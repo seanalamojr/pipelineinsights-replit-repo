@@ -1,0 +1,27 @@
+CHECKPOINT 7 — The baseline model
+Checkpoints 4–6 are approved, with two fixes now landed. Next: the baseline model. Keep explaining your choices in plain language.
+
+This model is deliberately dull. Its entire job is to be the number every later model must beat. Do not make it clever.
+
+Create models/baseline.py. It reads only from player_game_features — never from matches, never from the ETL, never from a CSV. If you find yourself needing a column that isn't in the feature table, stop and tell me rather than reaching around the feature table. This rule is what makes the model code reusable for MLB and NFL later, and it is not negotiable.
+
+The prediction is the player's rolling mean for the stat, multiplied by a context adjustment. Take the base from the configured rolling window and apply adjustments for surface, best_of, and tourney_level. Compute each adjustment as the ratio of the group mean to the overall mean, using only rows from the training period — never the full dataset.
+
+Put every adjustment in config/tennis.yaml under a baseline: block: which rolling window is the base, which context columns to adjust on, and a minimum group size below which the adjustment falls back to 1.0. No magic numbers in the Python.
+
+Rows where is_training_eligible is false must not be trained on. Rows where has_sufficient_history is false must not be predicted for — emit no prediction rather than a bad one. Report how many rows each rule excludes.
+
+Write predictions to player_prop_predictions with modelversion = 'baseline_v1_aces' (and the matching name per stat target) and a real predictiontimestamp. Never update or delete an existing row for a different modelversion. If a row already exists for the same player, match, prop, and modelversion, replace only that row.
+
+The baseline has no natural confidence interval, so derive one honestly: use the player's rolling standard deviation over the same window to set lowerci and upperci at roughly one standard deviation either side, floored at zero since a player cannot serve negative aces. Where the rolling standard deviation is null, write null bounds rather than inventing a width. Explain in your report what these bounds do and do not mean.
+
+Add a --dry-run flag that computes and prints summary statistics without writing to the database.
+
+Tests: assert the model raises if asked for a stat target with no baseline: config; assert a player with insufficient history produces no prediction row; assert that running twice with the same modelversion does not duplicate rows; assert that a context group below the minimum size falls back to an adjustment of exactly 1.0.
+
+Do not compute accuracy metrics yet — that is the next checkpoint, and I want the scoring built independently of the model that will be scored.
+
+Report which items you completed and explicitly list any you did not do and why. Do not silently skip items.
+
+What to look for when it comes back. The context adjustments are the one place this can go quietly wrong. If they are computed over the whole dataset rather than the training window, the model has seen the future — mildly, but it has. Ask for the actual multipliers and sanity-check them: grass should push ace predictions up relative to clay, and best_of: 5 should push them up relative to 3. If clay comes out higher than grass, something is inverted.
+

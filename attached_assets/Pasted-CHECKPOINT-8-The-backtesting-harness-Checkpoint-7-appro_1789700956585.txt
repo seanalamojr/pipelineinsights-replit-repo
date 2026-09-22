@@ -1,0 +1,33 @@
+CHECKPOINT 8 — The backtesting harness
+Checkpoint 7 approved. Now build the evaluation harness. This is the referee, and it has to be trustworthy before we build anything for it to judge.
+
+Create evaluation/backtest.py. It splits strictly on time: train on every eligible row with event_date before a cutoff, test on rows on or after it. Never use a random split, and never use scikit-learn's default train_test_split. Random splits let a model learn from a player's April matches to predict their March matches, which produces excellent results that mean nothing.
+
+Support walk-forward evaluation, not just one split: given a start date, an end date, and a step (default one month), train on everything before each cutoff and test on the following step. Report metrics per fold and pooled across folds. Put the defaults in config/tennis.yaml under backtest:.
+
+Metrics per fold and per stat target: MAE, RMSE, mean bias (signed mean error — this catches a model that is systematically high or low, which MAE hides), and the count of rows scored. Add the share of actual values falling inside [lowerci, upperci]; if that is far from the interval's nominal coverage, the intervals are decorative.
+
+Add a baseline comparison to every report: percentage improvement in MAE over baseline_v1, computed on the identical set of test rows. A model that scores different rows than the baseline is not comparable, so assert that the row sets match exactly and fail if they do not.
+
+Add two sabotage tests that must be part of the test suite, not a one-off script:
+Shuffled-target test. Randomly shuffle target_value within the training set and retrain. MAE must get substantially worse. If accuracy survives a shuffled target, features are leaking the answer.
+
+Future-cutoff test. Assert that no training row used for a given fold has an event_date on or after that fold's cutoff. This is a direct check for lookahead bias.
+
+
+Write results to a new table model_backtest_results — one row per model version, stat target, fold, and metric, with the cutoff date, row count, and a run timestamp. Add the migration. Never overwrite an old run; every backtest is a permanent record, the same way predictions are.
+
+Print a plain-language summary: which model version, over what date range, how many folds, what MAE, and how that compares to the baseline in a sentence a non-technical reader would understand.
+
+Do not tune anything to improve a metric in this checkpoint. The harness only measures.
+
+Report which items you completed and explicitly list any you did not do and why. Do not silently skip items.
+
+What to look for. Run it on the baseline immediately. You now have your first honest number, and you should compare it against the expectation you wrote down in advance (Part 2, item 4). Two failure signatures:
+
+MAE below about 0.5 on aces. That is not a good baseline, that is a leak. Go back to the Checkpoint 6 audit output and the shuffled-target test.
+
+Interval coverage near 100% or near 0%. Near 100% means the intervals are so wide they say nothing. Near 0% means they are far too narrow. Either way the standard-deviation logic from Checkpoint 7 needs revisiting before the GBM inherits the same pattern.
+
+Mean bias is the metric nobody builds and everybody needs. A model that is high by 1.2 aces on every single prediction has a fixable problem and a respectable MAE. You cannot see it without a signed error.
+

@@ -1,0 +1,45 @@
+Checkpoint 5 approved. Now build player_game_features — the single table every model reads from. This is the most important checkpoint in Phase 1: if there is leakage here, every model result for the rest of the project is fiction, and it will look like success rather than failure.
+
+Everything is driven by config/tennis.yaml. No feature names hardcoded in Python.
+
+Primitives in features/transforms.py (all sport-agnostic, all reusable for MLB and NFL):
+
+rolling_stat(df, group_col, date_col, stat_col, window, agg) — rolling mean/std/median over the last N events. Must shift by one so the current event is excluded. Add an assertion inside the function that the output for row i never depends on row i itself, and write a comment explaining that including today's result is the single most common beginner mistake in sports modeling and produces spectacular fake accuracy.
+
+rolling_by_category(...) — same, but split by a category (surface). Note that these windows fill slowly: a player may have 30 recent matches but only 4 on grass. Return both the value and a n_observations count so models can tell "average of 4" from "average of 30".
+
+days_since_previous(...) — rest days.
+
+head_to_head(...) — prior results and stat averages vs this specific opponent, using only matches before the current date.
+
+opponent_rolling(...) — the opponent's recent form, as the opponent-strength adjustment. For aces specifically, include the opponent's recent aces conceded rate, since ace counts depend heavily on who's returning.
+
+career_to_date(...) — expanding mean, again shifted.
+
+Feature set for aces (put this in the config, not the code): rolling mean and std of aces over 3/5/10/20 matches; surface-specific rolling ace mean with observation counts; aces per service game (a rate, which is more stable than raw count since matches vary in length); rolling first-serve-in percentage; rest days; best_of (5-set matches mean more serving — this is context, and the baseline model's context adjustment should use it); surface; tourney_level; player rank and opponent rank; rank difference; head-to-head ace average; opponent's recent aces-conceded rate; player height (tall players ace more — a genuinely predictive static feature).
+
+Exclusions and hygiene:
+
+Exclude rows where the target stat is NULL from training, but still generate feature rows for them.
+
+Exclude retirements and walkovers from rolling windows — a 2-game retirement would drag a rolling ace average down for no real reason. Use the match_completed flag from Checkpoint 4.
+
+Require a minimum history (e.g. 5 prior completed matches with stats) before emitting a feature row; add a has_sufficient_history flag rather than silently dropping.
+
+Set feature_version = 'tennis_v1' on every row.
+
+Leakage tests — these are the definition of done, write them as pytest:
+
+For a randomly sampled 50 player-match rows, recompute every rolling feature from scratch using only matches rows with event_date < the row's date, and assert equality with the stored value.
+
+Assert that a player's first-ever match has NULL rolling features, not zeros.
+
+Take one specific player-match, artificially inflate the actual ace count for that match in a copy of the data, rebuild features, and assert that row's own features are unchanged. If they change, we have leakage. Explain why this test is the strongest of the three.
+
+Assert no feature column has a correlation above 0.99 with the target — that would signal the target leaking in under another name.
+
+Also: because event_date is estimated from tournament start plus round (Checkpoint 4), same-tournament matches can have near-identical dates. Make sure rolling windows break ties by match_num within a tournament so a later round never uses a same-day later match. Call out this risk explicitly in your report.
+
+Report: row count, null rate per feature column, the distribution of the aces target, and the four test results. Show me one player's full feature row with a plain-language explanation of what each number means.
+
+Stop after this and report. Do not build any model yet.

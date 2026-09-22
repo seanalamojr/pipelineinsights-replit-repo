@@ -1,0 +1,41 @@
+Checkpoints 1–3 are approved. Now build the real tennis ETL. Keep explaining choices in plain language.
+
+Decision to apply first: our first prop target is aces, not games won. Aces come straight from a Sackmann integer column, whereas games won requires parsing score strings — so aces gets us to a working end-to-end model faster. Update config/tennis.yaml so the primary stat target is aces, with double_faults and service_games as secondary targets and games_won listed but disabled.
+
+Source: Jeff Sackmann's tennis_atp repo. Singles match files are named atp_matches_YYYY.csv, one per season. Pull from the raw GitHub URLs. Load seasons 2015 through 2025 to start (11 seasons — enough for multi-season backtests later without a huge first load). Add a --seasons CLI flag so I can load more later.
+
+The critical transform: Sackmann is stored one row per match, with a winner and a loser side (winner_*/w_* and loser_*/l_*). Our schema needs one row per player per match. So each Sackmann row becomes two rows in matches. Explain in a comment why we do this: it's what makes the same schema work for team sports later, and it means every feature query is "this player's history" rather than a messy winner/loser conditional.
+
+Columns to map (these are the real column names, verified against the repo's matches_data_dictionary.txt):
+
+Match/context: tourney_id, tourney_name, surface, draw_size, tourney_level, tourney_date (format is YYYYMMDD — parse it explicitly, do not let pandas guess), match_num, round, best_of, score, minutes
+
+Winner side: winner_id, winner_name, winner_hand, winner_ht, winner_ioc, winner_age, winner_seed, winner_entry, winner_rank, winner_rank_points
+
+Loser side: same fields with loser_ prefix
+
+Winner stats: w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, w_SvGms, w_bpSaved, w_bpFaced
+
+Loser stats: same nine with l_ prefix
+
+Derive per player row: aces, double_faults, serve_points, first_serves_in, first_serves_won, second_serves_won, service_games, bp_saved, bp_faced, break_points_won = opponent_bp_faced - opponent_bp_saved, plus is_winner, opponent_id, opponent_rank, player_rank, player_age.
+
+Build a stable match_id. Sackmann has no single match key. Construct one deterministically as {tourney_id}-{match_num} and make the matches primary key (match_id, player_id). Deterministic means re-running the loader updates rather than duplicates — implement it as an idempotent upsert, and prove it by running the loader twice and showing the row count is identical.
+
+Data quality issues you must handle explicitly, not silently:
+
+Match statistics are missing for many older and lower-tier matches — the w_ace/l_ace columns are blank. Do NOT fill these with 0; a missing ace count is not zero aces, and filling it would poison every rolling average. Leave them NULL and report what percentage of rows have stats.
+
+Retirements and walkovers appear in score as RET, W/O, DEF, or as an abbreviated score. Add a match_completed boolean flag. Do not drop these rows, but flag them so features can exclude them later.
+
+surface is occasionally blank. Leave NULL, report the count.
+
+tourney_date is the tournament start date, not the match date — every match in a tournament shares it. This matters enormously for time-based splits and rolling windows. Store it as tourney_date, and add a separate event_date column that estimates the actual match date by offsetting from tourney_date based on round. Document the estimate and its limitations in a comment. Do not pretend it's exact.
+
+Player IDs are stable across files, but names have encoding variance. Build players by deduplicating on winner_id/loser_id, taking the most recent name/rank/height per player.
+
+Report when done: total rows in matches and players, rows per season, percent of rows with non-null ace stats, count of retirements/walkovers, count of null surfaces, and the min/max event_date.
+
+Verification I will run myself — set it up for me: print the full match history for one well-known player (use Novak Djokovic) for one season, sorted by date, showing date, tournament, surface, opponent, score, and aces. I'm going to eyeball it against public records. Also write a pytest that asserts every Sackmann input row produced exactly two output rows.
+
+Stop after this and report. Do not start on odds or features.

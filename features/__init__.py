@@ -1,0 +1,1 @@
+"""Leakage-safe, sport-agnostic feature engineering."""

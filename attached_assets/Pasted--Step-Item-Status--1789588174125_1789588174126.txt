@@ -1,0 +1,25 @@
+| Step | Item                                                  | Status                   |
+| ---- | ----------------------------------------------------- | ------------------------ |
+| 1    | .env in .gitignore                                    | Not done                 |
+| 2    | Remove fabricated RMSE / agreement                    | Partial                  |
+| 3    | Render null deltas honestly                           | Done                     |
+| 4    | Real source record counts                             | Done (one mislabeled)    |
+| 5    | .env.example → DEMO_DATA=true                         | Not done                 |
+| 6    | Rewrite migrate.py to skip applied versions           | Not done                 |
+| 7    | captured_at in odds index                             | Done                     |
+| 8    | Nullable odds.match_id + provider columns             | Not done                 |
+| 9    | stat_target + feature_version in features key         | Not done                 |
+| 10   | actual_value and prediction_error                     | Partial                  |
+| 11   | snake_case prop_type keys                             | Not done                 |
+| 12   | Injury join grain                                     | Done (better than asked) |
+| 13   | Seed script updates                                   | Partial                  |
+| 14   | Real actuals in trends                                | Done                     |
+| 15   | Remove hardcoded model version, add versions endpoint | Not done                 |
+| 16   | Drop % from edge, add normalized edge                 | Partial                  |
+| 17   | Model version selector in UI                          | Not done                 |
+| 18   | Dedupe requirements.txt, drop FastAPI                 | Not done                 |
+| 19   | Delete dead lib/db, api/, dashboard/                  | Not done                 |
+| 20   | Engine at module scope                                | Not done                 |
+| 21   | tests/test_config.py                                  | Not done                 |
+| 22   | tests/test_reporting_view.py                          | Not done                 |
+| 23   | README + RULES updates                                | Partial                  |

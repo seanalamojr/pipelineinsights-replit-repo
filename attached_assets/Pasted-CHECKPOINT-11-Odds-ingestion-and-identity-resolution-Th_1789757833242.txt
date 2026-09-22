@@ -1,0 +1,28 @@
+CHECKPOINT 11 — Odds ingestion and identity resolution
+The math here is trivial. The hard part is that your odds and your match data use completely different names for the same people, and nothing will work until that is solved. I have looked at both schemas and the specifics are below — hand them over, because the agent cannot see your CSV files.
+
+Checkpoint 10 approved. Now load the captured odds. The arithmetic here is easy; the identity matching is the real work, so treat it that way.
+
+Create etl/odds/snapshots.py to load the nightly CSV archive in odds_snapshots/tennis_props_YYYY-MM.csv into the existing odds table. The CSV columns are: captured_at, fixture_id, game_id, league, tournament, start_date, status, home_player, away_player, sportsbook, market_id, market, player_id, selection, normalized_selection, selection_line, points, price, is_main, grouping_key, odds_id, odds_timestamp.
+
+Be aware of three shape mismatches between the CSV and the odds table, and handle each explicitly. First, the CSV has one row per selection, so Over and Under are separate rows that must be pivoted into a single odds row with over_price and under_price. Match them on (fixture_id, sportsbook, market, player_id, points). Second, the CSV's points column is the line; map it to odds.line. Third, the CSV's odds_id is the odds provider's identifier and must not be written to odds.odds_id, which is a generated primary key — preserve the provider id in a new nullable provider_odds_id column added by a migration.
+
+The identity problem. The CSV's player_id and fixture_id come from the odds provider. Your matches and players tables use Sackmann identifiers. They will never match, and the odds_match_player_fk foreign key will reject every row until you bridge them. Build an explicit resolution step that maps provider player names to your player_id values, reusing the provider_player_name / resolved_at pattern already established in migration 008 rather than inventing a second mechanism.
+
+Unresolved names must be recorded, not dropped. Write them to a table or report with the provider name, the league, and how many rows were affected, so I can add mappings by hand. Print the top unresolved names by row count at the end of every run. A silent drop here means quietly missing odds forever, and I will not be able to tell the difference between "no line offered" and "we failed to match the name."
+
+Expect the match rate to be poor at first and report it as a percentage. Tennis name formats differ badly between sources — "Novak Djokovic" versus "Djokovic N." versus "N. Djokovic" — and accented characters are inconsistent. Implement normalization (case, accents, punctuation, surname-initial forms) and report the match rate before and after normalization so I can see whether the normalization is earning its keep. Do not attempt fuzzy matching in this checkpoint; exact-after-normalization only, so that every match is auditable.
+
+The loader must be idempotent and safe to re-run over the whole archive. Re-running must not create duplicate rows. Define uniqueness on (match_id, player_id, book, prop_type, line, captured_at) and add the constraint in a migration. I intend to run this repeatedly as I add name mappings.
+
+Only load pre-match odds. Skip any row whose start_date is at or before its captured_at, and report how many were skipped. A price set after a match starts reflects in-play information and would poison any edge calculation.
+
+Do not modify vw_fact_player_prop_odds. It already computes edge and normalized_edge, and value_edge_threshold already lives in config. Once odds rows land, that view should light up on its own. Verify that it does and show me one example row end to end.
+
+Tests: assert Over and Under rows pivot into one row with both prices; assert an unresolved provider name is reported rather than dropped; assert re-running the loader twice does not duplicate rows; assert a post-start-time row is skipped; assert that name normalization maps at least the surname-initial and accented variants to the same player.
+
+Report which items you completed and explicitly list any you did not do and why. Do not silently skip items.
+
+What to look for. The match rate is the whole checkpoint. If it comes back above 90% on ATP main tour, you are in good shape. Below 60% and the normalization is not working — ask for the actual unresolved list before accepting anything. Expect Challenger and WTA rates to be worse than ATP, because lower-tier player names are more inconsistently rendered across sources.
+
+Also confirm item 7 actually fires. Your capture runs at 11 PM ET for next-day matches, so almost nothing should be skipped — if it reports skipping a large fraction, either the capture is grabbing live fixtures or the timestamp comparison is wrong.

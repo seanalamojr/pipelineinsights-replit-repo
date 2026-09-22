@@ -1,0 +1,388 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: pipeline
+    description: PipelineInsights dashboard data
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /pipeline/overview:
+    get:
+      operationId: getPipelineOverview
+      tags: [pipeline]
+      summary: Get the PipelineInsights overview
+      description: Returns dashboard KPIs, top value edges, today's matches, and source freshness.
+      responses:
+        "200":
+          description: Pipeline overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineOverview"
+  /pipeline/predictions:
+    get:
+      operationId: getPipelinePredictions
+      tags: [pipeline]
+      summary: List predictions with posted market lines
+      parameters:
+        - name: modelVersion
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: propType
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Prediction rows from the reporting view
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PropRow"
+  /pipeline/model-versions:
+    get:
+      operationId: getPipelineModelVersions
+      tags: [pipeline]
+      summary: List available model versions
+      description: Returns model versions present in the reporting view.
+      responses:
+        "200":
+          description: Available model versions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ModelVersion"
+  /pipeline/backtest:
+    get:
+      operationId: getPipelineBacktest
+      tags: [pipeline]
+      summary: Get scored model accuracy
+      description: Returns server-computed accuracy metrics from realized outcomes in the reporting view.
+      responses:
+        "200":
+          description: Latest scored backtest metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineBacktest"
+  /pipeline/trends:
+    get:
+      operationId: getPlayerTrend
+      tags: [pipeline]
+      summary: Get a player's recent stat trend
+      parameters:
+        - name: playerId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: stat
+          in: query
+          required: false
+          schema:
+            type: string
+            default: aces
+        - name: modelVersion
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Recent player trend
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TrendPoint"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    PropRow:
+      type: object
+      required:
+        - player
+        - tour
+        - sport
+        - eventDate
+        - matchup
+        - propType
+        - propLabel
+        - line
+        - projection
+        - lowerCi
+        - upperCi
+        - edge
+         - normalizedEdge
+        - side
+        - book
+        - modelVersion
+        - predictionTimestamp
+      properties:
+        player:
+          type: string
+        playerId:
+          type: string
+        tour:
+          type: string
+        sport:
+          type: string
+        eventDate:
+          type: string
+          format: date
+        matchup:
+          type: string
+        propType:
+          type: string
+        propLabel:
+          type: string
+        line:
+          type: [number, "null"]
+        projection:
+          type: number
+        lowerCi:
+          type: number
+        upperCi:
+          type: number
+        edge:
+          type: [number, "null"]
+        normalizedEdge:
+          type: [number, "null"]
+        side:
+          type: [string, "null"]
+          enum: [Over, Under, null]
+        book:
+          type: [string, "null"]
+        modelVersion:
+          type: string
+        predictionTimestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          nullable: true
+        tournament:
+          type: string
+        surface:
+          type: string
+        overPrice:
+          type: number
+        underPrice:
+          type: number
+        actualValue:
+          type: [number, "null"]
+        predictionError:
+          type: [number, "null"]
+        featureVersion:
+          type: [string, "null"]
+        isDemo:
+          type: boolean
+    ModelVersion:
+      type: object
+      required: [modelVersion, sport, propType, propLabel, predictionCount, firstSeen, lastSeen]
+      properties:
+        modelVersion:
+          type: string
+        sport:
+          type: string
+        propType:
+          type: string
+        propLabel:
+          type: string
+        predictionCount:
+          type: integer
+        firstSeen:
+          type: string
+          format: date-time
+        lastSeen:
+          type: string
+          format: date-time
+    PipelineBacktest:
+      type: object
+      properties:
+        available:
+          type: boolean
+        runTimestamp:
+          type: string
+          format: date-time
+          nullable: true
+        models:
+          type: array
+          items:
+            $ref: "#/components/schemas/BacktestAccuracy"
+      required: [available, runTimestamp, models]
+    BacktestAccuracy:
+      type: object
+      properties:
+        modelVersion:
+          type: string
+        modelFamily:
+          type: string
+        sport:
+          type: string
+        statTarget:
+          type: string
+        propLabel:
+          type: string
+        scoredRows:
+          type: integer
+        intervalScoredRows:
+          type: integer
+        foldCount:
+          type: integer
+        mae:
+          type: number
+          nullable: true
+        rmse:
+          type: number
+          nullable: true
+        meanBias:
+          type: number
+          nullable: true
+        intervalCoverage:
+          type: number
+          nullable: true
+        maeImprovementOverBaseline:
+          type: number
+          nullable: true
+        intervalCrossingCount:
+          type: [integer, "null"]
+        intervalRepairCount:
+          type: [integer, "null"]
+        firstCutoff:
+          type: string
+          format: date
+          nullable: true
+        lastTestEnd:
+          type: string
+          format: date
+          nullable: true
+      required: [modelVersion, modelFamily, sport, statTarget, propLabel, scoredRows, intervalScoredRows, foldCount, mae, rmse, meanBias, intervalCoverage, maeImprovementOverBaseline, intervalCrossingCount, intervalRepairCount, firstCutoff, lastTestEnd]
+    OverviewMetric:
+      type: object
+      required: [value, delta]
+      properties:
+        value:
+          type: [number, "null"]
+        delta:
+          type: [number, "null"]
+    SourceStatus:
+      type: object
+      required: [name, lastRun, recordCount, freshness, status]
+      properties:
+        name:
+          type: string
+        lastRun:
+          type: string
+          format: date-time
+        recordCount:
+          type: integer
+        freshness:
+          type: string
+        status:
+          type: string
+          enum: [ready, stale, pending]
+    MatchSummary:
+      type: object
+      required: [matchup, eventDate, tournament, surface]
+      properties:
+        matchup:
+          type: string
+        eventDate:
+          type: string
+          format: date
+        tournament:
+          type: string
+        surface:
+          type: string
+    PipelineOverview:
+      type: object
+      required:
+        - demoData
+        - generatedAt
+        - activePropMarkets
+        - predictionsGenerated
+        - avgRmse
+        - valueEdgesFound
+        - modelAgreement
+        - topEdges
+        - todaysMatches
+        - sources
+      properties:
+        demoData:
+          type: boolean
+        generatedAt:
+          type: string
+          format: date-time
+        activePropMarkets:
+          $ref: "#/components/schemas/OverviewMetric"
+        predictionsGenerated:
+          $ref: "#/components/schemas/OverviewMetric"
+        avgRmse:
+          $ref: "#/components/schemas/OverviewMetric"
+        valueEdgesFound:
+          $ref: "#/components/schemas/OverviewMetric"
+        modelAgreement:
+          $ref: "#/components/schemas/OverviewMetric"
+        topEdges:
+          type: array
+          items:
+            $ref: "#/components/schemas/PropRow"
+        todaysMatches:
+          type: array
+          items:
+            $ref: "#/components/schemas/MatchSummary"
+        sources:
+          type: array
+          items:
+            $ref: "#/components/schemas/SourceStatus"
+    TrendPoint:
+      type: object
+      required: [eventDate, opponent, value, rollingAverage, postedLine]
+      properties:
+        eventDate:
+          type: string
+          format: date
+        opponent:
+          type: string
+        value:
+          type: [number, "null"]
+        rollingAverage:
+          type: [number, "null"]
+        postedLine:
+          type: [number, "null"]
+

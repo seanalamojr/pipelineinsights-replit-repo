@@ -1,0 +1,30 @@
+CHECKPOINT 9 — The GBM
+Checkpoint 8 approved. Now the real model. Same rule as the baseline: it reads only from player_game_features.
+
+Create models/gbm.py using LightGBM. Train one model per stat target.
+
+Use quantile regression, not point estimates. Train three models per target — one at quantile 0.5 for the prediction, one at 0.1 for lowerci, one at 0.9 for upperci. Write the quantile levels to config/tennis.yaml; do not hardcode them. Explain in your report, in plain language, why quantile regression gives us honest uncertainty and a single point prediction does not.
+
+Feature selection comes from the config, not from the code. Read the feature list for each target from tennis.yaml. Do not silently drop columns, and do not add engineered features inside the model file — feature engineering belongs upstream, in the feature table.
+
+Handle nulls explicitly. LightGBM accepts nulls natively; use that rather than imputing. If you do impute anything, say exactly what and why, and put the strategy in the config. Never fill a null with zero for a rate or percentage feature — a null ace rate means unknown, and zero means a player who never aces.
+
+Hyperparameters live in config/tennis.yaml under gbm:. Start deliberately conservative: shallow trees, strong regularization, early stopping on a validation slice taken from the end of the training window, not at random. Report the parameters used.
+
+Write to player_prop_predictions with modelversion = 'gbm_v1_aces' (matching per target). The same no-overwrite rule applies. Bump to gbm_v2_* on any change to features, hyperparameters, or model type — never edit an existing version's rows.
+
+Save feature importances to a table or file per training run, and print the top fifteen with their plain-language descriptions from the config's descriptions block. This is our main interpretability check.
+
+Run the Checkpoint 8 harness on the GBM and report MAE, RMSE, bias, and interval coverage side by side with baseline_v1 on identical test rows. Report the result honestly even if the GBM loses.
+
+Run the shuffled-target sabotage test against the GBM specifically. Gradient boosting is far better than a rolling average at finding and exploiting a leak, so this test matters more here than it did for the baseline.
+
+Report which items you completed and explicitly list any you did not do and why. Do not silently skip items.
+
+What to look for. Three things, in this order.
+
+The feature importance list is your leak detector. Read the top fifteen against their descriptions. Any feature that could contain information about the match being predicted should not be there. If something like a context column is dominating, or if one feature holds implausible importance, investigate before celebrating.
+
+A single-digit percentage improvement over the baseline is a good, real result. Ace counts are genuinely noisy — serve outcomes depend on things no dataset captures. A 3–8% MAE improvement over a well-built baseline is a legitimate model. A 60% improvement is a leak.
+
+The GBM may lose, and that is a real finding. Rolling averages are strong baselines in noisy sports data, and plenty of published models fail to beat them. If it loses, do not immediately start tuning. Read the bias and coverage numbers first — a GBM with worse MAE but far better calibrated intervals may actually be the more useful model for betting, because the interval width is what drives your edge calculation.

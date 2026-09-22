@@ -1,0 +1,13 @@
+- [Checkpoint 3 honesty](checkpoint3-honesty.md) — keep unscored model metrics explicitly unavailable until realized outcomes support evaluation.
+- [Psycopg migration literals](psycopg-migration-literals.md) — escape literal percent signs in raw SQL migrations executed through psycopg.
+- [Constraint migration backfills](constraint-migration-backfills.md) — backfill existing rows before adding invariants that cover newly added columns.
+- [Sackmann source coverage](sackmann-fork-coverage.md) — Kadantte is the configured source for the requested 2015–2025 ATP seasons.
+- [Current tennis feed quality](current-tennis-feed-quality.md) — attached season feeds need stable-ID and stat-invariant validation before feature rebuilding.
+- [Prediction write boundary](prediction-write-boundary.md) — normalize pandas scalars and timestamps before SQLAlchemy batch upserts.
+- [LightGBM native runtime](lightgbm-runtime.md) — the pinned wheel needs GCC OpenMP libraries available in the Replit Nix environment.
+- [Ensemble prediction boundary](ensemble-prediction-boundary.md) — production ensembles consume versioned predictions only; fit weights from strictly earlier folds during evaluation.
+- [Odds identity boundary](odds-identity-boundary.md) — resolve provider names by exact normalization only, preserve unresolved rows, and keep provider IDs separate from generated database keys.
+- [Checkpoint 12 evaluation](checkpoint12-evaluation.md) — historical walk-forward reports must distinguish unscorable startup folds, percentage-point improvements, and non-informative odds samples.
+- [Append-only report instrumentation](append-only-report-instrumentation.md) — report-only rebuilds cannot recreate metrics absent from an older append-only run.
+- [View-backed accuracy caching](backtest-accuracy-caching.md) — prewarm expensive realized-outcome reports at API startup so first dashboard loads do not time out.
+- [Publish schema compatibility](publish-schema-compatibility.md) — legacy production rows require additive nullable columns and matching constraint names; never resolve the diff by truncating data.

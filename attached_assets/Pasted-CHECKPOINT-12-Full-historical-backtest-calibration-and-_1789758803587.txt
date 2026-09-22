@@ -1,0 +1,29 @@
+CHECKPOINT 12 — Full historical backtest, calibration, and model card
+This is the Phase 1 milestone: the point where you can say what this thing actually does.
+
+Checkpoint 11 approved. Now run the real evaluation and write down what we have. No new models in this checkpoint.
+
+Run the full walk-forward backtest across the complete available history for all three stat targets and all three model versions — baseline, GBM, ensemble — on identical test rows. Use the configured monthly folds. Persist every fold's metrics to model_backtest_results; do not overwrite prior runs.
+
+Report per target and per model: MAE, RMSE, signed mean bias, interval coverage, scored row count, and percentage MAE improvement over the baseline. Present it as one table I can read at a glance.
+
+Calibration is the headline, not MAE. For each model and target, report what fraction of actual outcomes fell inside [lowerci, upperci]. With quantiles at 0.1 and 0.9 this should be near 0.80. Report it per fold as well as pooled, because a pooled 0.80 can hide a model that covered 0.95 early and 0.60 late. Explain in plain language what it means if coverage is too high versus too low.
+
+Add a calibration-by-prediction-bin breakdown: split predictions into deciles and report coverage within each bin. A model can be well calibrated on average while being badly wrong at the extremes, and the extremes are exactly where betting value lives.
+
+Check the bias sign per fold. If mean_bias has the same sign in most folds, the model systematically over- or under-predicts, which is directly exploitable against us. Flag it prominently if so rather than burying it in a table.
+
+Write docs/model-card-tennis-v1.md covering: what each model version is, which features it uses, the exact training window, all metrics from item 2, the calibration results, the known limitations (list the two conceptually empty features, the estimated event dates from ROUND_OFFSETS, and the fact that market comparison has almost no sample yet), and the specific conditions under which you would not trust a prediction. Write it for someone who did not build this.
+
+Report separately on market comparison, and state the sample size in the first sentence. Compare predictions to captured lines only for matches that have both a pre-match line and a known result. This sample is currently tiny — that is expected, since odds capture began on September 17, 2026. Do not present a hit rate or ROI from a sample this small as though it means anything; report the raw counts and say plainly that the sample is not yet informative.
+
+Reconcile against pre-registered expectations and state pass or fail for each: baseline aces MAE in the 3.4–4.1 range; the GBM beating the baseline by 3–8%; the ensemble beating the GBM by 1–3%; interval coverage between 0.75 and 0.85. If any result falls outside its range — including better than expected — investigate and report the cause before concluding success. An unexpectedly good number is a leakage symptom, not a win.
+
+Add a --fold-detail flag that prints per-fold metrics rather than only pooled numbers, so I can see whether performance degrades over time. A model that was good in 2019 and bad in 2025 is not a good model.
+
+Report which items you completed and explicitly list any you did not do and why. Do not silently skip items.
+
+What to look for. Item 8 is the whole review. My expectations there are deliberately stated as ranges with both ends binding — if the GBM reports a 30% improvement over the baseline, that is the moment to stop and hunt for leakage, not to celebrate. Every leakage bug I have found in this project so far announced itself as an unusually good number.
+
+Also read the per-fold coverage. Pooled coverage near 0.80 with fold-level values bouncing between 0.55 and 0.95 means the intervals are not reliable even though the average looks right, and interval reliability is what you would actually be betting on.
+

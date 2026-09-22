@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "WlxFJJPS0JINQcZpmmELm"
+uri = "file://fail-safe-prompt-pack.md"
+type = "text"
+title = "PipelineInsights fail-safe prompt pack"
+description = "Standalone copy/paste execution guide with a reusable session preamble, 29 gated prompts, tennis-first sequencing, and explicit evidence requirements."
+logical_id = "0f1b02e1-9822-4f03-8904-d2ca0a07bcf6"
+content_hash = "sha256:65c18811e6c1306551b5821b2e85a7a4dd832a1215b94c4de89275b210fac1a4"
+size = 54746
+mtime_ms = 1789878659470
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:1534262c-b3de-4f66-90af-0a59b8510fb6/0f1b02e1-9822-4f03-8904-d2ca0a07bcf6/7964e27d-c439-46db-8275-a5ef8051cca7"
+storage_version_token = "1789878680430288"
+content_type = "text/markdown"

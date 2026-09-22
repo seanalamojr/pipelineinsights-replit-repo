@@ -1,0 +1,31 @@
+CHECKPOINT 10 — The ensemble layer
+This is the last piece of the model stack. It is also the single easiest place in this entire project to leak the future without noticing, so the prompt spends most of its length on that one risk.
+
+Checkpoints 7–9 are approved and the correction pass is verified. Two small leftovers first, then the ensemble. Keep explaining your choices in plain language.
+
+tests/test_reporting_view.py uses pytest.fail when DATABASE_URL is unset, which makes the suite red by default on a fresh clone. Change it to pytest.skip with allow_module_level=True. Verify that unset DATABASE_URL && python -m pytest tests/ -q reports passes and skips with zero failures.
+
+In models/gbm.py predict_quantile_models, the lower bound is clipped at 0.0 but the median and upper are not. Migration 013 now requires lowerci <= prediction, so a negative median would violate the constraint on insert. Apply the same clip to median and upper, and extend the interval test to assert all three are non-negative.
+
+Create models/ensemble.py. It reads model predictions from player_prop_predictions — it does not re-run the baseline or the GBM, and it does not touch player_game_features or any raw table. It combines existing versioned predictions into a new versioned prediction. Write with modelversion = 'ensemble_v1_<stat_target>'.
+
+Start with a weighted average, not a stacked model. Put the member models and their weights in config/tennis.yaml under an ensemble: block — list which modelversion values participate and the weight for each. Validate in the pydantic schema that weights are positive and sum to 1.0 within a small tolerance, and that every listed member modelversion is one the pipeline actually produces. No magic numbers in the Python.
+
+This is the item that matters most. Ensemble weights must be fitted on out-of-fold predictions only. Concretely: for each walk-forward fold, the weights used to score that fold must be derived from data strictly earlier than that fold's cutoff — never from the fold being scored. If you fit weights on the same rows you then measure, the ensemble will look better than it is and the improvement will be entirely fake. Implement this by fitting weights on folds 1..k-1 and applying them to fold k. The first fold has no prior folds, so either use the configured static weights or skip scoring it — state clearly which you chose and why. Explain in your report, in plain language, exactly which rows the weights were fitted on.
+
+Handle missing members honestly. A row may have a baseline prediction but no GBM prediction (insufficient history, or the GBM skipped it). Define one policy in config — either renormalize the weights across the members that are present, or emit no ensemble prediction for that row — implement exactly that policy, and report how many rows took each path. Do not silently treat a missing member as zero.
+
+For lowerci and upperci, take the same weighted average of the member bounds, then enforce lowerci <= prediction <= upperci and clip the lower bound at zero. Be explicit in your report that a weighted average of two models' intervals is not a statistically calibrated interval — it is a reasonable heuristic — and that Checkpoint 12 will measure whether the coverage is actually near 80%.
+
+Do not build the stacked meta-model in this checkpoint. Write a short section in your report describing what you would need to build it safely, so I can decide later whether it is worth it.
+
+Wire the ensemble into evaluation/backtest.py so one command scores baseline, GBM, and ensemble on the identical test rows, and report MAE for all three side by side plus the ensemble's percentage improvement over each.
+
+Tests: assert the config rejects weights that do not sum to 1.0; assert the config rejects an unknown member modelversion; assert that a member with weight 1.0 reproduces that member's predictions exactly; assert that weights fitted for fold k do not change when fold k's target values are altered (this is the out-of-fold proof — it is the most important test in this checkpoint); assert the missing-member policy behaves as configured.
+
+Report which items you completed and explicitly list any you did not do and why. Do not silently skip items.
+
+What to look for when it comes back. Ask for the fitted weights per fold. If the GBM's weight is above roughly 0.85, the ensemble is barely an ensemble and you should question whether it is adding anything. If the weights swing wildly fold to fold (0.2 → 0.9 → 0.3), the weight fitting is overreacting to noise and needs a floor, a cap, or smoothing across folds.
+
+And check the improvement number hard. A weighted ensemble of two correlated models typically buys you 1–3% MAE over the better member. If it reports 15%, the out-of-fold discipline in item 5 is broken somewhere — that is the number to be suspicious of, not pleased by.
+

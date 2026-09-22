@@ -1,0 +1,329 @@
+# Reference configuration for the first sport implementation.
+# Feature names are data, not Python conditionals; features/build_features.py
+# will read this list once that checkpoint is implemented.
+sport: tennis
+source:
+  # Kadantte provides the configured 2015–current-year ATP match history.
+  matches: sackmann_kadantte
+  odds: free_tier_odds_api
+stat_targets:
+  - aces
+  - double_faults
+  - service_games
+disabled_stat_targets:
+  - games_won
+  - sets_won
+  - minutes
+value_edge_threshold: 0.5
+backtest:
+  start_date: 2015-01-01
+  end_date: 2026-10-01
+  step_months: 1
+gbm:
+  quantiles: [0.1, 0.5, 0.9]
+  categorical_features: [surface, tourney_level]
+  validation_fraction: 0.2
+  early_stopping_rounds: 30
+  params:
+    n_estimators: 600
+    learning_rate: 0.03
+    num_leaves: 15
+    max_depth: 4
+    min_child_samples: 50
+    reg_alpha: 0.5
+    reg_lambda: 2.0
+    colsample_bytree: 0.8
+  verbosity: -1
+  features:
+    aces:
+      - rolling_mean_3
+      - rolling_std_3
+      - rolling_mean_5
+      - rolling_std_5
+      - rolling_mean_10
+      - rolling_std_10
+      - rolling_mean_20
+      - rolling_std_20
+      - surface_rolling_mean
+      - surface_rolling_n_observations
+      - rolling_aces_per_service_game
+      - rolling_first_serve_in_pct
+      - rest_days
+      - head_to_head_average
+      - head_to_head_matches
+      - head_to_head_win_rate
+      - opponent_aces_conceded_rate
+      - career_to_date_mean
+      - history_observations
+      - best_of
+      - surface
+      - tourney_level
+      - player_rank
+      - opponent_rank
+      - rank_difference
+      - player_height_cm
+    double_faults:
+      - rolling_mean_3
+      - rolling_std_3
+      - rolling_mean_5
+      - rolling_std_5
+      - rolling_mean_10
+      - rolling_std_10
+      - rolling_mean_20
+      - rolling_std_20
+      - surface_rolling_mean
+      - surface_rolling_n_observations
+      - rolling_double_faults_per_service_game
+      - rolling_first_serve_in_pct
+      - rest_days
+      - head_to_head_average
+      - head_to_head_matches
+      - head_to_head_win_rate
+      - opponent_double_faults_conceded_rate
+      - career_to_date_mean
+      - history_observations
+      - best_of
+      - surface
+      - tourney_level
+      - player_rank
+      - opponent_rank
+      - rank_difference
+      - player_height_cm
+    service_games:
+      - rolling_mean_3
+      - rolling_std_3
+      - rolling_mean_5
+      - rolling_std_5
+      - rolling_mean_10
+      - rolling_std_10
+      - rolling_mean_20
+      - rolling_std_20
+      - surface_rolling_mean
+      - surface_rolling_n_observations
+      - rolling_service_games_per_minute
+      - rolling_first_serve_in_pct
+      - rest_days
+      - head_to_head_average
+      - head_to_head_matches
+      - head_to_head_win_rate
+      - opponent_service_games_conceded_rate
+      - career_to_date_mean
+      - history_observations
+      - best_of
+      - surface
+      - tourney_level
+      - player_rank
+      - opponent_rank
+      - rank_difference
+      - player_height_cm
+ensemble:
+  missing_member_policy: renormalize
+  oof_objective: absolute
+  targets:
+    aces:
+      members:
+        - modelversion: baseline_v1_aces
+          weight: 0.5
+        - modelversion: gbm_v1_aces
+          weight: 0.5
+    double_faults:
+      members:
+        - modelversion: baseline_v1_double_faults
+          weight: 0.5
+        - modelversion: gbm_v1_double_faults
+          weight: 0.5
+    service_games:
+      members:
+        - modelversion: baseline_v1_service_games
+          weight: 0.5
+        - modelversion: gbm_v1_service_games
+          weight: 0.5
+features:
+  rolling_windows: [3, 5, 10, 20]
+  include:
+    - rolling_stat
+    - rolling_by_category
+    - rolling_rate
+    - rolling_percentage
+    - days_since_previous
+    - head_to_head
+    - opponent_rolling
+    - career_to_date
+    - context
+  feature_version: tennis_v1
+  minimum_history: 5
+  date_tie_policy: prior_event_dates_only
+  baseline:
+    base_window: 10
+    context_columns: [surface, best_of, tourney_level]
+    minimum_group_size: 30
+  descriptions:
+    rolling_mean_3: Average target statistic over the last 3 completed matches with target data.
+    rolling_mean_5: Average target statistic over the last 5 completed matches with target data.
+    rolling_mean_10: Average target statistic over the last 10 completed matches with target data.
+    rolling_mean_20: Average target statistic over the last 20 completed matches with target data.
+    rolling_std_3: Match-to-match variation in the target statistic over the last 3 completed matches.
+    rolling_std_5: Match-to-match variation in the target statistic over the last 5 completed matches.
+    rolling_std_10: Match-to-match variation in the target statistic over the last 10 completed matches.
+    rolling_std_20: Match-to-match variation in the target statistic over the last 20 completed matches.
+    surface_rolling_mean: Average prior target statistic on this same court surface.
+    surface_rolling_n_observations: Number of prior same-surface matches behind that average.
+    rolling_aces_per_service_game: Average prior aces per service game over the last 10 valid matches.
+    rolling_double_faults_per_service_game: Average prior double faults per service game over the last 10 valid matches.
+    rolling_service_games_per_minute: Average prior service games per minute over the last 10 valid matches.
+    rolling_first_serve_in_pct: Average prior first-serve-in rate over the last 10 valid matches; 0.61 means 61%.
+    rest_days: Days since the player's previous recorded match date.
+    head_to_head_average: Average prior target statistic by this player against this opponent.
+    head_to_head_matches: Number of prior completed matches against this opponent.
+    head_to_head_win_rate: Prior win rate against this opponent; 0.50 means 50%.
+    opponent_aces_conceded_rate: Opponent's average aces conceded over their last 10 completed matches.
+    opponent_double_faults_conceded_rate: Opponent's average double faults conceded over their last 10 completed matches.
+    opponent_service_games_conceded_rate: Opponent's average service games over their last 10 completed matches.
+    career_to_date_mean: Player's average target statistic across all completed prior matches with target data.
+    history_observations: Number of completed prior matches with target data.
+    best_of: Scheduled match length in sets; 3 means first to two sets and 5 means first to three.
+    surface: Court surface known before the match.
+    tourney_level: Tournament-level code known before the match.
+    player_rank: Player's ranking entering the event; lower is better.
+    opponent_rank: Opponent's ranking entering the event; lower is better.
+    player_height_cm: Player height in centimeters.
+    rank_difference: Player rank minus opponent rank; a negative value means the player is ranked higher.
+  targets:
+    aces:
+      source_column: aces
+      rolling:
+        aggregations: [mean, std]
+      category:
+        source_column: aces
+        category_column: surface
+        window: 20
+        value_output: surface_rolling_mean
+        count_output: surface_rolling_n_observations
+      rate:
+        numerator_column: aces
+        denominator_column: service_games
+        window: 10
+        output: rolling_aces_per_service_game
+      percentage:
+        numerator_column: first_serves_in
+        denominator_column: serve_points
+        window: 10
+        output: rolling_first_serve_in_pct
+      rest:
+        output: rest_days
+      head_to_head:
+        source_column: aces
+        average_output: head_to_head_average
+        matches_output: head_to_head_matches
+        win_rate_output: head_to_head_win_rate
+      opponent:
+        conceded_source_column: aces
+        window: 10
+        output: opponent_aces_conceded_rate
+      career:
+        source_column: aces
+        output: career_to_date_mean
+        count_output: history_observations
+      context:
+        best_of: best_of
+        surface: surface
+        tourney_level: tourney_level
+        player_rank: player_rank
+        opponent_rank: opponent_rank
+        player_height_cm: player_height_cm
+      derived:
+        rank_difference:
+          left_column: player_rank
+          right_column: opponent_rank
+    double_faults:
+      source_column: double_faults
+      rolling:
+        aggregations: [mean, std]
+      category:
+        source_column: double_faults
+        category_column: surface
+        window: 20
+        value_output: surface_rolling_mean
+        count_output: surface_rolling_n_observations
+      rate:
+        numerator_column: double_faults
+        denominator_column: service_games
+        window: 10
+        output: rolling_double_faults_per_service_game
+      percentage:
+        numerator_column: first_serves_in
+        denominator_column: serve_points
+        window: 10
+        output: rolling_first_serve_in_pct
+      rest:
+        output: rest_days
+      head_to_head:
+        source_column: double_faults
+        average_output: head_to_head_average
+        matches_output: head_to_head_matches
+        win_rate_output: head_to_head_win_rate
+      opponent:
+        conceded_source_column: double_faults
+        window: 10
+        output: opponent_double_faults_conceded_rate
+      career:
+        source_column: double_faults
+        output: career_to_date_mean
+        count_output: history_observations
+      context:
+        best_of: best_of
+        surface: surface
+        tourney_level: tourney_level
+        player_rank: player_rank
+        opponent_rank: opponent_rank
+        player_height_cm: player_height_cm
+      derived:
+        rank_difference:
+          left_column: player_rank
+          right_column: opponent_rank
+    service_games:
+      source_column: service_games
+      rolling:
+        aggregations: [mean, std]
+      category:
+        source_column: service_games
+        category_column: surface
+        window: 20
+        value_output: surface_rolling_mean
+        count_output: surface_rolling_n_observations
+      rate:
+        numerator_column: service_games
+        denominator_column: minutes
+        window: 10
+        output: rolling_service_games_per_minute
+      percentage:
+        numerator_column: first_serves_in
+        denominator_column: serve_points
+        window: 10
+        output: rolling_first_serve_in_pct
+      rest:
+        output: rest_days
+      head_to_head:
+        source_column: service_games
+        average_output: head_to_head_average
+        matches_output: head_to_head_matches
+        win_rate_output: head_to_head_win_rate
+      opponent:
+        conceded_source_column: service_games
+        window: 10
+        output: opponent_service_games_conceded_rate
+      career:
+        source_column: service_games
+        output: career_to_date_mean
+        count_output: history_observations
+      context:
+        best_of: best_of
+        surface: surface
+        tourney_level: tourney_level
+        player_rank: player_rank
+        opponent_rank: opponent_rank
+        player_height_cm: player_height_cm
+      derived:
+        rank_difference:
+          left_column: player_rank
+          right_column: opponent_rank

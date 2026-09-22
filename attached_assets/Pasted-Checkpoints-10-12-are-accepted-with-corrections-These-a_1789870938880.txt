@@ -1,0 +1,21 @@
+Checkpoints 10–12 are accepted with corrections. These are cleanup items, not a new checkpoint. Do not start any new modeling work.
+
+tests/test_ensemble.py::test_oof_weights_ignore_the_fold_being_scored is vacuous — it calls fit_oof_weights twice with identical arguments and never passes current_actual to it. I verified it still passes when the entire body of fit_oof_weights is replaced with a constant that ignores its inputs. Rewrite it so it fails if the out-of-fold boundary is broken. It must assert two things: that the fitted weights change when the earlier-fold outcomes change (proving the test engages the fitter), and that weights computed from earlier folds are unequal to weights computed from earlier folds plus the scored fold (proving the exclusion is load-bearing). Then verify your new test fails when you temporarily append the scored fold to the fitting inputs, and report that it failed before you restore the correct behavior. A test you have not seen fail is not a test.
+
+Add a test asserting the fold accumulation order in run_ensemble_backtest: no fold's fitted weights may be derived from rows in that fold's own test set. If the only way to test that is to add a seam to run_ensemble_backtest, add the seam.
+
+In models/ensemble.py combine_predictions, rename the local configured to effective_weights. It holds the fitted out-of-fold weights when the caller passes them, and the current name states the opposite.
+
+In combine_predictions, a row with no present members currently increments both renormalized_rows and skipped_rows. Count it once, and add a test asserting the three counts sum to the total candidate rows.
+
+fit_oof_weights minimizes squared error while the reported headline metric is MAE. Add a config option for the fitting objective, support absolute error as well as squared error, default to absolute error to match the reported metric, and report both the fitted weights and the resulting ensemble MAE under each objective so I can see whether it accounts for the ensemble underperforming the GBM.
+
+Report the fitted ensemble weights per fold. Add them to the --fold-detail output and include a per-target summary of the weights in the model card. I asked for this and cannot currently see any fitted weight anywhere in the output.
+
+.agents/memory/ensemble-prediction-boundary.md says production uses configured static weights while evaluation uses fitted weights. That means the backtested ensemble is not the artifact production would run. Do not change the behavior yet — write a short section in the model card stating this explicitly under a heading a reader cannot miss, so the ensemble metrics are not mistaken for production metrics.
+
+_name_aliases in etl/odds/snapshots.py derives the surname from tokens[-1] only, so compound surnames never produce a Surname F. alias — Aaron Gil Garcia yields garcia a but never gil garcia a. Generate initial-plus-surname aliases for every trailing-token span of the name. Add tests covering a two-token compound surname and a three-token name, and report the change in match rate against the existing test fixtures.
+
+The model card is over 1,400 lines, roughly 1,160 of which are inline fold-level coverage tables. Move all per-fold tables to a separate appendix file or CSV and leave a pooled summary plus a link in the model card. Item 6 asked for a document a non-builder can read.
+
+Add a "Data coverage" section to the model card stating plainly: the feature pipeline covers ATP men only (player.tour = 'ATP'), the captured odds archive to date is 100% WTA, and the captured markets are Sets Won, Games Won, and Break Points Won while the active model targets are aces, double faults, and service games — so the current intersection between model and market is empty. Correct the existing claim that the empty market comparison is explained by the capture start date, since additional collection under the current configuration cannot produce a paired row. Do not attempt to fix the mismatch. Document it only.
