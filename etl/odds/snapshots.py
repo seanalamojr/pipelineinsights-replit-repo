@@ -176,6 +176,10 @@ def normalize_player_name(value: object) -> str:
     text_value = "".join(
         character for character in text_value if not unicodedata.combining(character)
     )
+    # The archive uses YeXin while the official WTA profile uses Ye Xin.
+    # Split visible camel-case boundaries before casefolding; never infer a
+    # player from edit distance or from an incomplete name.
+    text_value = re.sub(r"(?<=[a-z])(?=[A-Z])", " ", text_value)
     text_value = text_value.casefold()
     text_value = re.sub(r"[^a-z0-9]+", " ", text_value)
     return " ".join(text_value.split())
@@ -206,7 +210,7 @@ def _name_index(
         player_id = _clean_text(player.get("player_id"))
         full_name = _clean_text(player.get("full_name"))
         player_tour = normalize_tour(player.get("tour"))
-        if tour and player_tour and player_tour != tour:
+        if tour and player_tour != tour:
             continue
         if not player_id or not full_name:
             continue
@@ -269,6 +273,7 @@ def _parse_decimal(value: object, field_name: str) -> Decimal:
 
 def _side(row: Mapping[str, Any]) -> str:
     for candidate in (
+        _clean_text(row.get("selection_line")),
         _clean_text(row.get("normalized_selection")),
         _clean_text(row.get("selection")),
     ):
@@ -288,6 +293,16 @@ def _selected_player_name(row: Mapping[str, Any]) -> str:
         value = _clean_text(row.get(field))
         if value:
             return value
+    # Some raw provider exports put the selected player's display name in
+    # `selection` and the Over/Under side in `selection_line`.
+    selection = _clean_text(row.get("selection"))
+    if selection and _side(row) in {"over", "under"}:
+        for field in ("home_player", "away_player"):
+            candidate = _clean_text(row.get(field))
+            if candidate and normalize_player_name(candidate) == normalize_player_name(
+                selection
+            ):
+                return candidate
     selection_text = normalize_player_name(
         f"{row.get('selection', '')} {row.get('normalized_selection', '')}"
     )
@@ -480,6 +495,8 @@ def _resolve_fixture(
 ) -> str | None:
     start_date = _parse_datetime(row["start_date"]).date()
     tournament = normalize_player_name(row.get("tournament"))
+    if not home_id or not away_id or home_id == away_id:
+        return None
     candidates = [
         match
         for match in matches
@@ -488,25 +505,8 @@ def _resolve_fixture(
             not tournament
             or normalize_player_name(match.tournament) == tournament
         )
-        and (
-            (
-                home_id
-                and away_id
-                and {
-                    match.player_id,
-                    match.opponent_id,
-                }
-                == {home_id, away_id}
-            )
-            or (
-                selected_player_id == match.player_id
-                and (home_id is None or match.opponent_id in {home_id, away_id})
-            )
-            or (
-                selected_player_id == match.opponent_id
-                and (away_id is None or match.player_id in {home_id, away_id})
-            )
-        )
+        and {match.player_id, match.opponent_id} == {home_id, away_id}
+        and selected_player_id in {home_id, away_id}
     ]
     match_ids = sorted({match.match_id for match in candidates})
     return match_ids[0] if len(match_ids) == 1 else None
@@ -621,8 +621,11 @@ def prepare_snapshot(
             if player_id is not None
             else None
         )
+        # A resolved name by itself is not enough to safely attach odds to a
+        # result. Keep both internal keys null until the entire fixture pairs.
         if match_id is None:
             unresolved_fixture_rows += 1
+            player_id = None
 
         prepared.append(
             {
@@ -636,6 +639,7 @@ def prepare_snapshot(
                 "captured_at": row["captured_at"],
                 "provider": provider,
                 "provider_event_id": _clean_text(row.get("fixture_id")),
+                "provider_event_start_at": row["start_date"],
                 "provider_market_id": row.get("market_id"),
                 "provider_odds_id": row.get("provider_odds_id"),
                 "provider_player_id": _clean_text(row.get("provider_player_id")),
@@ -734,6 +738,7 @@ def _upsert_rows(connection: Any, rows: Sequence[Mapping[str, Any]]) -> int:
             over_price = :over_price,
             under_price = :under_price,
             captured_at = :captured_at,
+            provider_event_start_at = :provider_event_start_at,
             provider_market_id = :provider_market_id,
             provider_odds_id = :provider_odds_id,
              provider_player_id = :provider_player_id,
@@ -750,13 +755,13 @@ def _upsert_rows(connection: Any, rows: Sequence[Mapping[str, Any]]) -> int:
         INSERT INTO odds (
             match_id, player_id, book, prop_type, line, over_price,
             under_price, captured_at, provider, provider_event_id,
-            provider_market_id, provider_odds_id, provider_player_id,
+            provider_event_start_at, provider_market_id, provider_odds_id, provider_player_id,
             provider_player_name, provider_team_name, resolved_at
         )
         VALUES (
             :match_id, :player_id, :book, :prop_type, :line, :over_price,
             :under_price, :captured_at, :provider, :provider_event_id,
-            :provider_market_id, :provider_odds_id, :provider_player_id,
+            :provider_event_start_at, :provider_market_id, :provider_odds_id, :provider_player_id,
             :provider_player_name, :provider_team_name, :resolved_at
         )
         ON CONFLICT (match_id, player_id, book, prop_type, line, captured_at)
@@ -769,6 +774,7 @@ def _upsert_rows(connection: Any, rows: Sequence[Mapping[str, Any]]) -> int:
             over_price = EXCLUDED.over_price,
             under_price = EXCLUDED.under_price,
             captured_at = EXCLUDED.captured_at,
+            provider_event_start_at = EXCLUDED.provider_event_start_at,
             provider_market_id = EXCLUDED.provider_market_id,
             provider_odds_id = EXCLUDED.provider_odds_id,
             provider_player_id = EXCLUDED.provider_player_id,

@@ -21,6 +21,12 @@ export const HealthCheckResponse = zod.object({
  * Returns dashboard KPIs, top value edges, today's matches, and source freshness.
  * @summary Get the PipelineInsights overview
  */
+export const getPipelineOverviewQueryModeDefault = `real`;
+
+export const GetPipelineOverviewQueryParams = zod.object({
+  "mode": zod.enum(['real', 'demo']).default(getPipelineOverviewQueryModeDefault).describe('Select real prediction data or explicitly seeded demo data.')
+})
+
 export const GetPipelineOverviewResponse = zod.object({
   "demoData": zod.boolean(),
   "generatedAt": zod.coerce.date(),
@@ -92,7 +98,10 @@ export const GetPipelineOverviewResponse = zod.object({
 /**
  * @summary List predictions with posted market lines
  */
+export const getPipelinePredictionsQueryModeDefault = `real`;
+
 export const GetPipelinePredictionsQueryParams = zod.object({
+  "mode": zod.enum(['real', 'demo']).default(getPipelinePredictionsQueryModeDefault).describe('Select real prediction data or explicitly seeded demo data.'),
   "modelVersion": zod.coerce.string().optional(),
   "propType": zod.coerce.string().optional()
 })
@@ -133,6 +142,12 @@ export const GetPipelinePredictionsResponse = zod.array(GetPipelinePredictionsRe
  * Returns model versions present in the reporting view.
  * @summary List available model versions
  */
+export const getPipelineModelVersionsQueryModeDefault = `real`;
+
+export const GetPipelineModelVersionsQueryParams = zod.object({
+  "mode": zod.enum(['real', 'demo']).default(getPipelineModelVersionsQueryModeDefault).describe('Select real prediction data or explicitly seeded demo data.')
+})
+
 export const GetPipelineModelVersionsResponseItem = zod.object({
   "modelVersion": zod.string(),
   "sport": zod.string(),
@@ -177,9 +192,11 @@ export const GetPipelineBacktestResponse = zod.object({
 /**
  * @summary Get a player's recent stat trend
  */
+export const getPlayerTrendQueryModeDefault = `real`;
 export const getPlayerTrendQueryStatDefault = `aces`;
 
 export const GetPlayerTrendQueryParams = zod.object({
+  "mode": zod.enum(['real', 'demo']).default(getPlayerTrendQueryModeDefault).describe('Select real prediction data or explicitly seeded demo data.'),
   "playerId": zod.coerce.string(),
   "stat": zod.coerce.string().default(getPlayerTrendQueryStatDefault),
   "modelVersion": zod.coerce.string().optional()

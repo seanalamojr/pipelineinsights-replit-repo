@@ -32,6 +32,8 @@ paths:
       tags: [pipeline]
       summary: Get the PipelineInsights overview
       description: Returns dashboard KPIs, top value edges, today's matches, and source freshness.
+      parameters:
+        - $ref: "#/components/parameters/PipelineDataMode"
       responses:
         "200":
           description: Pipeline overview
@@ -45,6 +47,7 @@ paths:
       tags: [pipeline]
       summary: List predictions with posted market lines
       parameters:
+        - $ref: "#/components/parameters/PipelineDataMode"
         - name: modelVersion
           in: query
           required: false
@@ -70,6 +73,8 @@ paths:
       tags: [pipeline]
       summary: List available model versions
       description: Returns model versions present in the reporting view.
+      parameters:
+        - $ref: "#/components/parameters/PipelineDataMode"
       responses:
         "200":
           description: Available model versions
@@ -98,6 +103,7 @@ paths:
       tags: [pipeline]
       summary: Get a player's recent stat trend
       parameters:
+        - $ref: "#/components/parameters/PipelineDataMode"
         - name: playerId
           in: query
           required: true
@@ -124,7 +130,19 @@ paths:
                 items:
                   $ref: "#/components/schemas/TrendPoint"
 components:
+  parameters:
+    PipelineDataMode:
+      name: mode
+      in: query
+      required: false
+      description: Select real prediction data or explicitly seeded demo data.
+      schema:
+        $ref: "#/components/schemas/PipelineDataMode"
   schemas:
+    PipelineDataMode:
+      type: string
+      enum: [real, demo]
+      default: real
     HealthStatus:
       type: object
       properties:

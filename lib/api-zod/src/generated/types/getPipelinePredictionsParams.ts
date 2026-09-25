@@ -5,8 +5,14 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { PipelineDataMode } from './pipelineDataMode';
+import type { PipelineDataModeParameter } from './pipelineDataModeParameter';
 
 export type GetPipelinePredictionsParams = {
+/**
+ * Select real prediction data or explicitly seeded demo data.
+ */
+mode?: PipelineDataModeParameter;
 modelVersion?: string;
 propType?: string;
 };

@@ -92,6 +92,32 @@ def test_over_and_under_rows_pivot_to_one_odds_row() -> None:
     assert pivoted[0]["provider_odds_id"] == "odds-over-1|odds-under-1"
 
 
+def test_raw_provider_export_uses_selection_line_for_side_and_selection_for_name() -> None:
+    rows = [
+        _source_row(
+            selection="Novak Djokovic",
+            normalized_selection="novak_djokovic",
+            selection_line="over",
+            odds_id="odds-over-1",
+            price="-110",
+        ),
+        _source_row(
+            selection="Novak Djokovic",
+            normalized_selection="novak_djokovic",
+            selection_line="under",
+            odds_id="odds-under-1",
+            price="-115",
+        ),
+    ]
+
+    pivoted = pivot_selections(rows)
+
+    assert len(pivoted) == 1
+    assert pivoted[0]["provider_player_name"] == "Novak Djokovic"
+    assert pivoted[0]["over_price"] == -110
+    assert pivoted[0]["under_price"] == -115
+
+
 def test_pivot_export_rows_are_auto_detected_and_preserve_provider_identity() -> None:
     row = {
         "captured_at": "2026-09-17T23:00:00Z",
@@ -129,6 +155,9 @@ def test_pivot_export_rows_are_auto_detected_and_preserve_provider_identity() ->
     assert len(prepared.rows) == 1
     assert prepared.rows[0]["provider"] == "attached-wta-archive"
     assert prepared.rows[0]["provider_event_id"] == "provider-fixture-1"
+    assert prepared.rows[0]["provider_event_start_at"] == datetime(
+        2026, 9, 18, 14, 0, tzinfo=timezone.utc
+    )
     assert prepared.rows[0]["provider_player_id"] == "provider-player-1"
     assert prepared.rows[0]["provider_odds_id"] == (
         "provider-over-1|provider-under-1"
@@ -184,6 +213,13 @@ def test_name_normalization_handles_initial_surname_and_accents() -> None:
     assert resolve_player_name("Elena Rybakina", players) == ("p", "normalized")
 
 
+def test_wta_camelcase_provider_name_matches_explicit_wta_reference() -> None:
+    players = [{"player_id": "wta-1", "full_name": "Ye Xin Ma", "tour": "WTA"}]
+    assert resolve_player_name("YeXin Ma", players, tour="WTA") == (
+        "wta-1", "normalized",
+    )
+
+
 def test_wta_row_does_not_resolve_identically_named_atp_player() -> None:
     row = _source_row(
         league="WTA",
@@ -218,6 +254,35 @@ def test_wta_row_does_not_resolve_identically_named_atp_player() -> None:
     assert prepared.report.unresolved_name_rows == 1
 
 
+def test_wta_requires_explicit_tour_and_both_players_for_fixture() -> None:
+    row = _source_row(
+        league="WTA", home_player="Anna Blinkova", away_player="Alina Charaeva",
+        player_name="Anna Blinkova",
+    )
+    players = [
+        {"player_id": "wta-a", "full_name": "Anna Blinkova", "tour": "WTA"},
+        {"player_id": "unknown-b", "full_name": "Alina Charaeva", "tour": None},
+        {"player_id": "atp-a", "full_name": "Anna Blinkova", "tour": "ATP"},
+    ]
+    matches = [{
+        "match_id": "same-day", "event_date": date(2026, 9, 18),
+        "tournament": "Test Open", "player_id": "wta-a",
+        "opponent_id": "unknown-b",
+    }]
+    prepared = prepare_snapshot([row], players=players, matches=matches, provider="test")
+    assert prepared.rows[0]["match_id"] is None
+    assert prepared.rows[0]["player_id"] is None
+    players[1]["tour"] = "WTA"
+    paired = prepare_snapshot([row], players=players, matches=matches, provider="test")
+    assert (paired.rows[0]["match_id"], paired.rows[0]["player_id"]) == ("same-day", "wta-a")
+    assert resolve_player_name("Anna Blinkova", players, tour="ATP") == ("atp-a", "raw")
+    ambiguous = prepare_snapshot([row], players=players, matches=matches * 1 + [
+        {**matches[0], "match_id": "second-match"}
+    ], provider="test")
+    assert ambiguous.rows[0]["match_id"] is None
+    assert ambiguous.rows[0]["player_id"] is None
+
+
 def test_name_normalization_handles_compound_and_three_token_surnames() -> None:
     players = [
         {"player_id": "p-compound", "full_name": "Aaron Gil Garcia"},
@@ -238,6 +303,17 @@ def test_name_normalization_handles_compound_and_three_token_surnames() -> None:
     )
     assert resolve_player_name("M. Lopez Alvarez", players) == (
         "p-three",
+        "normalized",
+    )
+
+
+def test_hyphenated_given_name_resolves_compound_initial_form() -> None:
+    players = [
+        {"player_id": "p-herbert", "full_name": "Pierre-Hugues Herbert"},
+    ]
+
+    assert resolve_player_name("Herbert P-H.", players) == (
+        "p-herbert",
         "normalized",
     )
 
@@ -314,8 +390,8 @@ def test_compound_name_fixture_reports_normalized_match_rate() -> None:
     prepared = prepare_snapshot(
         rows,
         players=[
-            {"player_id": "p-compound", "full_name": "Aaron Gil Garcia"},
-            {"player_id": "p-three", "full_name": "Maria Lopez Alvarez"},
+            {"player_id": "p-compound", "full_name": "Aaron Gil Garcia", "tour": "ATP"},
+            {"player_id": "p-three", "full_name": "Maria Lopez Alvarez", "tour": "ATP"},
         ],
         matches=matches,
         provider="test-provider",

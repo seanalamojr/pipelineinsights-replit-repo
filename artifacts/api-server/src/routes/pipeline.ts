@@ -4,6 +4,7 @@ import {
   GetPipelineModelVersionsResponse,
   GetPipelineBacktestResponse,
   GetPipelineOverviewResponse,
+  GetPipelineOverviewQueryParams,
   GetPipelinePredictionsResponse,
   GetPlayerTrendResponse,
 } from "@workspace/api-zod";
@@ -40,6 +41,12 @@ type QueryValue = string | undefined;
 function queryString(request: Request, name: string): QueryValue {
   const value = request.query[name];
   return typeof value === "string" ? value : undefined;
+}
+
+function parseDataMode(request: Request) {
+  return GetPipelineOverviewQueryParams.safeParse({
+    mode: request.query.mode,
+  });
 }
 
 function nullableNumber(value: unknown): number | null {
@@ -304,143 +311,77 @@ const reportingProjection = `
 `;
 
 const reportingCtes = `
-  WITH latest_features AS (
-    SELECT DISTINCT ON (match_id, player_id, stat_target)
-      match_id,
-      player_id,
-      stat_target,
-      feature_version,
-      rolling_mean_5 AS rolling_average
-    FROM player_game_features
-    ORDER BY
-      match_id,
-      player_id,
-      stat_target,
-      created_at DESC,
-      feature_version DESC
-  ),
-  latest_injuries AS (
-    SELECT DISTINCT ON (player_id, event_date)
-      player_id,
-      event_date,
-      status
-    FROM injuries
-    ORDER BY
-      player_id,
-      event_date,
-      captured_at DESC,
-      injury_id DESC
-  ),
-  reporting_base AS (
+  WITH reporting AS (
     SELECT
-      prediction.prediction_id,
-      prediction.player_id,
-      player.full_name AS player,
-      player.tour,
-      prediction.match_id,
-      match_row.event_date,
-      match_row.tournament,
-      match_row.surface,
-      prediction.sport,
-      prediction.prop_type,
+      source.prediction_id,
+      source.player_id,
+      source.player,
+      source.tour,
+      source.match_id,
+      source.event_date,
+      source.tournament,
+      source.surface,
+      source.sport,
+      source.prop_type,
       COALESCE(
         prop.display_label,
-        initcap(replace(prediction.prop_type, '_', ' '))
+        initcap(replace(source.prop_type, '_', ' '))
       ) AS prop_label,
-      prediction.prediction,
-      prediction.lowerci,
-      prediction.upperci,
-      prediction.modelversion,
-      prediction.predictiontimestamp,
-      market.provider,
-      market.provider_event_id,
-      market.provider_market_id,
-      market.book,
-      market.line,
-      market.over_price,
-      market.under_price,
-      market.captured_at,
+      source.prediction,
+      source.lowerci,
+      source.upperci,
+      source.modelversion,
+      source.predictiontimestamp,
+      source.book,
+      source.line,
+      source.over_price,
+      source.under_price,
+      source.captured_at,
+      source.edge,
+      source.edge / NULLIF(source.upperci - source.lowerci, 0) AS normalized_edge,
+      source.side,
+      source.opponent,
+      source.matchup,
+      source.status,
+      source.actual_value,
       CASE
-        WHEN market.line IS NULL THEN NULL
-        ELSE prediction.prediction - market.line
-      END AS edge,
-      CASE
-        WHEN market.line IS NULL THEN NULL
-        ELSE (prediction.prediction - market.line)
-          / NULLIF(prediction.upperci - prediction.lowerci, 0)
-      END AS normalized_edge,
-      CASE
-        WHEN market.line IS NULL THEN NULL
-        WHEN prediction.prediction >= market.line THEN 'Over'
-        ELSE 'Under'
-      END AS side,
-      opponent.full_name AS opponent,
-      player.full_name || ' vs ' ||
-        COALESCE(opponent.full_name, 'TBD') AS matchup,
-      injury.status,
-      feature.feature_version,
-      feature.rolling_average,
-      LEFT(player.player_id, 5) = 'demo_' AS is_demo,
-      CASE
-        WHEN match_row.event_date > CURRENT_DATE THEN NULL
-        ELSE CASE prediction.prop_type
-          WHEN 'games_won' THEN match_row.games_won::numeric
-          WHEN 'sets_won' THEN match_row.sets_won::numeric
-          WHEN 'aces' THEN match_row.aces::numeric
-          WHEN 'double_faults' THEN match_row.double_faults::numeric
-          WHEN 'service_games' THEN match_row.service_games::numeric
-          ELSE NULL
-        END
-      END AS actual_value
-    FROM player_prop_predictions AS prediction
-    JOIN players AS player
-      ON player.player_id = prediction.player_id
-    JOIN matches AS match_row
-      ON match_row.match_id = prediction.match_id
-     AND match_row.player_id = prediction.player_id
-    LEFT JOIN prop_types AS prop
-      ON prop.prop_key = prediction.prop_type
-    LEFT JOIN players AS opponent
-      ON opponent.player_id = match_row.opponent_id
-    LEFT JOIN latest_features AS feature
-      ON feature.match_id = prediction.match_id
-     AND feature.player_id = prediction.player_id
-     AND feature.stat_target = prediction.prop_type
-    LEFT JOIN odds AS market
-      ON market.match_id = prediction.match_id
-     AND market.player_id = prediction.player_id
-     AND market.prop_type = prediction.prop_type
-    LEFT JOIN latest_injuries AS injury
-      ON injury.player_id = prediction.player_id
-     AND injury.event_date = match_row.event_date
-  ),
-  reporting AS (
-    SELECT
-      reporting_base.*,
-      CASE
-        WHEN actual_value IS NULL THEN NULL
-        ELSE actual_value - prediction
+        WHEN source.actual_value IS NULL THEN NULL
+        ELSE source.actual_value - source.prediction
       END AS prediction_error,
       CASE
-        WHEN actual_value IS NULL THEN NULL
-        ELSE prediction - actual_value
-      END AS signed_error
-    FROM reporting_base
+        WHEN source.actual_value IS NULL THEN NULL
+        ELSE source.prediction - source.actual_value
+      END AS signed_error,
+      NULL::text AS feature_version,
+      source.rolling_average,
+      LEFT(source.player_id, 5) = 'demo_' AS is_demo,
+      CASE
+        WHEN LEFT(source.player_id, 5) = 'demo_' THEN 'demo'
+        ELSE 'real'
+      END AS data_mode
+    FROM vw_fact_player_prop_odds AS source
+    LEFT JOIN prop_types AS prop
+      ON prop.prop_key = source.prop_type
   )
 `;
 
 router.get("/pipeline/overview", async (request, response) => {
   try {
+    const parsedMode = parseDataMode(request);
+    if (!parsedMode.success) {
+      response.status(400).json({ message: "mode must be 'real' or 'demo'." });
+      return;
+    }
+    const mode = parsedMode.data.mode;
     const valueEdgeThreshold = readValueEdgeThreshold();
-    const [summary, edges, matches, featureCount] = await Promise.all([
+    const [summary, edges, matches] = await Promise.all([
       pool.query<{
         active_prop_markets: string;
         predictions_generated: string;
         value_edges_found: string;
-        view_rows: string;
-        demo_rows: string;
         match_rows: string;
         market_rows: string;
+        feature_rows: string;
         latest_prediction_timestamp: string | null;
       }>(`
         ${reportingCtes}
@@ -448,18 +389,21 @@ router.get("/pipeline/overview", async (request, response) => {
           COUNT(DISTINCT (match_id, player_id, prop_type))::text AS active_prop_markets,
           COUNT(DISTINCT prediction_id)::text AS predictions_generated,
           COUNT(DISTINCT prediction_id) FILTER (WHERE ABS(normalized_edge) >= $1)::text AS value_edges_found,
-          COUNT(*)::text AS view_rows,
-          COUNT(*) FILTER (WHERE player_id LIKE 'demo_%')::text AS demo_rows,
           COUNT(DISTINCT match_id)::text AS match_rows,
           COUNT(DISTINCT (match_id, player_id, book, prop_type))::text AS market_rows,
+          COUNT(DISTINCT (match_id, player_id, prop_type))
+            FILTER (WHERE rolling_average IS NOT NULL)::text AS feature_rows,
           MAX(predictiontimestamp)::text AS latest_prediction_timestamp
         FROM reporting
-      `, [valueEdgeThreshold]),
+        WHERE data_mode = $2
+      `, [valueEdgeThreshold, mode]),
       pool.query(
         `${reportingCtes}
          ${reportingProjection}
+         WHERE data_mode = $1
          ORDER BY ABS(normalized_edge) DESC NULLS LAST
          LIMIT 8`,
+        [mode],
       ),
       pool.query<{
         matchup: string;
@@ -471,21 +415,14 @@ router.get("/pipeline/overview", async (request, response) => {
         SELECT DISTINCT matchup, event_date, tournament, surface
         FROM reporting
         WHERE event_date = CURRENT_DATE
+          AND data_mode = $1
         ORDER BY matchup
-      `),
-      pool.query<{ feature_rows: string }>(
-        "SELECT COUNT(*)::text AS feature_rows FROM player_game_features",
-      ),
+      `, [mode]),
     ]);
 
     const summaryRow = summary.rows[0];
-    const featureRows = featureCount.rows[0];
     const generatedAt = new Date().toISOString();
-    const viewRows = Number(summaryRow?.view_rows ?? 0);
-    const demoRows = Number(summaryRow?.demo_rows ?? 0);
-    const demoData =
-      process.env["DEMO_DATA"] === "true" ||
-      demoRows > 0;
+    const demoData = mode === "demo";
     const latestDataTimestamp =
       summaryRow?.latest_prediction_timestamp ?? generatedAt;
     const result = GetPipelineOverviewResponse.parse({
@@ -536,7 +473,7 @@ router.get("/pipeline/overview", async (request, response) => {
         {
           name: "Feature builder",
           lastRun: latestDataTimestamp,
-          recordCount: Number(featureRows?.feature_rows ?? 0),
+          recordCount: Number(summaryRow?.feature_rows ?? 0),
           freshness: demoData ? "Demo snapshot" : "Reporting view",
           status: "ready",
         },
@@ -551,6 +488,11 @@ router.get("/pipeline/overview", async (request, response) => {
 
 router.get("/pipeline/predictions", async (request, response) => {
   try {
+    const parsedMode = parseDataMode(request);
+    if (!parsedMode.success) {
+      response.status(400).json({ message: "mode must be 'real' or 'demo'." });
+      return;
+    }
     const modelVersion = queryString(request, "modelVersion") ?? null;
     const propType = queryString(request, "propType")?.toLowerCase() ?? null;
     const result = await pool.query(
@@ -558,9 +500,10 @@ router.get("/pipeline/predictions", async (request, response) => {
        ${reportingProjection}
        WHERE ($1::text IS NULL OR modelversion = $1)
          AND ($2::text IS NULL OR LOWER(prop_type) = LOWER($2))
+         AND data_mode = $3
         ORDER BY event_date DESC, ABS(normalized_edge) DESC NULLS LAST, player
        LIMIT 200`,
-      [modelVersion, propType],
+      [modelVersion, propType, parsedMode.data.mode],
     );
     response.json(
       GetPipelinePredictionsResponse.parse(result.rows.map(toPropRow)),
@@ -573,6 +516,11 @@ router.get("/pipeline/predictions", async (request, response) => {
 
 router.get("/pipeline/model-versions", async (request, response) => {
   try {
+    const parsedMode = parseDataMode(request);
+    if (!parsedMode.success) {
+      response.status(400).json({ message: "mode must be 'real' or 'demo'." });
+      return;
+    }
     const result = await pool.query(`
       ${reportingCtes}
       SELECT
@@ -584,9 +532,10 @@ router.get("/pipeline/model-versions", async (request, response) => {
         MIN(predictiontimestamp)::text AS first_seen,
         MAX(predictiontimestamp)::text AS last_seen
       FROM reporting
+      WHERE data_mode = $1
       GROUP BY modelversion, sport, prop_type, prop_label
       ORDER BY MAX(predictiontimestamp) DESC, modelversion, prop_type
-    `);
+    `, [parsedMode.data.mode]);
     response.json(
       GetPipelineModelVersionsResponse.parse(
         result.rows.map((row) => ({
@@ -625,6 +574,11 @@ router.get("/pipeline/backtest", async (request, response) => {
 
 router.get("/pipeline/trends", async (request, response) => {
   try {
+    const parsedMode = parseDataMode(request);
+    if (!parsedMode.success) {
+      response.status(400).json({ message: "mode must be 'real' or 'demo'." });
+      return;
+    }
     const playerId = queryString(request, "playerId");
     const stat = (queryString(request, "stat") ?? "aces").toLowerCase();
     const modelVersion = queryString(request, "modelVersion") ?? null;
@@ -646,6 +600,7 @@ router.get("/pipeline/trends", async (request, response) => {
           WHERE player_id = $1
             AND LOWER(prop_type) = LOWER($2)
             AND ($3::text IS NULL OR modelversion = $3)
+            AND data_mode = $4
           GROUP BY modelversion
           ORDER BY MAX(predictiontimestamp) DESC, modelversion DESC
           LIMIT 1
@@ -662,11 +617,12 @@ router.get("/pipeline/trends", async (request, response) => {
           WHERE player_id = $1
             AND LOWER(prop_type) = LOWER($2)
             AND modelversion = (SELECT modelversion FROM selected_model)
+            AND data_mode = $4
           ORDER BY match_id, captured_at DESC NULLS LAST, book ASC NULLS LAST
         ) AS trend
         ORDER BY event_date ASC
       `,
-      [playerId, stat, modelVersion],
+      [playerId, stat, modelVersion, parsedMode.data.mode],
     );
     response.json(
       GetPlayerTrendResponse.parse(

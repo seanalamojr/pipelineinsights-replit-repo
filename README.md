@@ -225,6 +225,25 @@ plain-language model card to `docs/model-card-tennis-v1.md`. Market comparison
 reports raw paired counts only and does not claim hit rate or ROI when the
 captured odds sample is too small.
 
+### Verified WTA odds results
+
+After applying migrations (`python -m db.migrate`), reconcile the attached
+2026 WTA odds archive with official WTA result pages:
+
+```bash
+python -m etl.tennis.wta_results 'attached_assets/Tennis_prop_odds_—_pivoted_(over_under_per_row)_1789956870194.csv'
+```
+
+Use `--dry-run` to check official fixture coverage without changing the
+database. The importer requires an unambiguous official scorecard, both
+official player identities, an exact match date, final score and winner before
+writing results. The odds loader then requires both WTA players and the
+scheduled date before filling either internal odds key; post-start captures
+are excluded. Re-running the command updates rather than duplicates rows.
+Query `vw_wta_odds_results` for paired prices, winners, confirmed game/set
+totals and the official source URL. Missing prop totals remain NULL; no model
+predictions are fabricated to populate the prediction-anchored dashboard view.
+
 The web dashboard is served by the managed PipelineInsights workflow. The API
 workflow must be running as well for live dashboard data:
 

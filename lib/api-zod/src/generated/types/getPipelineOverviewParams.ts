@@ -8,12 +8,9 @@
 import type { PipelineDataMode } from './pipelineDataMode';
 import type { PipelineDataModeParameter } from './pipelineDataModeParameter';
 
-export type GetPlayerTrendParams = {
+export type GetPipelineOverviewParams = {
 /**
  * Select real prediction data or explicitly seeded demo data.
  */
 mode?: PipelineDataModeParameter;
-playerId: string;
-stat?: string;
-modelVersion?: string;
 };

@@ -7,6 +7,8 @@
  */
 
 export * from './backtestAccuracy';
+export * from './getPipelineModelVersionsParams';
+export * from './getPipelineOverviewParams';
 export * from './getPipelinePredictionsParams';
 export * from './getPlayerTrendParams';
 export * from './healthStatus';
@@ -14,6 +16,8 @@ export * from './matchSummary';
 export * from './modelVersion';
 export * from './overviewMetric';
 export * from './pipelineBacktest';
+export * from './pipelineDataMode';
+export * from './pipelineDataModeParameter';
 export * from './pipelineOverview';
 export * from './propRow';
 export * from './propRowSide';

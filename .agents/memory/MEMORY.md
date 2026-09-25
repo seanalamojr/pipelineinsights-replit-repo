@@ -7,7 +7,10 @@
 - [LightGBM native runtime](lightgbm-runtime.md) — the pinned wheel needs GCC OpenMP libraries available in the Replit Nix environment.
 - [Ensemble prediction boundary](ensemble-prediction-boundary.md) — production ensembles consume versioned predictions only; fit weights from strictly earlier folds during evaluation.
 - [Odds identity boundary](odds-identity-boundary.md) — resolve provider names by exact normalization only, preserve unresolved rows, and keep provider IDs separate from generated database keys.
+- [Odds-only reporting](odds-only-reporting.md) — verified prices need an odds-anchored report because a prediction-anchored view cannot show rows without forecasts.
 - [Checkpoint 12 evaluation](checkpoint12-evaluation.md) — historical walk-forward reports must distinguish unscorable startup folds, percentage-point improvements, and non-informative odds samples.
 - [Append-only report instrumentation](append-only-report-instrumentation.md) — report-only rebuilds cannot recreate metrics absent from an older append-only run.
-- [View-backed accuracy caching](backtest-accuracy-caching.md) — prewarm expensive realized-outcome reports at API startup so first dashboard loads do not time out.
+- [Reporting-view latency](backtest-accuracy-caching.md) — cold real-mode scans can leave the dashboard loading far longer than the small demo dataset.
 - [Publish schema compatibility](publish-schema-compatibility.md) — legacy production rows require additive nullable columns and matching constraint names; never resolve the diff by truncating data.
+- [Production database freeze diagnostics](production-db-freeze-diagnostics.md) — a frozen SQL-tool response may have no UI unpause control; verify evidence before attributing publish failure.
+- [Production data provisioning](production-data-provisioning.md) — later publishes preserve production rows and do not copy development-only model snapshots.

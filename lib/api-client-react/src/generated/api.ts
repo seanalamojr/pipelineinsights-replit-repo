@@ -16,6 +16,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetPipelineModelVersionsParams,
+  GetPipelineOverviewParams,
   GetPipelinePredictionsParams,
   GetPlayerTrendParams,
   HealthStatus,
@@ -131,21 +133,28 @@ export function useHealthCheck<TData = Awaited<ReturnType<typeof healthCheck>>, 
 
 
 
-export const getGetPipelineOverviewUrl = () => {
+export const getGetPipelineOverviewUrl = (params?: GetPipelineOverviewParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
 
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
 
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/api/pipeline/overview`
+  return stringifiedParams.length > 0 ? `/api/pipeline/overview?${stringifiedParams}` : `/api/pipeline/overview`
 }
 
 /**
  * Returns dashboard KPIs, top value edges, today's matches, and source freshness.
  * @summary Get the PipelineInsights overview
  */
-export const getPipelineOverview = async ( options?: Parameters<typeof customFetch>[1]): Promise<PipelineOverview> => {
+export const getPipelineOverview = async (params?: GetPipelineOverviewParams, options?: Parameters<typeof customFetch>[1]): Promise<PipelineOverview> => {
 
-  return customFetch<PipelineOverview>(getGetPipelineOverviewUrl(),
+  return customFetch<PipelineOverview>(getGetPipelineOverviewUrl(params),
   {
     ...options,
     method: 'GET'
@@ -158,23 +167,23 @@ export const getPipelineOverview = async ( options?: Parameters<typeof customFet
 
 
 
-export const getGetPipelineOverviewQueryKey = () => {
+export const getGetPipelineOverviewQueryKey = (params?: GetPipelineOverviewParams,) => {
     return [
-    `/api/pipeline/overview`
+    `/api/pipeline/overview`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getGetPipelineOverviewQueryOptions = <TData = Awaited<ReturnType<typeof getPipelineOverview>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPipelineOverview>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetPipelineOverviewQueryOptions = <TData = Awaited<ReturnType<typeof getPipelineOverview>>, TError = ErrorType<unknown>>(params?: GetPipelineOverviewParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPipelineOverview>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetPipelineOverviewQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetPipelineOverviewQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPipelineOverview>>> = ({ signal }) => getPipelineOverview({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPipelineOverview>>> = ({ signal }) => getPipelineOverview(params, { signal, ...requestOptions });
 
 
 
@@ -192,11 +201,11 @@ export type GetPipelineOverviewQueryError = ErrorType<unknown>
  */
 
 export function useGetPipelineOverview<TData = Awaited<ReturnType<typeof getPipelineOverview>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPipelineOverview>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+ params?: GetPipelineOverviewParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPipelineOverview>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetPipelineOverviewQueryOptions(options)
+  const queryOptions = getGetPipelineOverviewQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -293,21 +302,28 @@ export function useGetPipelinePredictions<TData = Awaited<ReturnType<typeof getP
 
 
 
-export const getGetPipelineModelVersionsUrl = () => {
+export const getGetPipelineModelVersionsUrl = (params?: GetPipelineModelVersionsParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
 
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
 
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/api/pipeline/model-versions`
+  return stringifiedParams.length > 0 ? `/api/pipeline/model-versions?${stringifiedParams}` : `/api/pipeline/model-versions`
 }
 
 /**
  * Returns model versions present in the reporting view.
  * @summary List available model versions
  */
-export const getPipelineModelVersions = async ( options?: Parameters<typeof customFetch>[1]): Promise<ModelVersion[]> => {
+export const getPipelineModelVersions = async (params?: GetPipelineModelVersionsParams, options?: Parameters<typeof customFetch>[1]): Promise<ModelVersion[]> => {
 
-  return customFetch<ModelVersion[]>(getGetPipelineModelVersionsUrl(),
+  return customFetch<ModelVersion[]>(getGetPipelineModelVersionsUrl(params),
   {
     ...options,
     method: 'GET'
@@ -320,23 +336,23 @@ export const getPipelineModelVersions = async ( options?: Parameters<typeof cust
 
 
 
-export const getGetPipelineModelVersionsQueryKey = () => {
+export const getGetPipelineModelVersionsQueryKey = (params?: GetPipelineModelVersionsParams,) => {
     return [
-    `/api/pipeline/model-versions`
+    `/api/pipeline/model-versions`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getGetPipelineModelVersionsQueryOptions = <TData = Awaited<ReturnType<typeof getPipelineModelVersions>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPipelineModelVersions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetPipelineModelVersionsQueryOptions = <TData = Awaited<ReturnType<typeof getPipelineModelVersions>>, TError = ErrorType<unknown>>(params?: GetPipelineModelVersionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPipelineModelVersions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetPipelineModelVersionsQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetPipelineModelVersionsQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPipelineModelVersions>>> = ({ signal }) => getPipelineModelVersions({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPipelineModelVersions>>> = ({ signal }) => getPipelineModelVersions(params, { signal, ...requestOptions });
 
 
 
@@ -354,11 +370,11 @@ export type GetPipelineModelVersionsQueryError = ErrorType<unknown>
  */
 
 export function useGetPipelineModelVersions<TData = Awaited<ReturnType<typeof getPipelineModelVersions>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPipelineModelVersions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+ params?: GetPipelineModelVersionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPipelineModelVersions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetPipelineModelVersionsQueryOptions(options)
+  const queryOptions = getGetPipelineModelVersionsQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

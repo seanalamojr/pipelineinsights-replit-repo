@@ -5,17 +5,17 @@ Scored monthly folds: aces=129, double_faults=129, service_games=129. Calendar w
 
 ## Pooled metrics
 
-| Target | Model | MAE | RMSE | Signed bias | Coverage | Rows | MAE improvement vs baseline |
-|---|---|---:|---:|---:|---:|---:|---:|
-| aces | baseline_v1_aces | 3.5814 | 5.4118 | 0.4136 | 63.6% | 66610 | 0.00% |
-| aces | gbm_v1_aces | 2.8561 | 4.0241 | -0.6138 | 77.2% | 66610 | 20.25% |
-| aces | ensemble_v1_aces | 3.0484 | 4.2904 | -0.1024 | 70.7% | 66610 | 14.88% |
-| double_faults | baseline_v1_double_faults | 1.7825 | 2.3887 | 0.0628 | 63.8% | 66610 | 0.00% |
-| double_faults | gbm_v1_double_faults | 1.6332 | 2.2003 | -0.3045 | 78.5% | 66610 | 8.38% |
-| double_faults | ensemble_v1_double_faults | 1.6620 | 2.2034 | -0.1210 | 70.7% | 66610 | 6.76% |
-| service_games | baseline_v1_service_games | 3.7423 | 5.2720 | 0.4095 | 61.8% | 66595 | 0.00% |
-| service_games | gbm_v1_service_games | 2.6997 | 3.4626 | -0.4998 | 77.0% | 66595 | 27.86% |
-| service_games | ensemble_v1_service_games | 2.9630 | 3.8955 | -0.0463 | 71.4% | 66595 | 20.82% |
+| Target | Model | MAE | RMSE | Signed bias | Coverage | Rows | Interval crossings | Interval repairs | MAE improvement vs baseline |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| aces | baseline_v1_aces | 3.5613 | 5.3793 | 0.3964 | 63.8% | 66108 | 0.0000 | 0.0000 | 0.00% |
+| aces | gbm_v1_aces | 2.8526 | 4.0191 | -0.6111 | 77.3% | 66108 | 0.0000 | 0.0000 | 19.90% |
+| aces | ensemble_v1_aces | 3.0313 | 4.2621 | -0.1200 | 71.0% | 66108 | 0.0000 | 0.0000 | 14.88% |
+| double_faults | baseline_v1_double_faults | 1.7774 | 2.3818 | 0.0562 | 63.9% | 66108 | 0.0000 | 0.0000 | 0.00% |
+| double_faults | gbm_v1_double_faults | 1.6292 | 2.1935 | -0.2993 | 78.5% | 66108 | 0.0000 | 0.0000 | 8.34% |
+| double_faults | ensemble_v1_double_faults | 1.6579 | 2.1980 | -0.1237 | 70.8% | 66108 | 0.0000 | 0.0000 | 6.72% |
+| service_games | baseline_v1_service_games | 3.7270 | 5.2500 | 0.3873 | 62.0% | 66093 | 0.0000 | 0.0000 | 0.00% |
+| service_games | gbm_v1_service_games | 2.6965 | 3.4593 | -0.4997 | 77.1% | 66093 | 0.0000 | 0.0000 | 27.65% |
+| service_games | ensemble_v1_service_games | 2.9450 | 3.8670 | -0.0673 | 71.6% | 66093 | 0.0000 | 0.0000 | 20.98% |
 
 ## Fold-level interval coverage
 
@@ -148,124 +148,124 @@ Scored monthly folds: aces=129, double_faults=129, service_games=129. Calendar w
 | aces | baseline_v1_aces | 137 | 2026-05-01 | 2026-06-01 | 1546 | 70.2% |
 | aces | baseline_v1_aces | 138 | 2026-06-01 | 2026-07-01 | 1542 | 60.7% |
 | aces | baseline_v1_aces | 139 | 2026-07-01 | 2026-08-01 | 1862 | 60.6% |
-| aces | baseline_v1_aces | 140 | 2026-08-01 | 2026-09-01 | 1606 | 65.3% |
-| aces | baseline_v1_aces | 141 | 2026-09-01 | 2026-10-01 | 1088 | 57.7% |
+| aces | baseline_v1_aces | 140 | 2026-08-01 | 2026-09-01 | 1518 | 67.7% |
+| aces | baseline_v1_aces | 141 | 2026-09-01 | 2026-10-01 | 674 | 67.7% |
 | aces | ensemble_v1_aces | 2 | 2015-02-01 | 2015-03-01 | 426 | 61.5% |
-| aces | ensemble_v1_aces | 3 | 2015-03-01 | 2015-04-01 | 344 | 70.1% |
-| aces | ensemble_v1_aces | 4 | 2015-04-01 | 2015-05-01 | 413 | 76.3% |
-| aces | ensemble_v1_aces | 5 | 2015-05-01 | 2015-06-01 | 580 | 56.7% |
-| aces | ensemble_v1_aces | 6 | 2015-06-01 | 2015-07-01 | 476 | 61.1% |
+| aces | ensemble_v1_aces | 3 | 2015-03-01 | 2015-04-01 | 344 | 67.7% |
+| aces | ensemble_v1_aces | 4 | 2015-04-01 | 2015-05-01 | 413 | 76.5% |
+| aces | ensemble_v1_aces | 5 | 2015-05-01 | 2015-06-01 | 580 | 54.8% |
+| aces | ensemble_v1_aces | 6 | 2015-06-01 | 2015-07-01 | 476 | 61.3% |
 | aces | ensemble_v1_aces | 7 | 2015-07-01 | 2015-08-01 | 368 | 64.1% |
 | aces | ensemble_v1_aces | 8 | 2015-08-01 | 2015-09-01 | 574 | 69.0% |
-| aces | ensemble_v1_aces | 9 | 2015-09-01 | 2015-10-01 | 262 | 64.5% |
-| aces | ensemble_v1_aces | 10 | 2015-10-01 | 2015-11-01 | 544 | 77.0% |
+| aces | ensemble_v1_aces | 9 | 2015-09-01 | 2015-10-01 | 262 | 65.6% |
+| aces | ensemble_v1_aces | 10 | 2015-10-01 | 2015-11-01 | 544 | 77.4% |
 | aces | ensemble_v1_aces | 11 | 2015-11-01 | 2015-12-01 | 128 | 71.9% |
-| aces | ensemble_v1_aces | 13 | 2016-01-01 | 2016-02-01 | 479 | 67.4% |
-| aces | ensemble_v1_aces | 14 | 2016-02-01 | 2016-03-01 | 631 | 75.9% |
+| aces | ensemble_v1_aces | 13 | 2016-01-01 | 2016-02-01 | 479 | 68.1% |
+| aces | ensemble_v1_aces | 14 | 2016-02-01 | 2016-03-01 | 631 | 75.8% |
 | aces | ensemble_v1_aces | 15 | 2016-03-01 | 2016-04-01 | 431 | 72.4% |
-| aces | ensemble_v1_aces | 16 | 2016-04-01 | 2016-05-01 | 486 | 77.0% |
-| aces | ensemble_v1_aces | 17 | 2016-05-01 | 2016-06-01 | 560 | 71.4% |
-| aces | ensemble_v1_aces | 18 | 2016-06-01 | 2016-07-01 | 526 | 58.9% |
-| aces | ensemble_v1_aces | 19 | 2016-07-01 | 2016-08-01 | 564 | 72.7% |
-| aces | ensemble_v1_aces | 20 | 2016-08-01 | 2016-09-01 | 633 | 64.9% |
+| aces | ensemble_v1_aces | 16 | 2016-04-01 | 2016-05-01 | 486 | 77.2% |
+| aces | ensemble_v1_aces | 17 | 2016-05-01 | 2016-06-01 | 560 | 72.0% |
+| aces | ensemble_v1_aces | 18 | 2016-06-01 | 2016-07-01 | 526 | 59.5% |
+| aces | ensemble_v1_aces | 19 | 2016-07-01 | 2016-08-01 | 564 | 72.9% |
+| aces | ensemble_v1_aces | 20 | 2016-08-01 | 2016-09-01 | 633 | 65.6% |
 | aces | ensemble_v1_aces | 21 | 2016-09-01 | 2016-10-01 | 278 | 65.5% |
-| aces | ensemble_v1_aces | 22 | 2016-10-01 | 2016-11-01 | 514 | 74.5% |
+| aces | ensemble_v1_aces | 22 | 2016-10-01 | 2016-11-01 | 514 | 74.9% |
 | aces | ensemble_v1_aces | 23 | 2016-11-01 | 2016-12-01 | 130 | 74.6% |
-| aces | ensemble_v1_aces | 25 | 2017-01-01 | 2017-02-01 | 492 | 63.4% |
-| aces | ensemble_v1_aces | 26 | 2017-02-01 | 2017-03-01 | 562 | 77.9% |
+| aces | ensemble_v1_aces | 25 | 2017-01-01 | 2017-02-01 | 492 | 63.6% |
+| aces | ensemble_v1_aces | 26 | 2017-02-01 | 2017-03-01 | 562 | 78.1% |
 | aces | ensemble_v1_aces | 27 | 2017-03-01 | 2017-04-01 | 544 | 77.0% |
-| aces | ensemble_v1_aces | 28 | 2017-04-01 | 2017-05-01 | 434 | 72.6% |
-| aces | ensemble_v1_aces | 29 | 2017-05-01 | 2017-06-01 | 676 | 68.6% |
-| aces | ensemble_v1_aces | 30 | 2017-06-01 | 2017-07-01 | 346 | 62.7% |
-| aces | ensemble_v1_aces | 31 | 2017-07-01 | 2017-08-01 | 573 | 60.4% |
-| aces | ensemble_v1_aces | 32 | 2017-08-01 | 2017-09-01 | 720 | 67.8% |
-| aces | ensemble_v1_aces | 33 | 2017-09-01 | 2017-10-01 | 289 | 69.6% |
+| aces | ensemble_v1_aces | 28 | 2017-04-01 | 2017-05-01 | 434 | 73.0% |
+| aces | ensemble_v1_aces | 29 | 2017-05-01 | 2017-06-01 | 676 | 68.9% |
+| aces | ensemble_v1_aces | 30 | 2017-06-01 | 2017-07-01 | 346 | 63.3% |
+| aces | ensemble_v1_aces | 31 | 2017-07-01 | 2017-08-01 | 573 | 61.1% |
+| aces | ensemble_v1_aces | 32 | 2017-08-01 | 2017-09-01 | 720 | 68.1% |
+| aces | ensemble_v1_aces | 33 | 2017-09-01 | 2017-10-01 | 289 | 69.9% |
 | aces | ensemble_v1_aces | 34 | 2017-10-01 | 2017-11-01 | 550 | 74.9% |
 | aces | ensemble_v1_aces | 35 | 2017-11-01 | 2017-12-01 | 123 | 71.5% |
-| aces | ensemble_v1_aces | 37 | 2018-01-01 | 2018-02-01 | 498 | 62.0% |
-| aces | ensemble_v1_aces | 38 | 2018-02-01 | 2018-03-01 | 670 | 77.8% |
+| aces | ensemble_v1_aces | 37 | 2018-01-01 | 2018-02-01 | 498 | 62.2% |
+| aces | ensemble_v1_aces | 38 | 2018-02-01 | 2018-03-01 | 670 | 77.6% |
 | aces | ensemble_v1_aces | 39 | 2018-03-01 | 2018-04-01 | 458 | 75.8% |
 | aces | ensemble_v1_aces | 40 | 2018-04-01 | 2018-05-01 | 451 | 79.2% |
-| aces | ensemble_v1_aces | 41 | 2018-05-01 | 2018-06-01 | 712 | 72.8% |
-| aces | ensemble_v1_aces | 42 | 2018-06-01 | 2018-07-01 | 335 | 71.9% |
-| aces | ensemble_v1_aces | 43 | 2018-07-01 | 2018-08-01 | 592 | 63.3% |
-| aces | ensemble_v1_aces | 44 | 2018-08-01 | 2018-09-01 | 711 | 71.3% |
+| aces | ensemble_v1_aces | 41 | 2018-05-01 | 2018-06-01 | 712 | 73.0% |
+| aces | ensemble_v1_aces | 42 | 2018-06-01 | 2018-07-01 | 335 | 72.8% |
+| aces | ensemble_v1_aces | 43 | 2018-07-01 | 2018-08-01 | 592 | 64.0% |
+| aces | ensemble_v1_aces | 44 | 2018-08-01 | 2018-09-01 | 711 | 71.6% |
 | aces | ensemble_v1_aces | 45 | 2018-09-01 | 2018-10-01 | 286 | 72.4% |
-| aces | ensemble_v1_aces | 46 | 2018-10-01 | 2018-11-01 | 559 | 73.2% |
+| aces | ensemble_v1_aces | 46 | 2018-10-01 | 2018-11-01 | 559 | 73.5% |
 | aces | ensemble_v1_aces | 47 | 2018-11-01 | 2018-12-01 | 95 | 75.8% |
-| aces | ensemble_v1_aces | 49 | 2019-01-01 | 2019-02-01 | 521 | 66.0% |
-| aces | ensemble_v1_aces | 50 | 2019-02-01 | 2019-03-01 | 683 | 76.7% |
-| aces | ensemble_v1_aces | 51 | 2019-03-01 | 2019-04-01 | 409 | 78.2% |
+| aces | ensemble_v1_aces | 49 | 2019-01-01 | 2019-02-01 | 521 | 66.4% |
+| aces | ensemble_v1_aces | 50 | 2019-02-01 | 2019-03-01 | 683 | 77.0% |
+| aces | ensemble_v1_aces | 51 | 2019-03-01 | 2019-04-01 | 409 | 78.5% |
 | aces | ensemble_v1_aces | 52 | 2019-04-01 | 2019-05-01 | 362 | 77.9% |
-| aces | ensemble_v1_aces | 53 | 2019-05-01 | 2019-06-01 | 658 | 71.9% |
-| aces | ensemble_v1_aces | 54 | 2019-06-01 | 2019-07-01 | 333 | 74.8% |
-| aces | ensemble_v1_aces | 55 | 2019-07-01 | 2019-08-01 | 672 | 66.5% |
-| aces | ensemble_v1_aces | 56 | 2019-08-01 | 2019-09-01 | 639 | 63.7% |
+| aces | ensemble_v1_aces | 53 | 2019-05-01 | 2019-06-01 | 658 | 72.0% |
+| aces | ensemble_v1_aces | 54 | 2019-06-01 | 2019-07-01 | 333 | 75.1% |
+| aces | ensemble_v1_aces | 55 | 2019-07-01 | 2019-08-01 | 672 | 66.8% |
+| aces | ensemble_v1_aces | 56 | 2019-08-01 | 2019-09-01 | 639 | 64.3% |
 | aces | ensemble_v1_aces | 57 | 2019-09-01 | 2019-10-01 | 214 | 73.8% |
 | aces | ensemble_v1_aces | 58 | 2019-10-01 | 2019-11-01 | 590 | 73.2% |
-| aces | ensemble_v1_aces | 59 | 2019-11-01 | 2019-12-01 | 169 | 70.4% |
-| aces | ensemble_v1_aces | 61 | 2020-01-01 | 2020-02-01 | 562 | 66.5% |
-| aces | ensemble_v1_aces | 62 | 2020-02-01 | 2020-03-01 | 641 | 74.9% |
+| aces | ensemble_v1_aces | 59 | 2019-11-01 | 2019-12-01 | 169 | 71.0% |
+| aces | ensemble_v1_aces | 61 | 2020-01-01 | 2020-02-01 | 562 | 67.6% |
+| aces | ensemble_v1_aces | 62 | 2020-02-01 | 2020-03-01 | 641 | 75.2% |
 | aces | ensemble_v1_aces | 63 | 2020-03-01 | 2020-04-01 | 108 | 71.3% |
 | aces | ensemble_v1_aces | 68 | 2020-08-01 | 2020-09-01 | 229 | 65.5% |
-| aces | ensemble_v1_aces | 69 | 2020-09-01 | 2020-10-01 | 552 | 66.5% |
+| aces | ensemble_v1_aces | 69 | 2020-09-01 | 2020-10-01 | 552 | 66.8% |
 | aces | ensemble_v1_aces | 70 | 2020-10-01 | 2020-11-01 | 400 | 74.2% |
 | aces | ensemble_v1_aces | 71 | 2020-11-01 | 2020-12-01 | 192 | 64.6% |
-| aces | ensemble_v1_aces | 73 | 2021-01-01 | 2021-02-01 | 102 | 84.3% |
-| aces | ensemble_v1_aces | 74 | 2021-02-01 | 2021-03-01 | 633 | 69.0% |
-| aces | ensemble_v1_aces | 75 | 2021-03-01 | 2021-04-01 | 602 | 73.4% |
-| aces | ensemble_v1_aces | 76 | 2021-04-01 | 2021-05-01 | 451 | 80.0% |
-| aces | ensemble_v1_aces | 77 | 2021-05-01 | 2021-06-01 | 550 | 73.3% |
-| aces | ensemble_v1_aces | 78 | 2021-06-01 | 2021-07-01 | 619 | 61.1% |
-| aces | ensemble_v1_aces | 79 | 2021-07-01 | 2021-08-01 | 433 | 69.3% |
+| aces | ensemble_v1_aces | 73 | 2021-01-01 | 2021-02-01 | 102 | 83.3% |
+| aces | ensemble_v1_aces | 74 | 2021-02-01 | 2021-03-01 | 633 | 69.2% |
+| aces | ensemble_v1_aces | 75 | 2021-03-01 | 2021-04-01 | 602 | 73.3% |
+| aces | ensemble_v1_aces | 76 | 2021-04-01 | 2021-05-01 | 451 | 79.8% |
+| aces | ensemble_v1_aces | 77 | 2021-05-01 | 2021-06-01 | 550 | 73.5% |
+| aces | ensemble_v1_aces | 78 | 2021-06-01 | 2021-07-01 | 619 | 61.4% |
+| aces | ensemble_v1_aces | 79 | 2021-07-01 | 2021-08-01 | 433 | 69.5% |
 | aces | ensemble_v1_aces | 80 | 2021-08-01 | 2021-09-01 | 578 | 71.3% |
-| aces | ensemble_v1_aces | 81 | 2021-09-01 | 2021-10-01 | 306 | 72.2% |
+| aces | ensemble_v1_aces | 81 | 2021-09-01 | 2021-10-01 | 306 | 72.9% |
 | aces | ensemble_v1_aces | 82 | 2021-10-01 | 2021-11-01 | 436 | 74.5% |
 | aces | ensemble_v1_aces | 83 | 2021-11-01 | 2021-12-01 | 296 | 72.0% |
 | aces | ensemble_v1_aces | 84 | 2021-12-01 | 2022-01-01 | 20 | 90.0% |
-| aces | ensemble_v1_aces | 85 | 2022-01-01 | 2022-02-01 | 564 | 67.2% |
-| aces | ensemble_v1_aces | 86 | 2022-02-01 | 2022-03-01 | 708 | 77.5% |
-| aces | ensemble_v1_aces | 87 | 2022-03-01 | 2022-04-01 | 458 | 76.0% |
+| aces | ensemble_v1_aces | 85 | 2022-01-01 | 2022-02-01 | 564 | 67.4% |
+| aces | ensemble_v1_aces | 86 | 2022-02-01 | 2022-03-01 | 708 | 77.7% |
+| aces | ensemble_v1_aces | 87 | 2022-03-01 | 2022-04-01 | 458 | 75.8% |
 | aces | ensemble_v1_aces | 88 | 2022-04-01 | 2022-05-01 | 460 | 78.7% |
-| aces | ensemble_v1_aces | 89 | 2022-05-01 | 2022-06-01 | 562 | 68.5% |
-| aces | ensemble_v1_aces | 90 | 2022-06-01 | 2022-07-01 | 552 | 59.8% |
-| aces | ensemble_v1_aces | 91 | 2022-07-01 | 2022-08-01 | 368 | 76.6% |
+| aces | ensemble_v1_aces | 89 | 2022-05-01 | 2022-06-01 | 562 | 68.9% |
+| aces | ensemble_v1_aces | 90 | 2022-06-01 | 2022-07-01 | 552 | 60.1% |
+| aces | ensemble_v1_aces | 91 | 2022-07-01 | 2022-08-01 | 368 | 76.4% |
 | aces | ensemble_v1_aces | 92 | 2022-08-01 | 2022-09-01 | 661 | 70.8% |
-| aces | ensemble_v1_aces | 93 | 2022-09-01 | 2022-10-01 | 261 | 75.9% |
-| aces | ensemble_v1_aces | 94 | 2022-10-01 | 2022-11-01 | 507 | 76.5% |
+| aces | ensemble_v1_aces | 93 | 2022-09-01 | 2022-10-01 | 261 | 76.6% |
+| aces | ensemble_v1_aces | 94 | 2022-10-01 | 2022-11-01 | 507 | 76.9% |
 | aces | ensemble_v1_aces | 95 | 2022-11-01 | 2022-12-01 | 163 | 71.2% |
-| aces | ensemble_v1_aces | 97 | 2023-01-01 | 2023-02-01 | 543 | 64.1% |
+| aces | ensemble_v1_aces | 97 | 2023-01-01 | 2023-02-01 | 543 | 64.3% |
 | aces | ensemble_v1_aces | 98 | 2023-02-01 | 2023-03-01 | 475 | 75.6% |
 | aces | ensemble_v1_aces | 99 | 2023-03-01 | 2023-04-01 | 543 | 76.2% |
-| aces | ensemble_v1_aces | 100 | 2023-04-01 | 2023-05-01 | 638 | 76.6% |
+| aces | ensemble_v1_aces | 100 | 2023-04-01 | 2023-05-01 | 638 | 76.8% |
 | aces | ensemble_v1_aces | 101 | 2023-05-01 | 2023-06-01 | 494 | 70.4% |
-| aces | ensemble_v1_aces | 102 | 2023-06-01 | 2023-07-01 | 350 | 71.1% |
-| aces | ensemble_v1_aces | 103 | 2023-07-01 | 2023-08-01 | 567 | 64.7% |
-| aces | ensemble_v1_aces | 104 | 2023-08-01 | 2023-09-01 | 719 | 67.2% |
+| aces | ensemble_v1_aces | 102 | 2023-06-01 | 2023-07-01 | 350 | 71.4% |
+| aces | ensemble_v1_aces | 103 | 2023-07-01 | 2023-08-01 | 567 | 64.9% |
+| aces | ensemble_v1_aces | 104 | 2023-08-01 | 2023-09-01 | 719 | 67.5% |
 | aces | ensemble_v1_aces | 105 | 2023-09-01 | 2023-10-01 | 296 | 75.3% |
-| aces | ensemble_v1_aces | 106 | 2023-10-01 | 2023-11-01 | 527 | 74.8% |
+| aces | ensemble_v1_aces | 106 | 2023-10-01 | 2023-11-01 | 527 | 75.1% |
 | aces | ensemble_v1_aces | 107 | 2023-11-01 | 2023-12-01 | 238 | 67.2% |
 | aces | ensemble_v1_aces | 108 | 2023-12-01 | 2024-01-01 | 6 | 83.3% |
-| aces | ensemble_v1_aces | 109 | 2024-01-01 | 2024-02-01 | 532 | 67.7% |
-| aces | ensemble_v1_aces | 110 | 2024-02-01 | 2024-03-01 | 743 | 76.3% |
+| aces | ensemble_v1_aces | 109 | 2024-01-01 | 2024-02-01 | 532 | 67.9% |
+| aces | ensemble_v1_aces | 110 | 2024-02-01 | 2024-03-01 | 743 | 77.0% |
 | aces | ensemble_v1_aces | 111 | 2024-03-01 | 2024-04-01 | 412 | 76.9% |
-| aces | ensemble_v1_aces | 112 | 2024-04-01 | 2024-05-01 | 642 | 79.3% |
-| aces | ensemble_v1_aces | 113 | 2024-05-01 | 2024-06-01 | 527 | 71.3% |
+| aces | ensemble_v1_aces | 112 | 2024-04-01 | 2024-05-01 | 642 | 79.4% |
+| aces | ensemble_v1_aces | 113 | 2024-05-01 | 2024-06-01 | 527 | 71.5% |
 | aces | ensemble_v1_aces | 114 | 2024-06-01 | 2024-07-01 | 329 | 72.9% |
-| aces | ensemble_v1_aces | 115 | 2024-07-01 | 2024-08-01 | 756 | 64.9% |
+| aces | ensemble_v1_aces | 115 | 2024-07-01 | 2024-08-01 | 756 | 65.1% |
 | aces | ensemble_v1_aces | 116 | 2024-08-01 | 2024-09-01 | 603 | 67.0% |
 | aces | ensemble_v1_aces | 117 | 2024-09-01 | 2024-10-01 | 342 | 73.4% |
-| aces | ensemble_v1_aces | 118 | 2024-10-01 | 2024-11-01 | 568 | 79.0% |
+| aces | ensemble_v1_aces | 118 | 2024-10-01 | 2024-11-01 | 568 | 79.2% |
 | aces | ensemble_v1_aces | 119 | 2024-11-01 | 2024-12-01 | 175 | 70.3% |
 | aces | ensemble_v1_aces | 120 | 2024-12-01 | 2025-01-01 | 69 | 75.4% |
 | aces | ensemble_v1_aces | 121 | 2025-01-01 | 2025-02-01 | 518 | 62.7% |
-| aces | ensemble_v1_aces | 122 | 2025-02-01 | 2025-03-01 | 563 | 71.4% |
+| aces | ensemble_v1_aces | 122 | 2025-02-01 | 2025-03-01 | 563 | 71.6% |
 | aces | ensemble_v1_aces | 123 | 2025-03-01 | 2025-04-01 | 387 | 71.8% |
-| aces | ensemble_v1_aces | 124 | 2025-04-01 | 2025-05-01 | 570 | 80.4% |
-| aces | ensemble_v1_aces | 125 | 2025-05-01 | 2025-06-01 | 540 | 76.1% |
-| aces | ensemble_v1_aces | 126 | 2025-06-01 | 2025-07-01 | 455 | 64.8% |
-| aces | ensemble_v1_aces | 127 | 2025-07-01 | 2025-08-01 | 635 | 70.9% |
-| aces | ensemble_v1_aces | 128 | 2025-08-01 | 2025-09-01 | 531 | 60.1% |
+| aces | ensemble_v1_aces | 124 | 2025-04-01 | 2025-05-01 | 570 | 80.2% |
+| aces | ensemble_v1_aces | 125 | 2025-05-01 | 2025-06-01 | 540 | 75.9% |
+| aces | ensemble_v1_aces | 126 | 2025-06-01 | 2025-07-01 | 455 | 65.3% |
+| aces | ensemble_v1_aces | 127 | 2025-07-01 | 2025-08-01 | 635 | 71.0% |
+| aces | ensemble_v1_aces | 128 | 2025-08-01 | 2025-09-01 | 531 | 60.3% |
 | aces | ensemble_v1_aces | 129 | 2025-09-01 | 2025-10-01 | 247 | 71.7% |
 | aces | ensemble_v1_aces | 130 | 2025-10-01 | 2025-11-01 | 570 | 74.7% |
 | aces | ensemble_v1_aces | 131 | 2025-11-01 | 2025-12-01 | 134 | 70.1% |
@@ -273,12 +273,12 @@ Scored monthly folds: aces=129, double_faults=129, service_games=129. Calendar w
 | aces | ensemble_v1_aces | 133 | 2026-01-01 | 2026-02-01 | 217 | 63.6% |
 | aces | ensemble_v1_aces | 134 | 2026-02-01 | 2026-03-01 | 1009 | 71.5% |
 | aces | ensemble_v1_aces | 135 | 2026-03-01 | 2026-04-01 | 1365 | 70.4% |
-| aces | ensemble_v1_aces | 136 | 2026-04-01 | 2026-05-01 | 1857 | 71.8% |
-| aces | ensemble_v1_aces | 137 | 2026-05-01 | 2026-06-01 | 1546 | 73.5% |
+| aces | ensemble_v1_aces | 136 | 2026-04-01 | 2026-05-01 | 1857 | 71.9% |
+| aces | ensemble_v1_aces | 137 | 2026-05-01 | 2026-06-01 | 1546 | 73.7% |
 | aces | ensemble_v1_aces | 138 | 2026-06-01 | 2026-07-01 | 1542 | 68.9% |
-| aces | ensemble_v1_aces | 139 | 2026-07-01 | 2026-08-01 | 1862 | 66.8% |
-| aces | ensemble_v1_aces | 140 | 2026-08-01 | 2026-09-01 | 1606 | 72.0% |
-| aces | ensemble_v1_aces | 141 | 2026-09-01 | 2026-10-01 | 1088 | 66.7% |
+| aces | ensemble_v1_aces | 139 | 2026-07-01 | 2026-08-01 | 1862 | 67.0% |
+| aces | ensemble_v1_aces | 140 | 2026-08-01 | 2026-09-01 | 1518 | 73.5% |
+| aces | ensemble_v1_aces | 141 | 2026-09-01 | 2026-10-01 | 674 | 73.0% |
 | aces | gbm_v1_aces | 2 | 2015-02-01 | 2015-03-01 | 426 | 61.7% |
 | aces | gbm_v1_aces | 3 | 2015-03-01 | 2015-04-01 | 344 | 70.1% |
 | aces | gbm_v1_aces | 4 | 2015-04-01 | 2015-05-01 | 413 | 76.0% |
@@ -406,8 +406,8 @@ Scored monthly folds: aces=129, double_faults=129, service_games=129. Calendar w
 | aces | gbm_v1_aces | 137 | 2026-05-01 | 2026-06-01 | 1546 | 77.9% |
 | aces | gbm_v1_aces | 138 | 2026-06-01 | 2026-07-01 | 1542 | 77.4% |
 | aces | gbm_v1_aces | 139 | 2026-07-01 | 2026-08-01 | 1862 | 75.6% |
-| aces | gbm_v1_aces | 140 | 2026-08-01 | 2026-09-01 | 1606 | 78.5% |
-| aces | gbm_v1_aces | 141 | 2026-09-01 | 2026-10-01 | 1088 | 78.3% |
+| aces | gbm_v1_aces | 140 | 2026-08-01 | 2026-09-01 | 1518 | 78.7% |
+| aces | gbm_v1_aces | 141 | 2026-09-01 | 2026-10-01 | 674 | 79.2% |
 | double_faults | baseline_v1_double_faults | 2 | 2015-02-01 | 2015-03-01 | 426 | 65.3% |
 | double_faults | baseline_v1_double_faults | 3 | 2015-03-01 | 2015-04-01 | 344 | 61.9% |
 | double_faults | baseline_v1_double_faults | 4 | 2015-04-01 | 2015-05-01 | 413 | 68.8% |
@@ -535,58 +535,58 @@ Scored monthly folds: aces=129, double_faults=129, service_games=129. Calendar w
 | double_faults | baseline_v1_double_faults | 137 | 2026-05-01 | 2026-06-01 | 1546 | 64.7% |
 | double_faults | baseline_v1_double_faults | 138 | 2026-06-01 | 2026-07-01 | 1542 | 62.8% |
 | double_faults | baseline_v1_double_faults | 139 | 2026-07-01 | 2026-08-01 | 1862 | 62.9% |
-| double_faults | baseline_v1_double_faults | 140 | 2026-08-01 | 2026-09-01 | 1606 | 62.1% |
-| double_faults | baseline_v1_double_faults | 141 | 2026-09-01 | 2026-10-01 | 1088 | 62.2% |
+| double_faults | baseline_v1_double_faults | 140 | 2026-08-01 | 2026-09-01 | 1518 | 63.3% |
+| double_faults | baseline_v1_double_faults | 141 | 2026-09-01 | 2026-10-01 | 674 | 67.4% |
 | double_faults | ensemble_v1_double_faults | 2 | 2015-02-01 | 2015-03-01 | 426 | 71.6% |
 | double_faults | ensemble_v1_double_faults | 3 | 2015-03-01 | 2015-04-01 | 344 | 69.5% |
 | double_faults | ensemble_v1_double_faults | 4 | 2015-04-01 | 2015-05-01 | 413 | 70.0% |
 | double_faults | ensemble_v1_double_faults | 5 | 2015-05-01 | 2015-06-01 | 580 | 73.4% |
-| double_faults | ensemble_v1_double_faults | 6 | 2015-06-01 | 2015-07-01 | 476 | 66.8% |
+| double_faults | ensemble_v1_double_faults | 6 | 2015-06-01 | 2015-07-01 | 476 | 66.4% |
 | double_faults | ensemble_v1_double_faults | 7 | 2015-07-01 | 2015-08-01 | 368 | 70.1% |
 | double_faults | ensemble_v1_double_faults | 8 | 2015-08-01 | 2015-09-01 | 574 | 67.6% |
-| double_faults | ensemble_v1_double_faults | 9 | 2015-09-01 | 2015-10-01 | 262 | 64.1% |
+| double_faults | ensemble_v1_double_faults | 9 | 2015-09-01 | 2015-10-01 | 262 | 64.5% |
 | double_faults | ensemble_v1_double_faults | 10 | 2015-10-01 | 2015-11-01 | 544 | 77.4% |
 | double_faults | ensemble_v1_double_faults | 11 | 2015-11-01 | 2015-12-01 | 128 | 74.2% |
-| double_faults | ensemble_v1_double_faults | 13 | 2016-01-01 | 2016-02-01 | 479 | 69.1% |
+| double_faults | ensemble_v1_double_faults | 13 | 2016-01-01 | 2016-02-01 | 479 | 69.3% |
 | double_faults | ensemble_v1_double_faults | 14 | 2016-02-01 | 2016-03-01 | 631 | 72.1% |
-| double_faults | ensemble_v1_double_faults | 15 | 2016-03-01 | 2016-04-01 | 431 | 70.5% |
-| double_faults | ensemble_v1_double_faults | 16 | 2016-04-01 | 2016-05-01 | 486 | 74.7% |
+| double_faults | ensemble_v1_double_faults | 15 | 2016-03-01 | 2016-04-01 | 431 | 70.8% |
+| double_faults | ensemble_v1_double_faults | 16 | 2016-04-01 | 2016-05-01 | 486 | 74.9% |
 | double_faults | ensemble_v1_double_faults | 17 | 2016-05-01 | 2016-06-01 | 560 | 75.5% |
 | double_faults | ensemble_v1_double_faults | 18 | 2016-06-01 | 2016-07-01 | 526 | 68.3% |
-| double_faults | ensemble_v1_double_faults | 19 | 2016-07-01 | 2016-08-01 | 564 | 72.2% |
-| double_faults | ensemble_v1_double_faults | 20 | 2016-08-01 | 2016-09-01 | 633 | 67.5% |
+| double_faults | ensemble_v1_double_faults | 19 | 2016-07-01 | 2016-08-01 | 564 | 72.3% |
+| double_faults | ensemble_v1_double_faults | 20 | 2016-08-01 | 2016-09-01 | 633 | 67.6% |
 | double_faults | ensemble_v1_double_faults | 21 | 2016-09-01 | 2016-10-01 | 278 | 70.5% |
-| double_faults | ensemble_v1_double_faults | 22 | 2016-10-01 | 2016-11-01 | 514 | 75.9% |
+| double_faults | ensemble_v1_double_faults | 22 | 2016-10-01 | 2016-11-01 | 514 | 76.1% |
 | double_faults | ensemble_v1_double_faults | 23 | 2016-11-01 | 2016-12-01 | 130 | 76.2% |
 | double_faults | ensemble_v1_double_faults | 25 | 2017-01-01 | 2017-02-01 | 492 | 68.3% |
-| double_faults | ensemble_v1_double_faults | 26 | 2017-02-01 | 2017-03-01 | 562 | 70.6% |
+| double_faults | ensemble_v1_double_faults | 26 | 2017-02-01 | 2017-03-01 | 562 | 70.8% |
 | double_faults | ensemble_v1_double_faults | 27 | 2017-03-01 | 2017-04-01 | 544 | 73.2% |
-| double_faults | ensemble_v1_double_faults | 28 | 2017-04-01 | 2017-05-01 | 434 | 70.7% |
-| double_faults | ensemble_v1_double_faults | 29 | 2017-05-01 | 2017-06-01 | 676 | 72.3% |
+| double_faults | ensemble_v1_double_faults | 28 | 2017-04-01 | 2017-05-01 | 434 | 71.0% |
+| double_faults | ensemble_v1_double_faults | 29 | 2017-05-01 | 2017-06-01 | 676 | 72.5% |
 | double_faults | ensemble_v1_double_faults | 30 | 2017-06-01 | 2017-07-01 | 346 | 71.1% |
-| double_faults | ensemble_v1_double_faults | 31 | 2017-07-01 | 2017-08-01 | 573 | 63.5% |
-| double_faults | ensemble_v1_double_faults | 32 | 2017-08-01 | 2017-09-01 | 720 | 67.5% |
+| double_faults | ensemble_v1_double_faults | 31 | 2017-07-01 | 2017-08-01 | 573 | 63.7% |
+| double_faults | ensemble_v1_double_faults | 32 | 2017-08-01 | 2017-09-01 | 720 | 67.8% |
 | double_faults | ensemble_v1_double_faults | 33 | 2017-09-01 | 2017-10-01 | 289 | 75.1% |
-| double_faults | ensemble_v1_double_faults | 34 | 2017-10-01 | 2017-11-01 | 550 | 69.3% |
-| double_faults | ensemble_v1_double_faults | 35 | 2017-11-01 | 2017-12-01 | 123 | 72.4% |
-| double_faults | ensemble_v1_double_faults | 37 | 2018-01-01 | 2018-02-01 | 498 | 68.9% |
+| double_faults | ensemble_v1_double_faults | 34 | 2017-10-01 | 2017-11-01 | 550 | 69.5% |
+| double_faults | ensemble_v1_double_faults | 35 | 2017-11-01 | 2017-12-01 | 123 | 73.2% |
+| double_faults | ensemble_v1_double_faults | 37 | 2018-01-01 | 2018-02-01 | 498 | 69.1% |
 | double_faults | ensemble_v1_double_faults | 38 | 2018-02-01 | 2018-03-01 | 670 | 70.4% |
-| double_faults | ensemble_v1_double_faults | 39 | 2018-03-01 | 2018-04-01 | 458 | 72.9% |
+| double_faults | ensemble_v1_double_faults | 39 | 2018-03-01 | 2018-04-01 | 458 | 72.7% |
 | double_faults | ensemble_v1_double_faults | 40 | 2018-04-01 | 2018-05-01 | 451 | 67.6% |
-| double_faults | ensemble_v1_double_faults | 41 | 2018-05-01 | 2018-06-01 | 712 | 74.3% |
+| double_faults | ensemble_v1_double_faults | 41 | 2018-05-01 | 2018-06-01 | 712 | 74.7% |
 | double_faults | ensemble_v1_double_faults | 42 | 2018-06-01 | 2018-07-01 | 335 | 80.3% |
-| double_faults | ensemble_v1_double_faults | 43 | 2018-07-01 | 2018-08-01 | 592 | 66.6% |
-| double_faults | ensemble_v1_double_faults | 44 | 2018-08-01 | 2018-09-01 | 711 | 69.2% |
-| double_faults | ensemble_v1_double_faults | 45 | 2018-09-01 | 2018-10-01 | 286 | 75.5% |
+| double_faults | ensemble_v1_double_faults | 43 | 2018-07-01 | 2018-08-01 | 592 | 66.9% |
+| double_faults | ensemble_v1_double_faults | 44 | 2018-08-01 | 2018-09-01 | 711 | 69.3% |
+| double_faults | ensemble_v1_double_faults | 45 | 2018-09-01 | 2018-10-01 | 286 | 75.9% |
 | double_faults | ensemble_v1_double_faults | 46 | 2018-10-01 | 2018-11-01 | 559 | 77.6% |
 | double_faults | ensemble_v1_double_faults | 47 | 2018-11-01 | 2018-12-01 | 95 | 71.6% |
-| double_faults | ensemble_v1_double_faults | 49 | 2019-01-01 | 2019-02-01 | 521 | 63.7% |
-| double_faults | ensemble_v1_double_faults | 50 | 2019-02-01 | 2019-03-01 | 683 | 73.1% |
+| double_faults | ensemble_v1_double_faults | 49 | 2019-01-01 | 2019-02-01 | 521 | 63.9% |
+| double_faults | ensemble_v1_double_faults | 50 | 2019-02-01 | 2019-03-01 | 683 | 73.2% |
 | double_faults | ensemble_v1_double_faults | 51 | 2019-03-01 | 2019-04-01 | 409 | 78.2% |
 | double_faults | ensemble_v1_double_faults | 52 | 2019-04-01 | 2019-05-01 | 362 | 73.5% |
 | double_faults | ensemble_v1_double_faults | 53 | 2019-05-01 | 2019-06-01 | 658 | 70.7% |
 | double_faults | ensemble_v1_double_faults | 54 | 2019-06-01 | 2019-07-01 | 333 | 74.2% |
-| double_faults | ensemble_v1_double_faults | 55 | 2019-07-01 | 2019-08-01 | 672 | 68.6% |
+| double_faults | ensemble_v1_double_faults | 55 | 2019-07-01 | 2019-08-01 | 672 | 68.9% |
 | double_faults | ensemble_v1_double_faults | 56 | 2019-08-01 | 2019-09-01 | 639 | 71.7% |
 | double_faults | ensemble_v1_double_faults | 57 | 2019-09-01 | 2019-10-01 | 214 | 71.5% |
 | double_faults | ensemble_v1_double_faults | 58 | 2019-10-01 | 2019-11-01 | 590 | 77.6% |
@@ -595,18 +595,18 @@ Scored monthly folds: aces=129, double_faults=129, service_games=129. Calendar w
 | double_faults | ensemble_v1_double_faults | 62 | 2020-02-01 | 2020-03-01 | 641 | 72.1% |
 | double_faults | ensemble_v1_double_faults | 63 | 2020-03-01 | 2020-04-01 | 108 | 78.7% |
 | double_faults | ensemble_v1_double_faults | 68 | 2020-08-01 | 2020-09-01 | 229 | 64.6% |
-| double_faults | ensemble_v1_double_faults | 69 | 2020-09-01 | 2020-10-01 | 552 | 62.7% |
-| double_faults | ensemble_v1_double_faults | 70 | 2020-10-01 | 2020-11-01 | 400 | 72.8% |
+| double_faults | ensemble_v1_double_faults | 69 | 2020-09-01 | 2020-10-01 | 552 | 62.9% |
+| double_faults | ensemble_v1_double_faults | 70 | 2020-10-01 | 2020-11-01 | 400 | 73.0% |
 | double_faults | ensemble_v1_double_faults | 71 | 2020-11-01 | 2020-12-01 | 192 | 76.6% |
 | double_faults | ensemble_v1_double_faults | 73 | 2021-01-01 | 2021-02-01 | 102 | 77.5% |
-| double_faults | ensemble_v1_double_faults | 74 | 2021-02-01 | 2021-03-01 | 633 | 69.5% |
+| double_faults | ensemble_v1_double_faults | 74 | 2021-02-01 | 2021-03-01 | 633 | 69.7% |
 | double_faults | ensemble_v1_double_faults | 75 | 2021-03-01 | 2021-04-01 | 602 | 72.1% |
-| double_faults | ensemble_v1_double_faults | 76 | 2021-04-01 | 2021-05-01 | 451 | 73.2% |
+| double_faults | ensemble_v1_double_faults | 76 | 2021-04-01 | 2021-05-01 | 451 | 73.4% |
 | double_faults | ensemble_v1_double_faults | 77 | 2021-05-01 | 2021-06-01 | 550 | 71.8% |
-| double_faults | ensemble_v1_double_faults | 78 | 2021-06-01 | 2021-07-01 | 619 | 67.2% |
-| double_faults | ensemble_v1_double_faults | 79 | 2021-07-01 | 2021-08-01 | 433 | 67.7% |
-| double_faults | ensemble_v1_double_faults | 80 | 2021-08-01 | 2021-09-01 | 578 | 70.4% |
-| double_faults | ensemble_v1_double_faults | 81 | 2021-09-01 | 2021-10-01 | 306 | 70.3% |
+| double_faults | ensemble_v1_double_faults | 78 | 2021-06-01 | 2021-07-01 | 619 | 67.4% |
+| double_faults | ensemble_v1_double_faults | 79 | 2021-07-01 | 2021-08-01 | 433 | 68.1% |
+| double_faults | ensemble_v1_double_faults | 80 | 2021-08-01 | 2021-09-01 | 578 | 71.1% |
+| double_faults | ensemble_v1_double_faults | 81 | 2021-09-01 | 2021-10-01 | 306 | 70.6% |
 | double_faults | ensemble_v1_double_faults | 82 | 2021-10-01 | 2021-11-01 | 436 | 71.6% |
 | double_faults | ensemble_v1_double_faults | 83 | 2021-11-01 | 2021-12-01 | 296 | 73.3% |
 | double_faults | ensemble_v1_double_faults | 84 | 2021-12-01 | 2022-01-01 | 20 | 85.0% |
@@ -615,57 +615,57 @@ Scored monthly folds: aces=129, double_faults=129, service_games=129. Calendar w
 | double_faults | ensemble_v1_double_faults | 87 | 2022-03-01 | 2022-04-01 | 458 | 72.3% |
 | double_faults | ensemble_v1_double_faults | 88 | 2022-04-01 | 2022-05-01 | 460 | 68.0% |
 | double_faults | ensemble_v1_double_faults | 89 | 2022-05-01 | 2022-06-01 | 562 | 69.4% |
-| double_faults | ensemble_v1_double_faults | 90 | 2022-06-01 | 2022-07-01 | 552 | 67.8% |
+| double_faults | ensemble_v1_double_faults | 90 | 2022-06-01 | 2022-07-01 | 552 | 67.6% |
 | double_faults | ensemble_v1_double_faults | 91 | 2022-07-01 | 2022-08-01 | 368 | 75.0% |
-| double_faults | ensemble_v1_double_faults | 92 | 2022-08-01 | 2022-09-01 | 661 | 71.1% |
+| double_faults | ensemble_v1_double_faults | 92 | 2022-08-01 | 2022-09-01 | 661 | 71.4% |
 | double_faults | ensemble_v1_double_faults | 93 | 2022-09-01 | 2022-10-01 | 261 | 70.5% |
 | double_faults | ensemble_v1_double_faults | 94 | 2022-10-01 | 2022-11-01 | 507 | 70.4% |
 | double_faults | ensemble_v1_double_faults | 95 | 2022-11-01 | 2022-12-01 | 163 | 63.2% |
 | double_faults | ensemble_v1_double_faults | 97 | 2023-01-01 | 2023-02-01 | 543 | 67.8% |
-| double_faults | ensemble_v1_double_faults | 98 | 2023-02-01 | 2023-03-01 | 475 | 72.4% |
+| double_faults | ensemble_v1_double_faults | 98 | 2023-02-01 | 2023-03-01 | 475 | 72.6% |
 | double_faults | ensemble_v1_double_faults | 99 | 2023-03-01 | 2023-04-01 | 543 | 68.5% |
 | double_faults | ensemble_v1_double_faults | 100 | 2023-04-01 | 2023-05-01 | 638 | 73.4% |
-| double_faults | ensemble_v1_double_faults | 101 | 2023-05-01 | 2023-06-01 | 494 | 69.8% |
+| double_faults | ensemble_v1_double_faults | 101 | 2023-05-01 | 2023-06-01 | 494 | 70.0% |
 | double_faults | ensemble_v1_double_faults | 102 | 2023-06-01 | 2023-07-01 | 350 | 73.1% |
 | double_faults | ensemble_v1_double_faults | 103 | 2023-07-01 | 2023-08-01 | 567 | 68.8% |
 | double_faults | ensemble_v1_double_faults | 104 | 2023-08-01 | 2023-09-01 | 719 | 65.1% |
 | double_faults | ensemble_v1_double_faults | 105 | 2023-09-01 | 2023-10-01 | 296 | 76.0% |
 | double_faults | ensemble_v1_double_faults | 106 | 2023-10-01 | 2023-11-01 | 527 | 77.2% |
-| double_faults | ensemble_v1_double_faults | 107 | 2023-11-01 | 2023-12-01 | 238 | 77.3% |
+| double_faults | ensemble_v1_double_faults | 107 | 2023-11-01 | 2023-12-01 | 238 | 77.7% |
 | double_faults | ensemble_v1_double_faults | 108 | 2023-12-01 | 2024-01-01 | 6 | 16.7% |
-| double_faults | ensemble_v1_double_faults | 109 | 2024-01-01 | 2024-02-01 | 532 | 68.8% |
+| double_faults | ensemble_v1_double_faults | 109 | 2024-01-01 | 2024-02-01 | 532 | 69.4% |
 | double_faults | ensemble_v1_double_faults | 110 | 2024-02-01 | 2024-03-01 | 743 | 76.7% |
 | double_faults | ensemble_v1_double_faults | 111 | 2024-03-01 | 2024-04-01 | 412 | 74.5% |
-| double_faults | ensemble_v1_double_faults | 112 | 2024-04-01 | 2024-05-01 | 642 | 70.7% |
-| double_faults | ensemble_v1_double_faults | 113 | 2024-05-01 | 2024-06-01 | 527 | 70.6% |
+| double_faults | ensemble_v1_double_faults | 112 | 2024-04-01 | 2024-05-01 | 642 | 70.9% |
+| double_faults | ensemble_v1_double_faults | 113 | 2024-05-01 | 2024-06-01 | 527 | 71.0% |
 | double_faults | ensemble_v1_double_faults | 114 | 2024-06-01 | 2024-07-01 | 329 | 70.5% |
 | double_faults | ensemble_v1_double_faults | 115 | 2024-07-01 | 2024-08-01 | 756 | 64.7% |
 | double_faults | ensemble_v1_double_faults | 116 | 2024-08-01 | 2024-09-01 | 603 | 62.2% |
 | double_faults | ensemble_v1_double_faults | 117 | 2024-09-01 | 2024-10-01 | 342 | 76.9% |
-| double_faults | ensemble_v1_double_faults | 118 | 2024-10-01 | 2024-11-01 | 568 | 78.7% |
-| double_faults | ensemble_v1_double_faults | 119 | 2024-11-01 | 2024-12-01 | 175 | 71.4% |
+| double_faults | ensemble_v1_double_faults | 118 | 2024-10-01 | 2024-11-01 | 568 | 78.9% |
+| double_faults | ensemble_v1_double_faults | 119 | 2024-11-01 | 2024-12-01 | 175 | 72.0% |
 | double_faults | ensemble_v1_double_faults | 120 | 2024-12-01 | 2025-01-01 | 69 | 72.5% |
-| double_faults | ensemble_v1_double_faults | 121 | 2025-01-01 | 2025-02-01 | 518 | 67.2% |
-| double_faults | ensemble_v1_double_faults | 122 | 2025-02-01 | 2025-03-01 | 563 | 71.8% |
+| double_faults | ensemble_v1_double_faults | 121 | 2025-01-01 | 2025-02-01 | 518 | 67.6% |
+| double_faults | ensemble_v1_double_faults | 122 | 2025-02-01 | 2025-03-01 | 563 | 71.9% |
 | double_faults | ensemble_v1_double_faults | 123 | 2025-03-01 | 2025-04-01 | 387 | 74.4% |
-| double_faults | ensemble_v1_double_faults | 124 | 2025-04-01 | 2025-05-01 | 570 | 69.5% |
+| double_faults | ensemble_v1_double_faults | 124 | 2025-04-01 | 2025-05-01 | 570 | 69.6% |
 | double_faults | ensemble_v1_double_faults | 125 | 2025-05-01 | 2025-06-01 | 540 | 69.8% |
-| double_faults | ensemble_v1_double_faults | 126 | 2025-06-01 | 2025-07-01 | 455 | 70.8% |
-| double_faults | ensemble_v1_double_faults | 127 | 2025-07-01 | 2025-08-01 | 635 | 65.4% |
+| double_faults | ensemble_v1_double_faults | 126 | 2025-06-01 | 2025-07-01 | 455 | 71.0% |
+| double_faults | ensemble_v1_double_faults | 127 | 2025-07-01 | 2025-08-01 | 635 | 65.5% |
 | double_faults | ensemble_v1_double_faults | 128 | 2025-08-01 | 2025-09-01 | 531 | 64.0% |
 | double_faults | ensemble_v1_double_faults | 129 | 2025-09-01 | 2025-10-01 | 247 | 77.3% |
 | double_faults | ensemble_v1_double_faults | 130 | 2025-10-01 | 2025-11-01 | 570 | 71.4% |
 | double_faults | ensemble_v1_double_faults | 131 | 2025-11-01 | 2025-12-01 | 134 | 75.4% |
 | double_faults | ensemble_v1_double_faults | 132 | 2025-12-01 | 2026-01-01 | 27 | 63.0% |
 | double_faults | ensemble_v1_double_faults | 133 | 2026-01-01 | 2026-02-01 | 217 | 71.0% |
-| double_faults | ensemble_v1_double_faults | 134 | 2026-02-01 | 2026-03-01 | 1009 | 70.9% |
+| double_faults | ensemble_v1_double_faults | 134 | 2026-02-01 | 2026-03-01 | 1009 | 71.0% |
 | double_faults | ensemble_v1_double_faults | 135 | 2026-03-01 | 2026-04-01 | 1365 | 67.8% |
-| double_faults | ensemble_v1_double_faults | 136 | 2026-04-01 | 2026-05-01 | 1857 | 70.9% |
+| double_faults | ensemble_v1_double_faults | 136 | 2026-04-01 | 2026-05-01 | 1857 | 71.1% |
 | double_faults | ensemble_v1_double_faults | 137 | 2026-05-01 | 2026-06-01 | 1546 | 70.1% |
 | double_faults | ensemble_v1_double_faults | 138 | 2026-06-01 | 2026-07-01 | 1542 | 70.0% |
-| double_faults | ensemble_v1_double_faults | 139 | 2026-07-01 | 2026-08-01 | 1862 | 71.2% |
-| double_faults | ensemble_v1_double_faults | 140 | 2026-08-01 | 2026-09-01 | 1606 | 70.1% |
-| double_faults | ensemble_v1_double_faults | 141 | 2026-09-01 | 2026-10-01 | 1088 | 71.3% |
+| double_faults | ensemble_v1_double_faults | 139 | 2026-07-01 | 2026-08-01 | 1862 | 71.3% |
+| double_faults | ensemble_v1_double_faults | 140 | 2026-08-01 | 2026-09-01 | 1518 | 71.0% |
+| double_faults | ensemble_v1_double_faults | 141 | 2026-09-01 | 2026-10-01 | 674 | 73.0% |
 | double_faults | gbm_v1_double_faults | 2 | 2015-02-01 | 2015-03-01 | 426 | 80.0% |
 | double_faults | gbm_v1_double_faults | 3 | 2015-03-01 | 2015-04-01 | 344 | 76.2% |
 | double_faults | gbm_v1_double_faults | 4 | 2015-04-01 | 2015-05-01 | 413 | 72.6% |
@@ -788,13 +788,13 @@ Scored monthly folds: aces=129, double_faults=129, service_games=129. Calendar w
 | double_faults | gbm_v1_double_faults | 132 | 2025-12-01 | 2026-01-01 | 27 | 66.7% |
 | double_faults | gbm_v1_double_faults | 133 | 2026-01-01 | 2026-02-01 | 217 | 81.6% |
 | double_faults | gbm_v1_double_faults | 134 | 2026-02-01 | 2026-03-01 | 1009 | 78.9% |
-| double_faults | gbm_v1_double_faults | 135 | 2026-03-01 | 2026-04-01 | 1365 | 75.4% |
+| double_faults | gbm_v1_double_faults | 135 | 2026-03-01 | 2026-04-01 | 1365 | 75.2% |
 | double_faults | gbm_v1_double_faults | 136 | 2026-04-01 | 2026-05-01 | 1857 | 78.4% |
 | double_faults | gbm_v1_double_faults | 137 | 2026-05-01 | 2026-06-01 | 1546 | 79.6% |
 | double_faults | gbm_v1_double_faults | 138 | 2026-06-01 | 2026-07-01 | 1542 | 79.4% |
 | double_faults | gbm_v1_double_faults | 139 | 2026-07-01 | 2026-08-01 | 1862 | 80.4% |
-| double_faults | gbm_v1_double_faults | 140 | 2026-08-01 | 2026-09-01 | 1606 | 78.6% |
-| double_faults | gbm_v1_double_faults | 141 | 2026-09-01 | 2026-10-01 | 1088 | 80.8% |
+| double_faults | gbm_v1_double_faults | 140 | 2026-08-01 | 2026-09-01 | 1518 | 79.2% |
+| double_faults | gbm_v1_double_faults | 141 | 2026-09-01 | 2026-10-01 | 674 | 81.5% |
 | service_games | baseline_v1_service_games | 2 | 2015-02-01 | 2015-03-01 | 426 | 64.6% |
 | service_games | baseline_v1_service_games | 3 | 2015-03-01 | 2015-04-01 | 344 | 72.1% |
 | service_games | baseline_v1_service_games | 4 | 2015-04-01 | 2015-05-01 | 413 | 69.2% |
@@ -922,137 +922,137 @@ Scored monthly folds: aces=129, double_faults=129, service_games=129. Calendar w
 | service_games | baseline_v1_service_games | 137 | 2026-05-01 | 2026-06-01 | 1544 | 54.4% |
 | service_games | baseline_v1_service_games | 138 | 2026-06-01 | 2026-07-01 | 1541 | 56.1% |
 | service_games | baseline_v1_service_games | 139 | 2026-07-01 | 2026-08-01 | 1862 | 57.7% |
-| service_games | baseline_v1_service_games | 140 | 2026-08-01 | 2026-09-01 | 1604 | 65.8% |
-| service_games | baseline_v1_service_games | 141 | 2026-09-01 | 2026-10-01 | 1088 | 54.1% |
+| service_games | baseline_v1_service_games | 140 | 2026-08-01 | 2026-09-01 | 1516 | 68.1% |
+| service_games | baseline_v1_service_games | 141 | 2026-09-01 | 2026-10-01 | 674 | 58.6% |
 | service_games | ensemble_v1_service_games | 2 | 2015-02-01 | 2015-03-01 | 426 | 50.2% |
 | service_games | ensemble_v1_service_games | 3 | 2015-03-01 | 2015-04-01 | 344 | 76.5% |
 | service_games | ensemble_v1_service_games | 4 | 2015-04-01 | 2015-05-01 | 413 | 72.4% |
-| service_games | ensemble_v1_service_games | 5 | 2015-05-01 | 2015-06-01 | 580 | 60.3% |
+| service_games | ensemble_v1_service_games | 5 | 2015-05-01 | 2015-06-01 | 580 | 59.5% |
 | service_games | ensemble_v1_service_games | 6 | 2015-06-01 | 2015-07-01 | 476 | 61.8% |
 | service_games | ensemble_v1_service_games | 7 | 2015-07-01 | 2015-08-01 | 368 | 76.1% |
-| service_games | ensemble_v1_service_games | 8 | 2015-08-01 | 2015-09-01 | 574 | 73.3% |
-| service_games | ensemble_v1_service_games | 9 | 2015-09-01 | 2015-10-01 | 262 | 67.6% |
-| service_games | ensemble_v1_service_games | 10 | 2015-10-01 | 2015-11-01 | 544 | 78.5% |
+| service_games | ensemble_v1_service_games | 8 | 2015-08-01 | 2015-09-01 | 574 | 73.2% |
+| service_games | ensemble_v1_service_games | 9 | 2015-09-01 | 2015-10-01 | 262 | 67.2% |
+| service_games | ensemble_v1_service_games | 10 | 2015-10-01 | 2015-11-01 | 544 | 78.7% |
 | service_games | ensemble_v1_service_games | 11 | 2015-11-01 | 2015-12-01 | 128 | 73.4% |
-| service_games | ensemble_v1_service_games | 13 | 2016-01-01 | 2016-02-01 | 479 | 61.8% |
-| service_games | ensemble_v1_service_games | 14 | 2016-02-01 | 2016-03-01 | 631 | 81.0% |
-| service_games | ensemble_v1_service_games | 15 | 2016-03-01 | 2016-04-01 | 431 | 77.3% |
-| service_games | ensemble_v1_service_games | 16 | 2016-04-01 | 2016-05-01 | 486 | 81.9% |
-| service_games | ensemble_v1_service_games | 17 | 2016-05-01 | 2016-06-01 | 560 | 58.6% |
-| service_games | ensemble_v1_service_games | 18 | 2016-06-01 | 2016-07-01 | 526 | 57.6% |
-| service_games | ensemble_v1_service_games | 19 | 2016-07-01 | 2016-08-01 | 564 | 82.8% |
-| service_games | ensemble_v1_service_games | 20 | 2016-08-01 | 2016-09-01 | 633 | 70.5% |
-| service_games | ensemble_v1_service_games | 21 | 2016-09-01 | 2016-10-01 | 278 | 73.4% |
-| service_games | ensemble_v1_service_games | 22 | 2016-10-01 | 2016-11-01 | 514 | 78.4% |
+| service_games | ensemble_v1_service_games | 13 | 2016-01-01 | 2016-02-01 | 479 | 62.4% |
+| service_games | ensemble_v1_service_games | 14 | 2016-02-01 | 2016-03-01 | 631 | 81.1% |
+| service_games | ensemble_v1_service_games | 15 | 2016-03-01 | 2016-04-01 | 431 | 77.0% |
+| service_games | ensemble_v1_service_games | 16 | 2016-04-01 | 2016-05-01 | 486 | 82.1% |
+| service_games | ensemble_v1_service_games | 17 | 2016-05-01 | 2016-06-01 | 560 | 58.9% |
+| service_games | ensemble_v1_service_games | 18 | 2016-06-01 | 2016-07-01 | 526 | 58.6% |
+| service_games | ensemble_v1_service_games | 19 | 2016-07-01 | 2016-08-01 | 564 | 82.6% |
+| service_games | ensemble_v1_service_games | 20 | 2016-08-01 | 2016-09-01 | 633 | 70.8% |
+| service_games | ensemble_v1_service_games | 21 | 2016-09-01 | 2016-10-01 | 278 | 72.7% |
+| service_games | ensemble_v1_service_games | 22 | 2016-10-01 | 2016-11-01 | 514 | 78.6% |
 | service_games | ensemble_v1_service_games | 23 | 2016-11-01 | 2016-12-01 | 130 | 74.6% |
-| service_games | ensemble_v1_service_games | 25 | 2017-01-01 | 2017-02-01 | 492 | 59.1% |
-| service_games | ensemble_v1_service_games | 26 | 2017-02-01 | 2017-03-01 | 562 | 81.3% |
-| service_games | ensemble_v1_service_games | 27 | 2017-03-01 | 2017-04-01 | 544 | 79.8% |
-| service_games | ensemble_v1_service_games | 28 | 2017-04-01 | 2017-05-01 | 434 | 71.4% |
-| service_games | ensemble_v1_service_games | 29 | 2017-05-01 | 2017-06-01 | 676 | 63.2% |
+| service_games | ensemble_v1_service_games | 25 | 2017-01-01 | 2017-02-01 | 492 | 58.9% |
+| service_games | ensemble_v1_service_games | 26 | 2017-02-01 | 2017-03-01 | 562 | 81.9% |
+| service_games | ensemble_v1_service_games | 27 | 2017-03-01 | 2017-04-01 | 544 | 80.0% |
+| service_games | ensemble_v1_service_games | 28 | 2017-04-01 | 2017-05-01 | 434 | 71.7% |
+| service_games | ensemble_v1_service_games | 29 | 2017-05-01 | 2017-06-01 | 676 | 63.8% |
 | service_games | ensemble_v1_service_games | 30 | 2017-06-01 | 2017-07-01 | 346 | 67.1% |
-| service_games | ensemble_v1_service_games | 31 | 2017-07-01 | 2017-08-01 | 573 | 58.3% |
-| service_games | ensemble_v1_service_games | 32 | 2017-08-01 | 2017-09-01 | 720 | 70.7% |
-| service_games | ensemble_v1_service_games | 33 | 2017-09-01 | 2017-10-01 | 289 | 77.9% |
+| service_games | ensemble_v1_service_games | 31 | 2017-07-01 | 2017-08-01 | 573 | 59.0% |
+| service_games | ensemble_v1_service_games | 32 | 2017-08-01 | 2017-09-01 | 720 | 71.0% |
+| service_games | ensemble_v1_service_games | 33 | 2017-09-01 | 2017-10-01 | 289 | 78.2% |
 | service_games | ensemble_v1_service_games | 34 | 2017-10-01 | 2017-11-01 | 550 | 76.2% |
 | service_games | ensemble_v1_service_games | 35 | 2017-11-01 | 2017-12-01 | 123 | 66.7% |
-| service_games | ensemble_v1_service_games | 37 | 2018-01-01 | 2018-02-01 | 498 | 58.8% |
-| service_games | ensemble_v1_service_games | 38 | 2018-02-01 | 2018-03-01 | 670 | 77.3% |
-| service_games | ensemble_v1_service_games | 39 | 2018-03-01 | 2018-04-01 | 458 | 76.2% |
-| service_games | ensemble_v1_service_games | 40 | 2018-04-01 | 2018-05-01 | 451 | 68.7% |
-| service_games | ensemble_v1_service_games | 41 | 2018-05-01 | 2018-06-01 | 712 | 64.0% |
+| service_games | ensemble_v1_service_games | 37 | 2018-01-01 | 2018-02-01 | 498 | 59.6% |
+| service_games | ensemble_v1_service_games | 38 | 2018-02-01 | 2018-03-01 | 670 | 77.5% |
+| service_games | ensemble_v1_service_games | 39 | 2018-03-01 | 2018-04-01 | 458 | 76.4% |
+| service_games | ensemble_v1_service_games | 40 | 2018-04-01 | 2018-05-01 | 451 | 68.3% |
+| service_games | ensemble_v1_service_games | 41 | 2018-05-01 | 2018-06-01 | 712 | 64.5% |
 | service_games | ensemble_v1_service_games | 42 | 2018-06-01 | 2018-07-01 | 335 | 81.2% |
-| service_games | ensemble_v1_service_games | 43 | 2018-07-01 | 2018-08-01 | 592 | 66.4% |
-| service_games | ensemble_v1_service_games | 44 | 2018-08-01 | 2018-09-01 | 711 | 73.3% |
-| service_games | ensemble_v1_service_games | 45 | 2018-09-01 | 2018-10-01 | 286 | 71.7% |
+| service_games | ensemble_v1_service_games | 43 | 2018-07-01 | 2018-08-01 | 592 | 66.9% |
+| service_games | ensemble_v1_service_games | 44 | 2018-08-01 | 2018-09-01 | 711 | 73.7% |
+| service_games | ensemble_v1_service_games | 45 | 2018-09-01 | 2018-10-01 | 286 | 72.0% |
 | service_games | ensemble_v1_service_games | 46 | 2018-10-01 | 2018-11-01 | 559 | 80.9% |
-| service_games | ensemble_v1_service_games | 47 | 2018-11-01 | 2018-12-01 | 95 | 78.9% |
-| service_games | ensemble_v1_service_games | 49 | 2019-01-01 | 2019-02-01 | 521 | 61.2% |
-| service_games | ensemble_v1_service_games | 50 | 2019-02-01 | 2019-03-01 | 683 | 79.5% |
-| service_games | ensemble_v1_service_games | 51 | 2019-03-01 | 2019-04-01 | 409 | 79.2% |
-| service_games | ensemble_v1_service_games | 52 | 2019-04-01 | 2019-05-01 | 362 | 80.9% |
-| service_games | ensemble_v1_service_games | 53 | 2019-05-01 | 2019-06-01 | 658 | 60.0% |
+| service_games | ensemble_v1_service_games | 47 | 2018-11-01 | 2018-12-01 | 95 | 77.9% |
+| service_games | ensemble_v1_service_games | 49 | 2019-01-01 | 2019-02-01 | 521 | 61.0% |
+| service_games | ensemble_v1_service_games | 50 | 2019-02-01 | 2019-03-01 | 683 | 79.4% |
+| service_games | ensemble_v1_service_games | 51 | 2019-03-01 | 2019-04-01 | 409 | 79.5% |
+| service_games | ensemble_v1_service_games | 52 | 2019-04-01 | 2019-05-01 | 362 | 81.2% |
+| service_games | ensemble_v1_service_games | 53 | 2019-05-01 | 2019-06-01 | 658 | 60.8% |
 | service_games | ensemble_v1_service_games | 54 | 2019-06-01 | 2019-07-01 | 333 | 78.7% |
-| service_games | ensemble_v1_service_games | 55 | 2019-07-01 | 2019-08-01 | 672 | 64.1% |
-| service_games | ensemble_v1_service_games | 56 | 2019-08-01 | 2019-09-01 | 639 | 70.7% |
+| service_games | ensemble_v1_service_games | 55 | 2019-07-01 | 2019-08-01 | 672 | 64.6% |
+| service_games | ensemble_v1_service_games | 56 | 2019-08-01 | 2019-09-01 | 639 | 71.0% |
 | service_games | ensemble_v1_service_games | 57 | 2019-09-01 | 2019-10-01 | 214 | 83.2% |
-| service_games | ensemble_v1_service_games | 58 | 2019-10-01 | 2019-11-01 | 590 | 81.9% |
+| service_games | ensemble_v1_service_games | 58 | 2019-10-01 | 2019-11-01 | 590 | 82.0% |
 | service_games | ensemble_v1_service_games | 59 | 2019-11-01 | 2019-12-01 | 169 | 72.8% |
 | service_games | ensemble_v1_service_games | 61 | 2020-01-01 | 2020-02-01 | 562 | 62.1% |
-| service_games | ensemble_v1_service_games | 62 | 2020-02-01 | 2020-03-01 | 641 | 80.8% |
+| service_games | ensemble_v1_service_games | 62 | 2020-02-01 | 2020-03-01 | 641 | 81.1% |
 | service_games | ensemble_v1_service_games | 63 | 2020-03-01 | 2020-04-01 | 108 | 65.7% |
 | service_games | ensemble_v1_service_games | 68 | 2020-08-01 | 2020-09-01 | 229 | 63.3% |
-| service_games | ensemble_v1_service_games | 69 | 2020-09-01 | 2020-10-01 | 552 | 55.8% |
-| service_games | ensemble_v1_service_games | 70 | 2020-10-01 | 2020-11-01 | 400 | 80.2% |
+| service_games | ensemble_v1_service_games | 69 | 2020-09-01 | 2020-10-01 | 552 | 56.0% |
+| service_games | ensemble_v1_service_games | 70 | 2020-10-01 | 2020-11-01 | 400 | 80.5% |
 | service_games | ensemble_v1_service_games | 71 | 2020-11-01 | 2020-12-01 | 192 | 77.6% |
 | service_games | ensemble_v1_service_games | 73 | 2021-01-01 | 2021-02-01 | 102 | 85.3% |
-| service_games | ensemble_v1_service_games | 74 | 2021-02-01 | 2021-03-01 | 633 | 65.6% |
-| service_games | ensemble_v1_service_games | 75 | 2021-03-01 | 2021-04-01 | 602 | 79.1% |
-| service_games | ensemble_v1_service_games | 76 | 2021-04-01 | 2021-05-01 | 451 | 72.3% |
-| service_games | ensemble_v1_service_games | 77 | 2021-05-01 | 2021-06-01 | 550 | 68.2% |
-| service_games | ensemble_v1_service_games | 78 | 2021-06-01 | 2021-07-01 | 621 | 61.8% |
-| service_games | ensemble_v1_service_games | 79 | 2021-07-01 | 2021-08-01 | 433 | 79.2% |
+| service_games | ensemble_v1_service_games | 74 | 2021-02-01 | 2021-03-01 | 633 | 65.9% |
+| service_games | ensemble_v1_service_games | 75 | 2021-03-01 | 2021-04-01 | 602 | 79.4% |
+| service_games | ensemble_v1_service_games | 76 | 2021-04-01 | 2021-05-01 | 451 | 72.9% |
+| service_games | ensemble_v1_service_games | 77 | 2021-05-01 | 2021-06-01 | 550 | 68.4% |
+| service_games | ensemble_v1_service_games | 78 | 2021-06-01 | 2021-07-01 | 621 | 62.2% |
+| service_games | ensemble_v1_service_games | 79 | 2021-07-01 | 2021-08-01 | 433 | 79.0% |
 | service_games | ensemble_v1_service_games | 80 | 2021-08-01 | 2021-09-01 | 578 | 75.1% |
 | service_games | ensemble_v1_service_games | 81 | 2021-09-01 | 2021-10-01 | 306 | 72.2% |
 | service_games | ensemble_v1_service_games | 82 | 2021-10-01 | 2021-11-01 | 436 | 86.2% |
 | service_games | ensemble_v1_service_games | 83 | 2021-11-01 | 2021-12-01 | 296 | 74.7% |
 | service_games | ensemble_v1_service_games | 84 | 2021-12-01 | 2022-01-01 | 20 | 75.0% |
-| service_games | ensemble_v1_service_games | 85 | 2022-01-01 | 2022-02-01 | 564 | 62.9% |
+| service_games | ensemble_v1_service_games | 85 | 2022-01-01 | 2022-02-01 | 564 | 63.3% |
 | service_games | ensemble_v1_service_games | 86 | 2022-02-01 | 2022-03-01 | 708 | 81.2% |
 | service_games | ensemble_v1_service_games | 87 | 2022-03-01 | 2022-04-01 | 458 | 76.4% |
 | service_games | ensemble_v1_service_games | 88 | 2022-04-01 | 2022-05-01 | 460 | 74.1% |
-| service_games | ensemble_v1_service_games | 89 | 2022-05-01 | 2022-06-01 | 562 | 61.9% |
-| service_games | ensemble_v1_service_games | 90 | 2022-06-01 | 2022-07-01 | 552 | 58.2% |
+| service_games | ensemble_v1_service_games | 89 | 2022-05-01 | 2022-06-01 | 562 | 62.5% |
+| service_games | ensemble_v1_service_games | 90 | 2022-06-01 | 2022-07-01 | 552 | 58.7% |
 | service_games | ensemble_v1_service_games | 91 | 2022-07-01 | 2022-08-01 | 368 | 79.6% |
-| service_games | ensemble_v1_service_games | 92 | 2022-08-01 | 2022-09-01 | 661 | 71.3% |
+| service_games | ensemble_v1_service_games | 92 | 2022-08-01 | 2022-09-01 | 661 | 71.6% |
 | service_games | ensemble_v1_service_games | 93 | 2022-09-01 | 2022-10-01 | 261 | 81.6% |
-| service_games | ensemble_v1_service_games | 94 | 2022-10-01 | 2022-11-01 | 507 | 78.7% |
+| service_games | ensemble_v1_service_games | 94 | 2022-10-01 | 2022-11-01 | 507 | 78.9% |
 | service_games | ensemble_v1_service_games | 95 | 2022-11-01 | 2022-12-01 | 163 | 65.6% |
-| service_games | ensemble_v1_service_games | 97 | 2023-01-01 | 2023-02-01 | 543 | 63.7% |
-| service_games | ensemble_v1_service_games | 98 | 2023-02-01 | 2023-03-01 | 475 | 80.4% |
-| service_games | ensemble_v1_service_games | 99 | 2023-03-01 | 2023-04-01 | 543 | 81.0% |
+| service_games | ensemble_v1_service_games | 97 | 2023-01-01 | 2023-02-01 | 543 | 63.9% |
+| service_games | ensemble_v1_service_games | 98 | 2023-02-01 | 2023-03-01 | 475 | 80.6% |
+| service_games | ensemble_v1_service_games | 99 | 2023-03-01 | 2023-04-01 | 543 | 80.7% |
 | service_games | ensemble_v1_service_games | 100 | 2023-04-01 | 2023-05-01 | 638 | 69.9% |
-| service_games | ensemble_v1_service_games | 101 | 2023-05-01 | 2023-06-01 | 494 | 58.9% |
-| service_games | ensemble_v1_service_games | 102 | 2023-06-01 | 2023-07-01 | 350 | 80.6% |
-| service_games | ensemble_v1_service_games | 103 | 2023-07-01 | 2023-08-01 | 567 | 66.1% |
+| service_games | ensemble_v1_service_games | 101 | 2023-05-01 | 2023-06-01 | 494 | 59.3% |
+| service_games | ensemble_v1_service_games | 102 | 2023-06-01 | 2023-07-01 | 350 | 80.3% |
+| service_games | ensemble_v1_service_games | 103 | 2023-07-01 | 2023-08-01 | 567 | 66.5% |
 | service_games | ensemble_v1_service_games | 104 | 2023-08-01 | 2023-09-01 | 719 | 69.1% |
-| service_games | ensemble_v1_service_games | 105 | 2023-09-01 | 2023-10-01 | 296 | 79.1% |
-| service_games | ensemble_v1_service_games | 106 | 2023-10-01 | 2023-11-01 | 527 | 79.1% |
-| service_games | ensemble_v1_service_games | 107 | 2023-11-01 | 2023-12-01 | 238 | 68.1% |
+| service_games | ensemble_v1_service_games | 105 | 2023-09-01 | 2023-10-01 | 296 | 79.4% |
+| service_games | ensemble_v1_service_games | 106 | 2023-10-01 | 2023-11-01 | 527 | 79.3% |
+| service_games | ensemble_v1_service_games | 107 | 2023-11-01 | 2023-12-01 | 238 | 68.5% |
 | service_games | ensemble_v1_service_games | 108 | 2023-12-01 | 2024-01-01 | 6 | 50.0% |
-| service_games | ensemble_v1_service_games | 109 | 2024-01-01 | 2024-02-01 | 532 | 66.0% |
+| service_games | ensemble_v1_service_games | 109 | 2024-01-01 | 2024-02-01 | 532 | 65.8% |
 | service_games | ensemble_v1_service_games | 110 | 2024-02-01 | 2024-03-01 | 743 | 81.6% |
 | service_games | ensemble_v1_service_games | 111 | 2024-03-01 | 2024-04-01 | 412 | 82.3% |
-| service_games | ensemble_v1_service_games | 112 | 2024-04-01 | 2024-05-01 | 642 | 73.5% |
-| service_games | ensemble_v1_service_games | 113 | 2024-05-01 | 2024-06-01 | 527 | 61.9% |
+| service_games | ensemble_v1_service_games | 112 | 2024-04-01 | 2024-05-01 | 642 | 73.7% |
+| service_games | ensemble_v1_service_games | 113 | 2024-05-01 | 2024-06-01 | 527 | 62.2% |
 | service_games | ensemble_v1_service_games | 114 | 2024-06-01 | 2024-07-01 | 329 | 82.7% |
-| service_games | ensemble_v1_service_games | 115 | 2024-07-01 | 2024-08-01 | 756 | 70.0% |
+| service_games | ensemble_v1_service_games | 115 | 2024-07-01 | 2024-08-01 | 756 | 70.2% |
 | service_games | ensemble_v1_service_games | 116 | 2024-08-01 | 2024-09-01 | 601 | 66.2% |
 | service_games | ensemble_v1_service_games | 117 | 2024-09-01 | 2024-10-01 | 342 | 81.9% |
-| service_games | ensemble_v1_service_games | 118 | 2024-10-01 | 2024-11-01 | 568 | 80.6% |
-| service_games | ensemble_v1_service_games | 119 | 2024-11-01 | 2024-12-01 | 175 | 77.7% |
+| service_games | ensemble_v1_service_games | 118 | 2024-10-01 | 2024-11-01 | 568 | 80.8% |
+| service_games | ensemble_v1_service_games | 119 | 2024-11-01 | 2024-12-01 | 175 | 78.3% |
 | service_games | ensemble_v1_service_games | 120 | 2024-12-01 | 2025-01-01 | 69 | 62.3% |
-| service_games | ensemble_v1_service_games | 121 | 2025-01-01 | 2025-02-01 | 518 | 63.9% |
-| service_games | ensemble_v1_service_games | 122 | 2025-02-01 | 2025-03-01 | 563 | 78.2% |
+| service_games | ensemble_v1_service_games | 121 | 2025-01-01 | 2025-02-01 | 518 | 63.7% |
+| service_games | ensemble_v1_service_games | 122 | 2025-02-01 | 2025-03-01 | 563 | 78.3% |
 | service_games | ensemble_v1_service_games | 123 | 2025-03-01 | 2025-04-01 | 387 | 78.0% |
-| service_games | ensemble_v1_service_games | 124 | 2025-04-01 | 2025-05-01 | 570 | 72.6% |
-| service_games | ensemble_v1_service_games | 125 | 2025-05-01 | 2025-06-01 | 540 | 64.6% |
+| service_games | ensemble_v1_service_games | 124 | 2025-04-01 | 2025-05-01 | 570 | 72.8% |
+| service_games | ensemble_v1_service_games | 125 | 2025-05-01 | 2025-06-01 | 540 | 65.4% |
 | service_games | ensemble_v1_service_games | 126 | 2025-06-01 | 2025-07-01 | 455 | 67.3% |
-| service_games | ensemble_v1_service_games | 127 | 2025-07-01 | 2025-08-01 | 635 | 75.4% |
-| service_games | ensemble_v1_service_games | 128 | 2025-08-01 | 2025-09-01 | 531 | 63.5% |
-| service_games | ensemble_v1_service_games | 129 | 2025-09-01 | 2025-10-01 | 247 | 82.2% |
+| service_games | ensemble_v1_service_games | 127 | 2025-07-01 | 2025-08-01 | 635 | 75.7% |
+| service_games | ensemble_v1_service_games | 128 | 2025-08-01 | 2025-09-01 | 531 | 63.8% |
+| service_games | ensemble_v1_service_games | 129 | 2025-09-01 | 2025-10-01 | 247 | 82.6% |
 | service_games | ensemble_v1_service_games | 130 | 2025-10-01 | 2025-11-01 | 570 | 79.1% |
-| service_games | ensemble_v1_service_games | 131 | 2025-11-01 | 2025-12-01 | 134 | 64.9% |
+| service_games | ensemble_v1_service_games | 131 | 2025-11-01 | 2025-12-01 | 134 | 65.7% |
 | service_games | ensemble_v1_service_games | 132 | 2025-12-01 | 2026-01-01 | 27 | 14.8% |
 | service_games | ensemble_v1_service_games | 133 | 2026-01-01 | 2026-02-01 | 217 | 52.1% |
-| service_games | ensemble_v1_service_games | 134 | 2026-02-01 | 2026-03-01 | 1002 | 73.5% |
-| service_games | ensemble_v1_service_games | 135 | 2026-03-01 | 2026-04-01 | 1362 | 68.6% |
-| service_games | ensemble_v1_service_games | 136 | 2026-04-01 | 2026-05-01 | 1857 | 72.2% |
-| service_games | ensemble_v1_service_games | 137 | 2026-05-01 | 2026-06-01 | 1544 | 67.6% |
-| service_games | ensemble_v1_service_games | 138 | 2026-06-01 | 2026-07-01 | 1541 | 69.2% |
-| service_games | ensemble_v1_service_games | 139 | 2026-07-01 | 2026-08-01 | 1862 | 68.2% |
-| service_games | ensemble_v1_service_games | 140 | 2026-08-01 | 2026-09-01 | 1604 | 75.9% |
-| service_games | ensemble_v1_service_games | 141 | 2026-09-01 | 2026-10-01 | 1088 | 66.9% |
+| service_games | ensemble_v1_service_games | 134 | 2026-02-01 | 2026-03-01 | 1002 | 73.4% |
+| service_games | ensemble_v1_service_games | 135 | 2026-03-01 | 2026-04-01 | 1362 | 68.7% |
+| service_games | ensemble_v1_service_games | 136 | 2026-04-01 | 2026-05-01 | 1857 | 72.4% |
+| service_games | ensemble_v1_service_games | 137 | 2026-05-01 | 2026-06-01 | 1544 | 67.7% |
+| service_games | ensemble_v1_service_games | 138 | 2026-06-01 | 2026-07-01 | 1541 | 69.0% |
+| service_games | ensemble_v1_service_games | 139 | 2026-07-01 | 2026-08-01 | 1862 | 68.3% |
+| service_games | ensemble_v1_service_games | 140 | 2026-08-01 | 2026-09-01 | 1516 | 77.4% |
+| service_games | ensemble_v1_service_games | 141 | 2026-09-01 | 2026-10-01 | 674 | 70.3% |
 | service_games | gbm_v1_service_games | 2 | 2015-02-01 | 2015-03-01 | 426 | 37.8% |
 | service_games | gbm_v1_service_games | 3 | 2015-03-01 | 2015-04-01 | 344 | 73.0% |
 | service_games | gbm_v1_service_games | 4 | 2015-04-01 | 2015-05-01 | 413 | 69.5% |
@@ -1174,122 +1174,123 @@ Scored monthly folds: aces=129, double_faults=129, service_games=129. Calendar w
 | service_games | gbm_v1_service_games | 131 | 2025-11-01 | 2025-12-01 | 134 | 77.6% |
 | service_games | gbm_v1_service_games | 132 | 2025-12-01 | 2026-01-01 | 27 | 29.6% |
 | service_games | gbm_v1_service_games | 133 | 2026-01-01 | 2026-02-01 | 217 | 57.1% |
-| service_games | gbm_v1_service_games | 134 | 2026-02-01 | 2026-03-01 | 1002 | 73.3% |
+| service_games | gbm_v1_service_games | 134 | 2026-02-01 | 2026-03-01 | 1002 | 73.2% |
 | service_games | gbm_v1_service_games | 135 | 2026-03-01 | 2026-04-01 | 1362 | 75.9% |
 | service_games | gbm_v1_service_games | 136 | 2026-04-01 | 2026-05-01 | 1857 | 80.4% |
-| service_games | gbm_v1_service_games | 137 | 2026-05-01 | 2026-06-01 | 1544 | 78.6% |
+| service_games | gbm_v1_service_games | 137 | 2026-05-01 | 2026-06-01 | 1544 | 78.5% |
 | service_games | gbm_v1_service_games | 138 | 2026-06-01 | 2026-07-01 | 1541 | 77.9% |
 | service_games | gbm_v1_service_games | 139 | 2026-07-01 | 2026-08-01 | 1862 | 76.3% |
-| service_games | gbm_v1_service_games | 140 | 2026-08-01 | 2026-09-01 | 1604 | 82.0% |
-| service_games | gbm_v1_service_games | 141 | 2026-09-01 | 2026-10-01 | 1088 | 76.1% |
+| service_games | gbm_v1_service_games | 140 | 2026-08-01 | 2026-09-01 | 1516 | 82.8% |
+| service_games | gbm_v1_service_games | 141 | 2026-09-01 | 2026-10-01 | 674 | 76.7% |
 
 ## Pooled calibration by prediction bin
 
 | Target | Model | Prediction bin | Rows | Coverage |
 |---|---|---:|---:|---:|
-| aces | baseline_v1_aces | 01 | 6661 | 66.8% |
-| aces | baseline_v1_aces | 02 | 6661 | 69.4% |
-| aces | baseline_v1_aces | 03 | 6661 | 69.3% |
-| aces | baseline_v1_aces | 04 | 6661 | 71.7% |
-| aces | baseline_v1_aces | 05 | 6661 | 69.1% |
-| aces | baseline_v1_aces | 06 | 6661 | 68.9% |
-| aces | baseline_v1_aces | 07 | 6661 | 66.4% |
-| aces | baseline_v1_aces | 08 | 6661 | 65.1% |
-| aces | baseline_v1_aces | 09 | 6661 | 57.9% |
-| aces | baseline_v1_aces | 10 | 6661 | 31.0% |
-| aces | ensemble_v1_aces | 01 | 6661 | 68.3% |
-| aces | ensemble_v1_aces | 02 | 6661 | 72.1% |
-| aces | ensemble_v1_aces | 03 | 6661 | 75.2% |
-| aces | ensemble_v1_aces | 04 | 6661 | 76.5% |
-| aces | ensemble_v1_aces | 05 | 6661 | 74.1% |
-| aces | ensemble_v1_aces | 06 | 6661 | 74.2% |
-| aces | ensemble_v1_aces | 07 | 6661 | 72.4% |
-| aces | ensemble_v1_aces | 08 | 6661 | 70.7% |
-| aces | ensemble_v1_aces | 09 | 6661 | 68.3% |
-| aces | ensemble_v1_aces | 10 | 6661 | 55.6% |
-| aces | gbm_v1_aces | 01 | 6661 | 75.8% |
-| aces | gbm_v1_aces | 02 | 6661 | 76.5% |
-| aces | gbm_v1_aces | 03 | 6661 | 79.5% |
-| aces | gbm_v1_aces | 04 | 6661 | 77.2% |
-| aces | gbm_v1_aces | 05 | 6661 | 77.2% |
-| aces | gbm_v1_aces | 06 | 6661 | 77.9% |
-| aces | gbm_v1_aces | 07 | 6661 | 77.6% |
-| aces | gbm_v1_aces | 08 | 6661 | 78.8% |
-| aces | gbm_v1_aces | 09 | 6661 | 76.5% |
-| aces | gbm_v1_aces | 10 | 6661 | 75.4% |
-| double_faults | baseline_v1_double_faults | 01 | 6661 | 62.3% |
-| double_faults | baseline_v1_double_faults | 02 | 6661 | 65.6% |
-| double_faults | baseline_v1_double_faults | 03 | 6661 | 68.0% |
-| double_faults | baseline_v1_double_faults | 04 | 6661 | 68.1% |
-| double_faults | baseline_v1_double_faults | 05 | 6661 | 68.9% |
-| double_faults | baseline_v1_double_faults | 06 | 6661 | 69.5% |
-| double_faults | baseline_v1_double_faults | 07 | 6661 | 69.0% |
-| double_faults | baseline_v1_double_faults | 08 | 6661 | 66.9% |
-| double_faults | baseline_v1_double_faults | 09 | 6661 | 59.9% |
-| double_faults | baseline_v1_double_faults | 10 | 6661 | 39.5% |
-| double_faults | ensemble_v1_double_faults | 01 | 6661 | 68.6% |
-| double_faults | ensemble_v1_double_faults | 02 | 6661 | 69.3% |
-| double_faults | ensemble_v1_double_faults | 03 | 6661 | 70.3% |
-| double_faults | ensemble_v1_double_faults | 04 | 6661 | 73.1% |
-| double_faults | ensemble_v1_double_faults | 05 | 6661 | 73.2% |
-| double_faults | ensemble_v1_double_faults | 06 | 6661 | 75.3% |
-| double_faults | ensemble_v1_double_faults | 07 | 6661 | 74.2% |
-| double_faults | ensemble_v1_double_faults | 08 | 6661 | 71.4% |
-| double_faults | ensemble_v1_double_faults | 09 | 6661 | 69.6% |
-| double_faults | ensemble_v1_double_faults | 10 | 6661 | 62.2% |
-| double_faults | gbm_v1_double_faults | 01 | 6661 | 79.7% |
-| double_faults | gbm_v1_double_faults | 02 | 6661 | 77.9% |
-| double_faults | gbm_v1_double_faults | 03 | 6661 | 78.5% |
-| double_faults | gbm_v1_double_faults | 04 | 6661 | 77.8% |
-| double_faults | gbm_v1_double_faults | 05 | 6661 | 78.4% |
-| double_faults | gbm_v1_double_faults | 06 | 6661 | 79.3% |
-| double_faults | gbm_v1_double_faults | 07 | 6661 | 79.9% |
-| double_faults | gbm_v1_double_faults | 08 | 6661 | 79.3% |
-| double_faults | gbm_v1_double_faults | 09 | 6661 | 76.7% |
-| double_faults | gbm_v1_double_faults | 10 | 6661 | 77.9% |
-| service_games | baseline_v1_service_games | 01 | 6659 | 49.7% |
-| service_games | baseline_v1_service_games | 02 | 6660 | 60.0% |
-| service_games | baseline_v1_service_games | 03 | 6659 | 64.4% |
-| service_games | baseline_v1_service_games | 04 | 6660 | 67.9% |
-| service_games | baseline_v1_service_games | 05 | 6659 | 73.1% |
-| service_games | baseline_v1_service_games | 06 | 6660 | 77.5% |
-| service_games | baseline_v1_service_games | 07 | 6659 | 83.5% |
-| service_games | baseline_v1_service_games | 08 | 6660 | 86.5% |
-| service_games | baseline_v1_service_games | 09 | 6659 | 40.4% |
-| service_games | baseline_v1_service_games | 10 | 6660 | 15.2% |
-| service_games | ensemble_v1_service_games | 01 | 6659 | 69.8% |
-| service_games | ensemble_v1_service_games | 02 | 6660 | 70.8% |
-| service_games | ensemble_v1_service_games | 03 | 6659 | 71.9% |
-| service_games | ensemble_v1_service_games | 04 | 6660 | 76.5% |
-| service_games | ensemble_v1_service_games | 05 | 6659 | 78.6% |
-| service_games | ensemble_v1_service_games | 06 | 6660 | 80.6% |
-| service_games | ensemble_v1_service_games | 07 | 6659 | 83.9% |
-| service_games | ensemble_v1_service_games | 08 | 6660 | 85.6% |
-| service_games | ensemble_v1_service_games | 09 | 6659 | 52.5% |
-| service_games | ensemble_v1_service_games | 10 | 6660 | 43.2% |
-| service_games | gbm_v1_service_games | 01 | 6659 | 78.1% |
-| service_games | gbm_v1_service_games | 02 | 6660 | 77.5% |
-| service_games | gbm_v1_service_games | 03 | 6659 | 77.3% |
-| service_games | gbm_v1_service_games | 04 | 6660 | 76.7% |
-| service_games | gbm_v1_service_games | 05 | 6659 | 77.5% |
-| service_games | gbm_v1_service_games | 06 | 6660 | 78.7% |
-| service_games | gbm_v1_service_games | 07 | 6659 | 79.0% |
-| service_games | gbm_v1_service_games | 08 | 6660 | 78.0% |
-| service_games | gbm_v1_service_games | 09 | 6659 | 73.5% |
-| service_games | gbm_v1_service_games | 10 | 6660 | 74.2% |
+| aces | baseline_v1_aces | 01 | 6610 | 67.0% |
+| aces | baseline_v1_aces | 02 | 6611 | 69.5% |
+| aces | baseline_v1_aces | 03 | 6611 | 69.4% |
+| aces | baseline_v1_aces | 04 | 6611 | 71.7% |
+| aces | baseline_v1_aces | 05 | 6611 | 69.2% |
+| aces | baseline_v1_aces | 06 | 6610 | 68.9% |
+| aces | baseline_v1_aces | 07 | 6611 | 66.4% |
+| aces | baseline_v1_aces | 08 | 6611 | 65.3% |
+| aces | baseline_v1_aces | 09 | 6611 | 58.4% |
+| aces | baseline_v1_aces | 10 | 6611 | 31.7% |
+| aces | ensemble_v1_aces | 01 | 6610 | 68.4% |
+| aces | ensemble_v1_aces | 02 | 6611 | 72.5% |
+| aces | ensemble_v1_aces | 03 | 6611 | 75.5% |
+| aces | ensemble_v1_aces | 04 | 6611 | 76.6% |
+| aces | ensemble_v1_aces | 05 | 6611 | 74.1% |
+| aces | ensemble_v1_aces | 06 | 6610 | 74.4% |
+| aces | ensemble_v1_aces | 07 | 6611 | 72.5% |
+| aces | ensemble_v1_aces | 08 | 6611 | 71.1% |
+| aces | ensemble_v1_aces | 09 | 6611 | 68.6% |
+| aces | ensemble_v1_aces | 10 | 6611 | 56.5% |
+| aces | gbm_v1_aces | 01 | 6610 | 75.8% |
+| aces | gbm_v1_aces | 02 | 6611 | 76.6% |
+| aces | gbm_v1_aces | 03 | 6611 | 79.5% |
+| aces | gbm_v1_aces | 04 | 6611 | 77.3% |
+| aces | gbm_v1_aces | 05 | 6611 | 77.1% |
+| aces | gbm_v1_aces | 06 | 6610 | 77.9% |
+| aces | gbm_v1_aces | 07 | 6611 | 77.7% |
+| aces | gbm_v1_aces | 08 | 6611 | 78.9% |
+| aces | gbm_v1_aces | 09 | 6611 | 76.4% |
+| aces | gbm_v1_aces | 10 | 6611 | 75.3% |
+| double_faults | baseline_v1_double_faults | 01 | 6610 | 62.2% |
+| double_faults | baseline_v1_double_faults | 02 | 6611 | 65.8% |
+| double_faults | baseline_v1_double_faults | 03 | 6611 | 67.9% |
+| double_faults | baseline_v1_double_faults | 04 | 6611 | 68.2% |
+| double_faults | baseline_v1_double_faults | 05 | 6611 | 68.9% |
+| double_faults | baseline_v1_double_faults | 06 | 6610 | 69.5% |
+| double_faults | baseline_v1_double_faults | 07 | 6611 | 69.1% |
+| double_faults | baseline_v1_double_faults | 08 | 6611 | 67.0% |
+| double_faults | baseline_v1_double_faults | 09 | 6611 | 60.0% |
+| double_faults | baseline_v1_double_faults | 10 | 6611 | 40.1% |
+| double_faults | ensemble_v1_double_faults | 01 | 6610 | 68.7% |
+| double_faults | ensemble_v1_double_faults | 02 | 6611 | 69.4% |
+| double_faults | ensemble_v1_double_faults | 03 | 6611 | 70.4% |
+| double_faults | ensemble_v1_double_faults | 04 | 6611 | 73.0% |
+| double_faults | ensemble_v1_double_faults | 05 | 6611 | 73.4% |
+| double_faults | ensemble_v1_double_faults | 06 | 6610 | 75.4% |
+| double_faults | ensemble_v1_double_faults | 07 | 6611 | 74.3% |
+| double_faults | ensemble_v1_double_faults | 08 | 6611 | 71.5% |
+| double_faults | ensemble_v1_double_faults | 09 | 6611 | 69.7% |
+| double_faults | ensemble_v1_double_faults | 10 | 6611 | 62.6% |
+| double_faults | gbm_v1_double_faults | 01 | 6610 | 79.6% |
+| double_faults | gbm_v1_double_faults | 02 | 6611 | 77.9% |
+| double_faults | gbm_v1_double_faults | 03 | 6611 | 78.5% |
+| double_faults | gbm_v1_double_faults | 04 | 6611 | 77.8% |
+| double_faults | gbm_v1_double_faults | 05 | 6611 | 78.4% |
+| double_faults | gbm_v1_double_faults | 06 | 6610 | 79.3% |
+| double_faults | gbm_v1_double_faults | 07 | 6611 | 79.8% |
+| double_faults | gbm_v1_double_faults | 08 | 6611 | 79.4% |
+| double_faults | gbm_v1_double_faults | 09 | 6611 | 76.8% |
+| double_faults | gbm_v1_double_faults | 10 | 6611 | 78.0% |
+| service_games | baseline_v1_service_games | 01 | 6609 | 49.7% |
+| service_games | baseline_v1_service_games | 02 | 6609 | 59.9% |
+| service_games | baseline_v1_service_games | 03 | 6609 | 64.4% |
+| service_games | baseline_v1_service_games | 04 | 6610 | 68.0% |
+| service_games | baseline_v1_service_games | 05 | 6609 | 73.2% |
+| service_games | baseline_v1_service_games | 06 | 6609 | 77.4% |
+| service_games | baseline_v1_service_games | 07 | 6610 | 83.4% |
+| service_games | baseline_v1_service_games | 08 | 6609 | 86.5% |
+| service_games | baseline_v1_service_games | 09 | 6609 | 41.9% |
+| service_games | baseline_v1_service_games | 10 | 6610 | 15.2% |
+| service_games | ensemble_v1_service_games | 01 | 6609 | 69.8% |
+| service_games | ensemble_v1_service_games | 02 | 6609 | 70.9% |
+| service_games | ensemble_v1_service_games | 03 | 6609 | 72.1% |
+| service_games | ensemble_v1_service_games | 04 | 6610 | 76.6% |
+| service_games | ensemble_v1_service_games | 05 | 6609 | 78.7% |
+| service_games | ensemble_v1_service_games | 06 | 6609 | 80.6% |
+| service_games | ensemble_v1_service_games | 07 | 6610 | 83.8% |
+| service_games | ensemble_v1_service_games | 08 | 6609 | 85.7% |
+| service_games | ensemble_v1_service_games | 09 | 6609 | 53.6% |
+| service_games | ensemble_v1_service_games | 10 | 6610 | 44.0% |
+| service_games | gbm_v1_service_games | 01 | 6609 | 78.2% |
+| service_games | gbm_v1_service_games | 02 | 6609 | 77.6% |
+| service_games | gbm_v1_service_games | 03 | 6609 | 77.3% |
+| service_games | gbm_v1_service_games | 04 | 6610 | 76.8% |
+| service_games | gbm_v1_service_games | 05 | 6609 | 77.6% |
+| service_games | gbm_v1_service_games | 06 | 6609 | 78.6% |
+| service_games | gbm_v1_service_games | 07 | 6610 | 78.9% |
+| service_games | gbm_v1_service_games | 08 | 6609 | 78.2% |
+| service_games | gbm_v1_service_games | 09 | 6609 | 73.4% |
+| service_games | gbm_v1_service_games | 10 | 6610 | 74.1% |
 
 ## OOF objective comparison
 
 | Target | OOF objective | Pooled ensemble MAE |
 |---|---|---:|
-| aces | absolute error | unavailable |
-| aces | squared error | unavailable |
-| double_faults | absolute error | unavailable |
-| double_faults | squared error | unavailable |
-| service_games | absolute error | unavailable |
-| service_games | squared error | unavailable |
+| aces | absolute error | 3.0313 |
+| aces | squared error | 3.0377 |
+| double_faults | absolute error | 1.6579 |
+| double_faults | squared error | 1.6588 |
+| service_games | absolute error | 2.9450 |
+| service_games | squared error | 2.9552 |
 
 Coverage near 80% means the nominal 0.1–0.9 interval contains outcomes about eight times in ten. Higher coverage usually means intervals are too wide; lower coverage means they are too narrow.
+Interval crossing and repair counts are persisted with each corrected run. Older append-only runs report these fields as unavailable rather than reconstructing them.
 
 ## Fold-level bias-sign review
 
@@ -1298,7 +1299,7 @@ Coverage near 80% means the nominal 0.1–0.9 interval contains outcomes about e
 | aces | baseline_v1_aces | 65 | 64 | 50.4% | mixed |
 | aces | gbm_v1_aces | 20 | 109 | 84.5% | FLAG: negative in most folds |
 | aces | ensemble_v1_aces | 51 | 78 | 60.5% | FLAG: negative in most folds |
-| double_faults | baseline_v1_double_faults | 74 | 55 | 57.4% | mixed |
+| double_faults | baseline_v1_double_faults | 73 | 56 | 56.6% | mixed |
 | double_faults | gbm_v1_double_faults | 36 | 93 | 72.1% | FLAG: negative in most folds |
 | double_faults | ensemble_v1_double_faults | 59 | 70 | 54.3% | mixed |
 | service_games | baseline_v1_service_games | 68 | 61 | 52.7% | mixed |
@@ -1307,22 +1308,22 @@ Coverage near 80% means the nominal 0.1–0.9 interval contains outcomes about e
 
 ## Expectation reconciliation
 
-- Baseline aces MAE 3.4–4.1: **PASS** (3.5814).
-- GBM aces improvement 3–8%: **FAIL** (20.25%).
-- Ensemble aces improvement over GBM 1–3%: **FAIL** (-6.73%).
-- baseline_v1 aces interval coverage 0.75–0.85: **FAIL** (63.6%).
-- gbm_v1 aces interval coverage 0.75–0.85: **PASS** (77.2%).
-- ensemble_v1 aces interval coverage 0.75–0.85: **FAIL** (70.7%).
-- GBM double_faults improvement 3–8%: **FAIL** (8.38%).
+- Baseline aces MAE 3.4–4.1: **PASS** (3.5613).
+- GBM aces improvement 3–8%: **FAIL** (19.90%).
+- Ensemble aces improvement over GBM 1–3%: **FAIL** (-6.26%).
+- baseline_v1 aces interval coverage 0.75–0.85: **FAIL** (63.8%).
+- gbm_v1 aces interval coverage 0.75–0.85: **PASS** (77.3%).
+- ensemble_v1 aces interval coverage 0.75–0.85: **FAIL** (71.0%).
+- GBM double_faults improvement 3–8%: **FAIL** (8.34%).
 - Ensemble double_faults improvement over GBM 1–3%: **FAIL** (-1.77%).
-- baseline_v1 double_faults interval coverage 0.75–0.85: **FAIL** (63.8%).
+- baseline_v1 double_faults interval coverage 0.75–0.85: **FAIL** (63.9%).
 - gbm_v1 double_faults interval coverage 0.75–0.85: **PASS** (78.5%).
-- ensemble_v1 double_faults interval coverage 0.75–0.85: **FAIL** (70.7%).
-- GBM service_games improvement 3–8%: **FAIL** (27.86%).
-- Ensemble service_games improvement over GBM 1–3%: **FAIL** (-9.75%).
-- baseline_v1 service_games interval coverage 0.75–0.85: **FAIL** (61.8%).
-- gbm_v1 service_games interval coverage 0.75–0.85: **PASS** (77.0%).
-- ensemble_v1 service_games interval coverage 0.75–0.85: **FAIL** (71.4%).
+- ensemble_v1 double_faults interval coverage 0.75–0.85: **FAIL** (70.8%).
+- GBM service_games improvement 3–8%: **FAIL** (27.65%).
+- Ensemble service_games improvement over GBM 1–3%: **FAIL** (-9.21%).
+- baseline_v1 service_games interval coverage 0.75–0.85: **FAIL** (62.0%).
+- gbm_v1 service_games interval coverage 0.75–0.85: **PASS** (77.1%).
+- ensemble_v1 service_games interval coverage 0.75–0.85: **FAIL** (71.6%).
 - Any FAIL is not treated as success. It requires a leakage and data-boundary review before the model is trusted, including when the result is better than expected.
 
 ## Market comparison

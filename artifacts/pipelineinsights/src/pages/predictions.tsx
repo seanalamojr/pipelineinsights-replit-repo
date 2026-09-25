@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useGetPipelineModelVersions, useGetPipelinePredictions } from '@workspace/api-client-react';
+import { usePipelineMode } from '@/contexts/pipeline-mode';
 import { Filter, Layers, Search, SlidersHorizontal } from 'lucide-react';
 import { EmptyState, ErrorState, ExportButton, LoadingBlock, Panel, SectionHeading, SourceNote } from '@/components/dashboard-ui';
 import { PaginationHint } from '@/components/prediction-table';
@@ -7,15 +8,21 @@ import { PredictionTable } from '@/components/prediction-table';
 import { formatDate, formatEdge, formatPropLabel } from '@/lib/pipeline';
 
 export default function PredictionsPage() {
+  const { mode } = usePipelineMode();
   const [modelVersion, setModelVersion] = useState('all');
   const [search, setSearch] = useState('');
-  const query = useGetPipelinePredictions(modelVersion === 'all' ? undefined : { modelVersion });
-  const versionsQuery = useGetPipelineModelVersions();
+  const query = useGetPipelinePredictions(modelVersion === 'all' ? { mode } : { modelVersion, mode });
+  const versionsQuery = useGetPipelineModelVersions({ mode });
   const rows = query.data ?? [];
   const versions = useMemo(() => Array.from(new Set((versionsQuery.data ?? []).map((version) => version.modelVersion))).sort(), [versionsQuery.data]);
   const filtered = useMemo(() => rows.filter((row) => `${row.player} ${row.matchup} ${row.propLabel} ${row.propType}`.toLowerCase().includes(search.toLowerCase())), [rows, search]);
   const exportRows = filtered.map((row) => ({ player: row.player, event: row.matchup, date: formatDate(row.eventDate), market: row.propLabel, line: row.line ?? '', projection: row.projection, lower_ci: row.lowerCi, upper_ci: row.upperCi, edge: formatEdge(row.edge), side: row.side ?? '', book: row.book ?? '', model_version: row.modelVersion }));
   const loading = query.isLoading || query.isFetching;
+  const realDataEmpty = mode === 'real' && rows.length === 0;
+
+  useEffect(() => {
+    if (modelVersion !== 'all' && !versions.includes(modelVersion)) setModelVersion('all');
+  }, [modelVersion, versions]);
 
   return <div className="space-y-7">
     <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end"><div><p className="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-primary">Prediction ledger / 02</p><h1 className="font-display text-[34px] font-semibold leading-none tracking-[-0.045em] sm:text-[42px]">Model outputs, unabridged.</h1><p className="mt-3 max-w-[660px] text-[14px] leading-relaxed text-muted-foreground">Confidence bands stay attached to every forecast. Filter by model checkpoint to compare what changed and why.</p></div><SourceNote>Read-only reporting view · no frontend calculations</SourceNote></div>
@@ -27,7 +34,7 @@ export default function PredictionsPage() {
         <div className="flex h-9 items-center gap-2 rounded-lg border border-border bg-card px-3 text-[11px] text-muted-foreground"><Filter className="h-3.5 w-3.5" />{filtered.length} matching rows</div>
         <button type="button" data-testid="button-clear-prediction-filters" onClick={() => { setSearch(''); setModelVersion('all'); }} className="inline-flex h-9 items-center gap-2 rounded-lg px-2 text-[11px] text-muted-foreground hover:text-primary"><SlidersHorizontal className="h-3.5 w-3.5" />Reset</button>
       </div>
-      {query.isError ? <ErrorState onRetry={() => void query.refetch()} /> : loading ? <LoadingBlock rows={7} height="h-11" /> : !filtered.length ? <EmptyState title="No predictions match" description="Try a different player, market, or model checkpoint. Empty results are intentional, not inferred." /> : <><PredictionTable rows={filtered} /><PaginationHint count={filtered.length} /></>}
+          {query.isError ? <ErrorState onRetry={() => void query.refetch()} /> : loading ? <LoadingBlock rows={7} height="h-11" /> : !filtered.length ? <EmptyState title={realDataEmpty ? 'No real predictions available' : 'No predictions match'} description={realDataEmpty ? 'Real-data mode is active and contains no predictions yet. Demo rows remain hidden; switch to Demo mode only to preview seeded examples.' : 'Try a different player, market, or model checkpoint. Empty results are intentional, not inferred.'} /> : <><PredictionTable rows={filtered} /><PaginationHint count={filtered.length} /></>}
     </Panel>
   </div>;
 }

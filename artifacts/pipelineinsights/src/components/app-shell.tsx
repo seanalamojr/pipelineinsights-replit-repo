@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { getGetPipelineOverviewQueryKey, getGetPipelinePredictionsQueryKey, useGetPipelineOverview, useHealthCheck } from '@workspace/api-client-react';
+import { getGetPipelineOverviewQueryKey, getGetPipelinePredictionsQueryKey, useHealthCheck } from '@workspace/api-client-react';
 import { BarChart3, BookOpen, ChevronDown, CircleHelp, Database, FileChartColumn, Gauge, Menu, Moon, Printer, RefreshCw, Sun, Table2, TrendingUp, X } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
+import { PipelineModeContext, type PipelineDataMode } from '@/contexts/pipeline-mode';
 
 const INTERVALS = [
   { label: 'Every 5 min', value: 5 * 60 * 1000 },
@@ -26,19 +27,23 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dark, setDark] = useState(() => localStorage.getItem('pipeline-theme') === 'dark');
+  const [mode, setMode] = useState<PipelineDataMode>(() => localStorage.getItem('pipeline-mode') === 'demo' ? 'demo' : 'real');
   const [autoRefresh, setAutoRefresh] = useState(false);
   const [intervalMs, setIntervalMs] = useState(INTERVALS[0].value);
   const [refreshMenuOpen, setRefreshMenuOpen] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
-  const overviewQuery = useGetPipelineOverview();
   const healthQuery = useHealthCheck();
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', dark);
     localStorage.setItem('pipeline-theme', dark ? 'dark' : 'light');
   }, [dark]);
+
+  useEffect(() => {
+    localStorage.setItem('pipeline-mode', mode);
+  }, [mode]);
 
   useEffect(() => {
     const close = (event: MouseEvent) => {
@@ -48,24 +53,25 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     setRefreshing(true);
     await Promise.all([
-      queryClient.invalidateQueries({ queryKey: getGetPipelineOverviewQueryKey() }),
-      queryClient.invalidateQueries({ queryKey: getGetPipelinePredictionsQueryKey() }),
+      queryClient.invalidateQueries({ queryKey: getGetPipelineOverviewQueryKey({ mode }) }),
+      queryClient.invalidateQueries({ queryKey: getGetPipelinePredictionsQueryKey({ mode }) }),
     ]);
     window.setTimeout(() => setRefreshing(false), 650);
-  };
+  }, [mode, queryClient]);
 
   useEffect(() => {
     if (!autoRefresh) return;
     const timer = window.setInterval(() => void refresh(), intervalMs);
     return () => window.clearInterval(timer);
-  }, [autoRefresh, intervalMs]);
+  }, [autoRefresh, intervalMs, refresh]);
 
   const status = healthQuery.data?.status;
 
   return (
+    <PipelineModeContext.Provider value={{ mode, setMode }}>
     <div className="noise min-h-[100dvh] bg-background">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[244px] flex-col bg-sidebar text-sidebar-foreground md:flex">
         <div className="border-b border-sidebar-border/80 px-5 py-5">
@@ -101,7 +107,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
         <div className="border-t border-sidebar-border/80 px-5 py-4">
-          {overviewQuery.data?.demoData && <div data-testid="badge-demo-sidebar" className="mb-3 flex items-center gap-2 rounded-lg bg-sidebar-accent px-3 py-2 text-[11px] text-sidebar-foreground/80"><span className="h-1.5 w-1.5 rounded-full bg-sidebar-primary" />Demo records active</div>}
+          <div data-testid="status-data-mode-sidebar" className="mb-3 flex items-center justify-between rounded-lg bg-sidebar-accent px-3 py-2 text-[11px] text-sidebar-foreground/80"><span>Data mode</span><strong>{mode === 'demo' ? 'Demo' : 'Real'}</strong></div>
           <div className="flex items-center gap-2 text-[10px] text-sidebar-foreground/45"><span className={`h-1.5 w-1.5 rounded-full ${status === 'ok' ? 'bg-emerald-400' : 'bg-sidebar-foreground/30'}`} />API {status === 'ok' ? 'operational' : 'checking status'}</div>
         </div>
       </aside>
@@ -117,9 +123,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-3">
              <button type="button" aria-label="Open navigation" data-testid="button-open-mobile-nav" className="rounded-lg border border-border p-2 md:hidden" onClick={() => setMobileOpen(true)}><Menu className="h-4 w-4" /></button>
             <div className="hidden items-center gap-2 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground sm:flex"><span className="text-primary">PIPELINE</span><span>/</span><span>{navItems.find((item) => item.href === location)?.label ?? 'Overview'}</span></div>
-            {overviewQuery.data?.demoData && <span data-testid="badge-demo-top" className="rounded-md border border-accent/40 bg-accent/10 px-2 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.08em] text-accent-foreground">Demo data</span>}
+            <span data-testid="status-data-mode" className="whitespace-nowrap rounded-md border border-accent/40 bg-accent/10 px-2 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.08em] text-accent-foreground">{mode === 'demo' ? 'Demo' : 'Real'}</span>
           </div>
           <div className="flex items-center gap-2">
+            <label className="sr-only" htmlFor="pipeline-data-mode">Data mode</label>
+            <select id="pipeline-data-mode" data-testid="select-data-mode" aria-label="Data mode" value={mode} onChange={(event) => setMode(event.target.value as PipelineDataMode)} className="h-9 w-[108px] rounded-lg border border-border bg-card px-2 text-[11px] font-medium text-foreground sm:w-[118px]">
+              <option value="real">Real data</option>
+              <option value="demo">Demo data</option>
+            </select>
             <div className="relative" ref={menuRef}>
               <div className="flex h-9 items-center rounded-lg border border-border bg-card">
                 <button type="button" data-testid="button-refresh" onClick={() => void refresh()} disabled={refreshing} className="flex h-full items-center gap-2 px-3 text-[12px] font-medium text-foreground/75 transition-colors hover:text-primary disabled:opacity-50"><RefreshCw className={`h-3.5 w-3.5 ${refreshing ? 'animate-spin' : ''}`} />Refresh</button>
@@ -132,12 +143,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <p className="mt-2 text-[10px] leading-relaxed text-muted-foreground">Automatic updates never run more often than every five minutes.</p>
               </div>}
             </div>
-            <button type="button" data-testid="button-print" onClick={() => window.print()} className={iconButtonClass()}><Printer className="h-4 w-4" /></button>
+            <button type="button" data-testid="button-print" onClick={() => window.print()} className={`${iconButtonClass()} hidden sm:inline-flex`}><Printer className="h-4 w-4" /></button>
             <button type="button" data-testid="button-theme" onClick={() => setDark((value) => !value)} className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:text-foreground">{dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}</button>
           </div>
         </header>
         <div className="mx-auto max-w-[1520px] px-4 py-7 sm:px-7 lg:px-9">{children}</div>
       </main>
     </div>
+    </PipelineModeContext.Provider>
   );
 }

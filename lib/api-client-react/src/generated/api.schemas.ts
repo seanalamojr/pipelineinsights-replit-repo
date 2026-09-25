@@ -5,6 +5,14 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+export type PipelineDataMode = typeof PipelineDataMode[keyof typeof PipelineDataMode];
+
+
+export const PipelineDataMode = {
+  real: 'real',
+  demo: 'demo',
+} as const;
+
 export interface HealthStatus {
   status: string;
 }
@@ -151,12 +159,36 @@ export interface TrendPoint {
   postedLine: number | null;
 }
 
+export type PipelineDataModeParameter = PipelineDataMode;
+
+export type GetPipelineOverviewParams = {
+/**
+ * Select real prediction data or explicitly seeded demo data.
+ */
+mode?: PipelineDataModeParameter;
+};
+
 export type GetPipelinePredictionsParams = {
+/**
+ * Select real prediction data or explicitly seeded demo data.
+ */
+mode?: PipelineDataModeParameter;
 modelVersion?: string;
 propType?: string;
 };
 
+export type GetPipelineModelVersionsParams = {
+/**
+ * Select real prediction data or explicitly seeded demo data.
+ */
+mode?: PipelineDataModeParameter;
+};
+
 export type GetPlayerTrendParams = {
+/**
+ * Select real prediction data or explicitly seeded demo data.
+ */
+mode?: PipelineDataModeParameter;
 playerId: string;
 stat?: string;
 modelVersion?: string;

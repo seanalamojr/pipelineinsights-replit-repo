@@ -335,8 +335,7 @@ def seed_demo() -> int:
                     :resolved_at
                 )
                 ON CONFLICT (
-                    provider, provider_event_id, player_id, book, prop_type,
-                    line, captured_at
+                    match_id, player_id, book, prop_type, line, captured_at
                 )
                 DO UPDATE SET
                     over_price = EXCLUDED.over_price,

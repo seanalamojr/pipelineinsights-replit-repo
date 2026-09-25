@@ -25,20 +25,29 @@ The ensemble scores in this document are not the exact artifact that production 
 
 | Target | OOF objective | Member | Folds | Mean weight | Range |
 |---|---|---|---:|---:|---:|
-| unavailable | unavailable | unavailable | 0 | unavailable | unavailable |
-
-The persisted append-only run used to rebuild this card predates objective-specific weight instrumentation; the corrected evaluator will populate this table on its next full run.
+| aces | absolute error | baseline_v1_aces | 129 | 0.4893 | 0.4682–0.7673 |
+| aces | absolute error | gbm_v1_aces | 129 | 0.5107 | 0.2327–0.5318 |
+| aces | squared error | baseline_v1_aces | 129 | 0.4976 | 0.4645–0.7544 |
+| aces | squared error | gbm_v1_aces | 129 | 0.5024 | 0.2456–0.5355 |
+| double_faults | absolute error | baseline_v1_double_faults | 129 | 0.4944 | 0.4892–0.5569 |
+| double_faults | absolute error | gbm_v1_double_faults | 129 | 0.5056 | 0.4431–0.5108 |
+| double_faults | squared error | baseline_v1_double_faults | 129 | 0.4994 | 0.4963–0.5580 |
+| double_faults | squared error | gbm_v1_double_faults | 129 | 0.5006 | 0.4420–0.5037 |
+| service_games | absolute error | baseline_v1_service_games | 129 | 0.4906 | 0.4777–0.6551 |
+| service_games | absolute error | gbm_v1_service_games | 129 | 0.5094 | 0.3449–0.5223 |
+| service_games | squared error | baseline_v1_service_games | 129 | 0.4993 | 0.4907–0.6181 |
+| service_games | squared error | gbm_v1_service_games | 129 | 0.5007 | 0.3819–0.5093 |
 
 ### OOF objective comparison
 
 | Target | OOF objective | Pooled ensemble MAE |
 |---|---|---:|
-| aces | absolute error | unavailable |
-| aces | squared error | unavailable |
-| double_faults | absolute error | unavailable |
-| double_faults | squared error | unavailable |
-| service_games | absolute error | unavailable |
-| service_games | squared error | unavailable |
+| aces | absolute error | 3.0313 |
+| aces | squared error | 3.0377 |
+| double_faults | absolute error | 1.6579 |
+| double_faults | squared error | 1.6588 |
+| service_games | absolute error | 2.9450 |
+| service_games | squared error | 2.9552 |
 
 ## Features
 
@@ -61,116 +70,117 @@ The ensemble combines the versioned baseline and GBM predictions. Production wei
 
 ## Pooled metrics
 
-| Target | Model | MAE | RMSE | Signed bias | Coverage | Rows | MAE improvement vs baseline |
-|---|---|---:|---:|---:|---:|---:|---:|
-| aces | baseline_v1_aces | 3.5814 | 5.4118 | 0.4136 | 63.6% | 66610 | 0.00% |
-| aces | gbm_v1_aces | 2.8561 | 4.0241 | -0.6138 | 77.2% | 66610 | 20.25% |
-| aces | ensemble_v1_aces | 3.0484 | 4.2904 | -0.1024 | 70.7% | 66610 | 14.88% |
-| double_faults | baseline_v1_double_faults | 1.7825 | 2.3887 | 0.0628 | 63.8% | 66610 | 0.00% |
-| double_faults | gbm_v1_double_faults | 1.6332 | 2.2003 | -0.3045 | 78.5% | 66610 | 8.38% |
-| double_faults | ensemble_v1_double_faults | 1.6620 | 2.2034 | -0.1210 | 70.7% | 66610 | 6.76% |
-| service_games | baseline_v1_service_games | 3.7423 | 5.2720 | 0.4095 | 61.8% | 66595 | 0.00% |
-| service_games | gbm_v1_service_games | 2.6997 | 3.4626 | -0.4998 | 77.0% | 66595 | 27.86% |
-| service_games | ensemble_v1_service_games | 2.9630 | 3.8955 | -0.0463 | 71.4% | 66595 | 20.82% |
+| Target | Model | MAE | RMSE | Signed bias | Coverage | Rows | Interval crossings | Interval repairs | MAE improvement vs baseline |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| aces | baseline_v1_aces | 3.5613 | 5.3793 | 0.3964 | 63.8% | 66108 | 0.0000 | 0.0000 | 0.00% |
+| aces | gbm_v1_aces | 2.8526 | 4.0191 | -0.6111 | 77.3% | 66108 | 0.0000 | 0.0000 | 19.90% |
+| aces | ensemble_v1_aces | 3.0313 | 4.2621 | -0.1200 | 71.0% | 66108 | 0.0000 | 0.0000 | 14.88% |
+| double_faults | baseline_v1_double_faults | 1.7774 | 2.3818 | 0.0562 | 63.9% | 66108 | 0.0000 | 0.0000 | 0.00% |
+| double_faults | gbm_v1_double_faults | 1.6292 | 2.1935 | -0.2993 | 78.5% | 66108 | 0.0000 | 0.0000 | 8.34% |
+| double_faults | ensemble_v1_double_faults | 1.6579 | 2.1980 | -0.1237 | 70.8% | 66108 | 0.0000 | 0.0000 | 6.72% |
+| service_games | baseline_v1_service_games | 3.7270 | 5.2500 | 0.3873 | 62.0% | 66093 | 0.0000 | 0.0000 | 0.00% |
+| service_games | gbm_v1_service_games | 2.6965 | 3.4593 | -0.4997 | 77.1% | 66093 | 0.0000 | 0.0000 | 27.65% |
+| service_games | ensemble_v1_service_games | 2.9450 | 3.8670 | -0.0673 | 71.6% | 66093 | 0.0000 | 0.0000 | 20.98% |
 
 ## Calibration
 
 The headline metric is interval coverage: the fraction of realized outcomes inside `[lowerci, upperci]`. With 0.1 and 0.9 quantiles, a useful target is near 80%. Coverage that is too high usually means intervals are too wide or conservative. Coverage that is too low means intervals are too narrow.
+Pooled metric rows also report interval crossings and repaired rows. Unavailable means the append-only run predates that instrumentation.
 
 ### Prediction-ranked bins
 
 | Target | Model | Prediction bin | Rows | Coverage |
 |---|---|---:|---:|---:|
-| aces | baseline_v1_aces | 01 | 6661 | 66.8% |
-| aces | baseline_v1_aces | 02 | 6661 | 69.4% |
-| aces | baseline_v1_aces | 03 | 6661 | 69.3% |
-| aces | baseline_v1_aces | 04 | 6661 | 71.7% |
-| aces | baseline_v1_aces | 05 | 6661 | 69.1% |
-| aces | baseline_v1_aces | 06 | 6661 | 68.9% |
-| aces | baseline_v1_aces | 07 | 6661 | 66.4% |
-| aces | baseline_v1_aces | 08 | 6661 | 65.1% |
-| aces | baseline_v1_aces | 09 | 6661 | 57.9% |
-| aces | baseline_v1_aces | 10 | 6661 | 31.0% |
-| aces | ensemble_v1_aces | 01 | 6661 | 68.3% |
-| aces | ensemble_v1_aces | 02 | 6661 | 72.1% |
-| aces | ensemble_v1_aces | 03 | 6661 | 75.2% |
-| aces | ensemble_v1_aces | 04 | 6661 | 76.5% |
-| aces | ensemble_v1_aces | 05 | 6661 | 74.1% |
-| aces | ensemble_v1_aces | 06 | 6661 | 74.2% |
-| aces | ensemble_v1_aces | 07 | 6661 | 72.4% |
-| aces | ensemble_v1_aces | 08 | 6661 | 70.7% |
-| aces | ensemble_v1_aces | 09 | 6661 | 68.3% |
-| aces | ensemble_v1_aces | 10 | 6661 | 55.6% |
-| aces | gbm_v1_aces | 01 | 6661 | 75.8% |
-| aces | gbm_v1_aces | 02 | 6661 | 76.5% |
-| aces | gbm_v1_aces | 03 | 6661 | 79.5% |
-| aces | gbm_v1_aces | 04 | 6661 | 77.2% |
-| aces | gbm_v1_aces | 05 | 6661 | 77.2% |
-| aces | gbm_v1_aces | 06 | 6661 | 77.9% |
-| aces | gbm_v1_aces | 07 | 6661 | 77.6% |
-| aces | gbm_v1_aces | 08 | 6661 | 78.8% |
-| aces | gbm_v1_aces | 09 | 6661 | 76.5% |
-| aces | gbm_v1_aces | 10 | 6661 | 75.4% |
-| double_faults | baseline_v1_double_faults | 01 | 6661 | 62.3% |
-| double_faults | baseline_v1_double_faults | 02 | 6661 | 65.6% |
-| double_faults | baseline_v1_double_faults | 03 | 6661 | 68.0% |
-| double_faults | baseline_v1_double_faults | 04 | 6661 | 68.1% |
-| double_faults | baseline_v1_double_faults | 05 | 6661 | 68.9% |
-| double_faults | baseline_v1_double_faults | 06 | 6661 | 69.5% |
-| double_faults | baseline_v1_double_faults | 07 | 6661 | 69.0% |
-| double_faults | baseline_v1_double_faults | 08 | 6661 | 66.9% |
-| double_faults | baseline_v1_double_faults | 09 | 6661 | 59.9% |
-| double_faults | baseline_v1_double_faults | 10 | 6661 | 39.5% |
-| double_faults | ensemble_v1_double_faults | 01 | 6661 | 68.6% |
-| double_faults | ensemble_v1_double_faults | 02 | 6661 | 69.3% |
-| double_faults | ensemble_v1_double_faults | 03 | 6661 | 70.3% |
-| double_faults | ensemble_v1_double_faults | 04 | 6661 | 73.1% |
-| double_faults | ensemble_v1_double_faults | 05 | 6661 | 73.2% |
-| double_faults | ensemble_v1_double_faults | 06 | 6661 | 75.3% |
-| double_faults | ensemble_v1_double_faults | 07 | 6661 | 74.2% |
-| double_faults | ensemble_v1_double_faults | 08 | 6661 | 71.4% |
-| double_faults | ensemble_v1_double_faults | 09 | 6661 | 69.6% |
-| double_faults | ensemble_v1_double_faults | 10 | 6661 | 62.2% |
-| double_faults | gbm_v1_double_faults | 01 | 6661 | 79.7% |
-| double_faults | gbm_v1_double_faults | 02 | 6661 | 77.9% |
-| double_faults | gbm_v1_double_faults | 03 | 6661 | 78.5% |
-| double_faults | gbm_v1_double_faults | 04 | 6661 | 77.8% |
-| double_faults | gbm_v1_double_faults | 05 | 6661 | 78.4% |
-| double_faults | gbm_v1_double_faults | 06 | 6661 | 79.3% |
-| double_faults | gbm_v1_double_faults | 07 | 6661 | 79.9% |
-| double_faults | gbm_v1_double_faults | 08 | 6661 | 79.3% |
-| double_faults | gbm_v1_double_faults | 09 | 6661 | 76.7% |
-| double_faults | gbm_v1_double_faults | 10 | 6661 | 77.9% |
-| service_games | baseline_v1_service_games | 01 | 6659 | 49.7% |
-| service_games | baseline_v1_service_games | 02 | 6660 | 60.0% |
-| service_games | baseline_v1_service_games | 03 | 6659 | 64.4% |
-| service_games | baseline_v1_service_games | 04 | 6660 | 67.9% |
-| service_games | baseline_v1_service_games | 05 | 6659 | 73.1% |
-| service_games | baseline_v1_service_games | 06 | 6660 | 77.5% |
-| service_games | baseline_v1_service_games | 07 | 6659 | 83.5% |
-| service_games | baseline_v1_service_games | 08 | 6660 | 86.5% |
-| service_games | baseline_v1_service_games | 09 | 6659 | 40.4% |
-| service_games | baseline_v1_service_games | 10 | 6660 | 15.2% |
-| service_games | ensemble_v1_service_games | 01 | 6659 | 69.8% |
-| service_games | ensemble_v1_service_games | 02 | 6660 | 70.8% |
-| service_games | ensemble_v1_service_games | 03 | 6659 | 71.9% |
-| service_games | ensemble_v1_service_games | 04 | 6660 | 76.5% |
-| service_games | ensemble_v1_service_games | 05 | 6659 | 78.6% |
-| service_games | ensemble_v1_service_games | 06 | 6660 | 80.6% |
-| service_games | ensemble_v1_service_games | 07 | 6659 | 83.9% |
-| service_games | ensemble_v1_service_games | 08 | 6660 | 85.6% |
-| service_games | ensemble_v1_service_games | 09 | 6659 | 52.5% |
-| service_games | ensemble_v1_service_games | 10 | 6660 | 43.2% |
-| service_games | gbm_v1_service_games | 01 | 6659 | 78.1% |
-| service_games | gbm_v1_service_games | 02 | 6660 | 77.5% |
-| service_games | gbm_v1_service_games | 03 | 6659 | 77.3% |
-| service_games | gbm_v1_service_games | 04 | 6660 | 76.7% |
-| service_games | gbm_v1_service_games | 05 | 6659 | 77.5% |
-| service_games | gbm_v1_service_games | 06 | 6660 | 78.7% |
-| service_games | gbm_v1_service_games | 07 | 6659 | 79.0% |
-| service_games | gbm_v1_service_games | 08 | 6660 | 78.0% |
-| service_games | gbm_v1_service_games | 09 | 6659 | 73.5% |
-| service_games | gbm_v1_service_games | 10 | 6660 | 74.2% |
+| aces | baseline_v1_aces | 01 | 6610 | 67.0% |
+| aces | baseline_v1_aces | 02 | 6611 | 69.5% |
+| aces | baseline_v1_aces | 03 | 6611 | 69.4% |
+| aces | baseline_v1_aces | 04 | 6611 | 71.7% |
+| aces | baseline_v1_aces | 05 | 6611 | 69.2% |
+| aces | baseline_v1_aces | 06 | 6610 | 68.9% |
+| aces | baseline_v1_aces | 07 | 6611 | 66.4% |
+| aces | baseline_v1_aces | 08 | 6611 | 65.3% |
+| aces | baseline_v1_aces | 09 | 6611 | 58.4% |
+| aces | baseline_v1_aces | 10 | 6611 | 31.7% |
+| aces | ensemble_v1_aces | 01 | 6610 | 68.4% |
+| aces | ensemble_v1_aces | 02 | 6611 | 72.5% |
+| aces | ensemble_v1_aces | 03 | 6611 | 75.5% |
+| aces | ensemble_v1_aces | 04 | 6611 | 76.6% |
+| aces | ensemble_v1_aces | 05 | 6611 | 74.1% |
+| aces | ensemble_v1_aces | 06 | 6610 | 74.4% |
+| aces | ensemble_v1_aces | 07 | 6611 | 72.5% |
+| aces | ensemble_v1_aces | 08 | 6611 | 71.1% |
+| aces | ensemble_v1_aces | 09 | 6611 | 68.6% |
+| aces | ensemble_v1_aces | 10 | 6611 | 56.5% |
+| aces | gbm_v1_aces | 01 | 6610 | 75.8% |
+| aces | gbm_v1_aces | 02 | 6611 | 76.6% |
+| aces | gbm_v1_aces | 03 | 6611 | 79.5% |
+| aces | gbm_v1_aces | 04 | 6611 | 77.3% |
+| aces | gbm_v1_aces | 05 | 6611 | 77.1% |
+| aces | gbm_v1_aces | 06 | 6610 | 77.9% |
+| aces | gbm_v1_aces | 07 | 6611 | 77.7% |
+| aces | gbm_v1_aces | 08 | 6611 | 78.9% |
+| aces | gbm_v1_aces | 09 | 6611 | 76.4% |
+| aces | gbm_v1_aces | 10 | 6611 | 75.3% |
+| double_faults | baseline_v1_double_faults | 01 | 6610 | 62.2% |
+| double_faults | baseline_v1_double_faults | 02 | 6611 | 65.8% |
+| double_faults | baseline_v1_double_faults | 03 | 6611 | 67.9% |
+| double_faults | baseline_v1_double_faults | 04 | 6611 | 68.2% |
+| double_faults | baseline_v1_double_faults | 05 | 6611 | 68.9% |
+| double_faults | baseline_v1_double_faults | 06 | 6610 | 69.5% |
+| double_faults | baseline_v1_double_faults | 07 | 6611 | 69.1% |
+| double_faults | baseline_v1_double_faults | 08 | 6611 | 67.0% |
+| double_faults | baseline_v1_double_faults | 09 | 6611 | 60.0% |
+| double_faults | baseline_v1_double_faults | 10 | 6611 | 40.1% |
+| double_faults | ensemble_v1_double_faults | 01 | 6610 | 68.7% |
+| double_faults | ensemble_v1_double_faults | 02 | 6611 | 69.4% |
+| double_faults | ensemble_v1_double_faults | 03 | 6611 | 70.4% |
+| double_faults | ensemble_v1_double_faults | 04 | 6611 | 73.0% |
+| double_faults | ensemble_v1_double_faults | 05 | 6611 | 73.4% |
+| double_faults | ensemble_v1_double_faults | 06 | 6610 | 75.4% |
+| double_faults | ensemble_v1_double_faults | 07 | 6611 | 74.3% |
+| double_faults | ensemble_v1_double_faults | 08 | 6611 | 71.5% |
+| double_faults | ensemble_v1_double_faults | 09 | 6611 | 69.7% |
+| double_faults | ensemble_v1_double_faults | 10 | 6611 | 62.6% |
+| double_faults | gbm_v1_double_faults | 01 | 6610 | 79.6% |
+| double_faults | gbm_v1_double_faults | 02 | 6611 | 77.9% |
+| double_faults | gbm_v1_double_faults | 03 | 6611 | 78.5% |
+| double_faults | gbm_v1_double_faults | 04 | 6611 | 77.8% |
+| double_faults | gbm_v1_double_faults | 05 | 6611 | 78.4% |
+| double_faults | gbm_v1_double_faults | 06 | 6610 | 79.3% |
+| double_faults | gbm_v1_double_faults | 07 | 6611 | 79.8% |
+| double_faults | gbm_v1_double_faults | 08 | 6611 | 79.4% |
+| double_faults | gbm_v1_double_faults | 09 | 6611 | 76.8% |
+| double_faults | gbm_v1_double_faults | 10 | 6611 | 78.0% |
+| service_games | baseline_v1_service_games | 01 | 6609 | 49.7% |
+| service_games | baseline_v1_service_games | 02 | 6609 | 59.9% |
+| service_games | baseline_v1_service_games | 03 | 6609 | 64.4% |
+| service_games | baseline_v1_service_games | 04 | 6610 | 68.0% |
+| service_games | baseline_v1_service_games | 05 | 6609 | 73.2% |
+| service_games | baseline_v1_service_games | 06 | 6609 | 77.4% |
+| service_games | baseline_v1_service_games | 07 | 6610 | 83.4% |
+| service_games | baseline_v1_service_games | 08 | 6609 | 86.5% |
+| service_games | baseline_v1_service_games | 09 | 6609 | 41.9% |
+| service_games | baseline_v1_service_games | 10 | 6610 | 15.2% |
+| service_games | ensemble_v1_service_games | 01 | 6609 | 69.8% |
+| service_games | ensemble_v1_service_games | 02 | 6609 | 70.9% |
+| service_games | ensemble_v1_service_games | 03 | 6609 | 72.1% |
+| service_games | ensemble_v1_service_games | 04 | 6610 | 76.6% |
+| service_games | ensemble_v1_service_games | 05 | 6609 | 78.7% |
+| service_games | ensemble_v1_service_games | 06 | 6609 | 80.6% |
+| service_games | ensemble_v1_service_games | 07 | 6610 | 83.8% |
+| service_games | ensemble_v1_service_games | 08 | 6609 | 85.7% |
+| service_games | ensemble_v1_service_games | 09 | 6609 | 53.6% |
+| service_games | ensemble_v1_service_games | 10 | 6610 | 44.0% |
+| service_games | gbm_v1_service_games | 01 | 6609 | 78.2% |
+| service_games | gbm_v1_service_games | 02 | 6609 | 77.6% |
+| service_games | gbm_v1_service_games | 03 | 6609 | 77.3% |
+| service_games | gbm_v1_service_games | 04 | 6610 | 76.8% |
+| service_games | gbm_v1_service_games | 05 | 6609 | 77.6% |
+| service_games | gbm_v1_service_games | 06 | 6609 | 78.6% |
+| service_games | gbm_v1_service_games | 07 | 6610 | 78.9% |
+| service_games | gbm_v1_service_games | 08 | 6609 | 78.2% |
+| service_games | gbm_v1_service_games | 09 | 6609 | 73.4% |
+| service_games | gbm_v1_service_games | 10 | 6610 | 74.1% |
 
 ### Fold-level bias-sign review
 
@@ -179,7 +189,7 @@ The headline metric is interval coverage: the fraction of realized outcomes insi
 | aces | baseline_v1_aces | 65 | 64 | 50.4% | mixed |
 | aces | gbm_v1_aces | 20 | 109 | 84.5% | FLAG: negative in most folds |
 | aces | ensemble_v1_aces | 51 | 78 | 60.5% | FLAG: negative in most folds |
-| double_faults | baseline_v1_double_faults | 74 | 55 | 57.4% | mixed |
+| double_faults | baseline_v1_double_faults | 73 | 56 | 56.6% | mixed |
 | double_faults | gbm_v1_double_faults | 36 | 93 | 72.1% | FLAG: negative in most folds |
 | double_faults | ensemble_v1_double_faults | 59 | 70 | 54.3% | mixed |
 | service_games | baseline_v1_service_games | 68 | 61 | 52.7% | mixed |
@@ -188,22 +198,22 @@ The headline metric is interval coverage: the fraction of realized outcomes insi
 
 ## Expectation reconciliation
 
-- Baseline aces MAE 3.4–4.1: **PASS** (3.5814).
-- GBM aces improvement 3–8%: **FAIL** (20.25%).
-- Ensemble aces improvement over GBM 1–3%: **FAIL** (-6.73%).
-- baseline_v1 aces interval coverage 0.75–0.85: **FAIL** (63.6%).
-- gbm_v1 aces interval coverage 0.75–0.85: **PASS** (77.2%).
-- ensemble_v1 aces interval coverage 0.75–0.85: **FAIL** (70.7%).
-- GBM double_faults improvement 3–8%: **FAIL** (8.38%).
+- Baseline aces MAE 3.4–4.1: **PASS** (3.5613).
+- GBM aces improvement 3–8%: **FAIL** (19.90%).
+- Ensemble aces improvement over GBM 1–3%: **FAIL** (-6.26%).
+- baseline_v1 aces interval coverage 0.75–0.85: **FAIL** (63.8%).
+- gbm_v1 aces interval coverage 0.75–0.85: **PASS** (77.3%).
+- ensemble_v1 aces interval coverage 0.75–0.85: **FAIL** (71.0%).
+- GBM double_faults improvement 3–8%: **FAIL** (8.34%).
 - Ensemble double_faults improvement over GBM 1–3%: **FAIL** (-1.77%).
-- baseline_v1 double_faults interval coverage 0.75–0.85: **FAIL** (63.8%).
+- baseline_v1 double_faults interval coverage 0.75–0.85: **FAIL** (63.9%).
 - gbm_v1 double_faults interval coverage 0.75–0.85: **PASS** (78.5%).
-- ensemble_v1 double_faults interval coverage 0.75–0.85: **FAIL** (70.7%).
-- GBM service_games improvement 3–8%: **FAIL** (27.86%).
-- Ensemble service_games improvement over GBM 1–3%: **FAIL** (-9.75%).
-- baseline_v1 service_games interval coverage 0.75–0.85: **FAIL** (61.8%).
-- gbm_v1 service_games interval coverage 0.75–0.85: **PASS** (77.0%).
-- ensemble_v1 service_games interval coverage 0.75–0.85: **FAIL** (71.4%).
+- ensemble_v1 double_faults interval coverage 0.75–0.85: **FAIL** (70.8%).
+- GBM service_games improvement 3–8%: **FAIL** (27.65%).
+- Ensemble service_games improvement over GBM 1–3%: **FAIL** (-9.21%).
+- baseline_v1 service_games interval coverage 0.75–0.85: **FAIL** (62.0%).
+- gbm_v1 service_games interval coverage 0.75–0.85: **PASS** (77.1%).
+- ensemble_v1 service_games interval coverage 0.75–0.85: **FAIL** (71.6%).
 - Any FAIL is not treated as success. It requires a leakage and data-boundary review before the model is trusted, including when the result is better than expected.
 
 ## Known limitations
